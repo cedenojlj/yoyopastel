@@ -20,7 +20,7 @@ class EmpleadoFactory extends Factory
             'direccion' => $this->faker->address(),
             'telefono' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
-            'salario' => 1,
+            'salario' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 500),            
             'foto' => $this->faker->imageUrl($width = 640, $height = 480),
             'empresa_id' => $this->faker->numberBetween($min = 1, $max = 50),
         ];
