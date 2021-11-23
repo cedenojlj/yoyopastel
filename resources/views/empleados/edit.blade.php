@@ -17,11 +17,11 @@
 
 
             <div class="card">
-                <div class="card-header">{{ __('Crear Empresa') }}</div>
+                <div class="card-header">{{ __('Editar Empleado') }}</div>
 
                 <div class="card-body">  
 
-                    <form method="POST" action="{{ route('empresas.update',$empresa->id) }}">
+                    <form method="POST" action="{{ route('empleados.update',$empleado->id) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -30,9 +30,9 @@
                                 }}</label>
 
                             <div class="col-md-6">
-                                <input id="nombre" type="text" 
+                                <input id="nombre" type="text"
                                     class="form-control @error('nombre') is-invalid @enderror" name="nombre"
-                                    value="{{ $empresa->nombre }}" required autocomplete="nombre" autofocus>
+                                    value="{{ $empleado->nombre }}" required autocomplete="nombre" autofocus>
 
                                 @error('nombre')
                                 <span class="invalid-feedback" role="alert">
@@ -43,14 +43,32 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="rif" class="col-md-3 col-form-label text-md-right">{{ __('Rif')
+                            <label for="apellido" class="col-md-3 col-form-label text-md-right">{{ __('Apellido')
                                 }}</label>
 
                             <div class="col-md-6">
-                                <input id="rif" type="text" class="form-control @error('rif') is-invalid @enderror"
-                                    name="rif" value="{{ $empresa->rif }}" required autocomplete="rif" autofocus>
+                                <input id="apellido" type="text"
+                                    class="form-control @error('apellido') is-invalid @enderror" name="apellido"
+                                    value="{{ $empleado->apellido }}" required autocomplete="apellido" autofocus>
 
-                                @error('rif')
+                                @error('apellido')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="cedula" class="col-md-3 col-form-label text-md-right">{{ __('Cedula')
+                                }}</label>
+
+                            <div class="col-md-6">
+                                <input id="cedula" type="text"
+                                    class="form-control @error('cedula') is-invalid @enderror" name="cedula"
+                                    value="{{ $empleado->cedula }}" required autocomplete="cedula" autofocus>
+
+                                @error('cedula')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -65,7 +83,7 @@
                             <div class="col-md-9">
                                 <input id="direccion" type="text"
                                     class="form-control @error('direccion') is-invalid @enderror" name="direccion"
-                                    value="{{ $empresa->direccion }}" required autocomplete="direccion" autofocus>
+                                    value="{{ $empleado->direccion }}" required autocomplete="direccion" autofocus>
 
                                 @error('direccion')
                                 <span class="invalid-feedback" role="alert">
@@ -82,7 +100,7 @@
                             <div class="col-md-6">
                                 <input id="telefono" type="text"
                                     class="form-control @error('telefono') is-invalid @enderror" name="telefono"
-                                    value="{{ $empresa->telefono }}" required autocomplete="telefono" autofocus>
+                                    value="{{ $empleado->telefono }}" required autocomplete="telefono" autofocus>
 
                                 @error('telefono')
                                 <span class="invalid-feedback" role="alert">
@@ -98,7 +116,7 @@
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                                    name="email" value="{{ $empresa->email }}" required autocomplete="email" autofocus>
+                                    name="email" value="{{ $empleado->email }}" required autocomplete="email" autofocus>
 
                                 @error('email')
                                 <span class="invalid-feedback" role="alert">
@@ -106,7 +124,68 @@
                                 </span>
                                 @enderror
                             </div>
-                        </div>                       
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="salario" class="col-md-3 col-form-label text-md-right">{{ __('Salario')
+                                }}</label>
+
+                            <div class="col-md-6">
+                                <input id="salario" type="number"
+                                    class="form-control @error('salario') is-invalid @enderror" name="salario"
+                                    value="{{ $empleado->salario }}" required autocomplete="salario" autofocus step="0.01">
+
+                                @error('salario')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <label for="foto" class="col-md-3 col-form-label text-md-right">{{ __('Foto')
+                                }}</label>
+
+                            <div class="col-md-6">
+                                <input id="foto" type="file" class="form-control @error('foto') is-invalid @enderror"
+                                    name="foto" accept="image/*">
+
+                                @error('foto')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="empresa_id" class="col-md-3 col-form-label text-md-right">{{ __('Empresa')
+                                }}</label>
+
+                            <div class="col-md-6">
+
+                                <select class="form-control @error('salario') is-invalid @enderror" name="empresa_id"
+                                    required>
+
+                                    <option value=""> --Select-- </option>
+
+                                    @foreach ($empresas as $empresa)
+
+                                    <option {{ $empresa->id==$empleado->empresa_id ? 'selected' : '' }} value="{{ $empresa->id }}"> {{ $empresa->nombre }}</option>
+                                        
+                                    @endforeach    
+
+                                </select>
+
+                                @error('empresa_id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>                    
 
                         <div class="form-group row mb-0 justify-content-center">
                             <div class="col-md-8 offset-md-4">
@@ -114,7 +193,7 @@
                                     {{ __('Aceptar') }}
                                 </button>
 
-                                <a name="" id="" class="btn btn-primary" href="{{ route('empresas.index') }}"
+                                <a name="" id="" class="btn btn-primary" href="{{ route('empleados.index') }}"
                                     role="button">Cancel</a>
                             </div>
                         </div>

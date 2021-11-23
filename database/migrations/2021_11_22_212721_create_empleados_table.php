@@ -24,9 +24,8 @@ class CreateEmpleadosTable extends Migration
             $table->string('email');
             $table->decimal('salario',8,2);
             $table->string('foto');
-            $table->foreignId('empresa_id')->constrained();
+            $table->foreignId('empresa_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
-
         });
     }
 

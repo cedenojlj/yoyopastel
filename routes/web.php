@@ -1,10 +1,9 @@
 <?php
 
-
+use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpresaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
 
 
 /*
@@ -37,9 +36,9 @@ Route::get('empresas-reporte', [EmpresaController::class, 'export'])->name('empr
 
 //Empleado
 
-Route::resource('empleados', EmpresaController::class)->middleware('auth');
+Route::resource('empleados', EmpleadoController::class)->middleware('auth');
 
-Route::get('empleados-search', [EmpresaController::class, 'search'])->name('empleados.search')->middleware('auth');
+Route::get('empleados-search', [EmpleadoController::class, 'search'])->name('empleados.search')->middleware('auth');
 
-Route::get('empleados-reporte', [EmpresaController::class, 'export'])->name('empleados.reporte')->middleware('auth');
+Route::get('empleados-reporte', [EmpleadoController::class, 'export'])->name('empleados.reporte')->middleware('auth');
 
