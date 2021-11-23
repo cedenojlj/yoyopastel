@@ -26,8 +26,20 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
+// Empresa
+
 Route::resource('empresas', EmpresaController::class)->middleware('auth');
 
-Route::get('empresas-search', [EmpresaController::class, 'search'])->name('empresas.search');
+Route::get('empresas-search', [EmpresaController::class, 'search'])->name('empresas.search')->middleware('auth');
 
-Route::get('empresas-reporte', [EmpresaController::class, 'export'])->name('empresas.reporte');
+Route::get('empresas-reporte', [EmpresaController::class, 'export'])->name('empresas.reporte')->middleware('auth');
+
+//Empleado
+
+Route::resource('empleados', EmpresaController::class)->middleware('auth');
+
+Route::get('empleados-search', [EmpresaController::class, 'search'])->name('empleados.search')->middleware('auth');
+
+Route::get('empleados-reporte', [EmpresaController::class, 'export'])->name('empleados.reporte')->middleware('auth');
+

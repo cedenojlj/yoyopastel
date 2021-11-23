@@ -165,5 +165,7 @@ class EmpresaController extends Controller
     {
         return Excel::download(new EmpresaExport, 'empresa.xlsx');
     }
+
+    
     
 }
