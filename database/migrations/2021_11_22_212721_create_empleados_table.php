@@ -23,9 +23,10 @@ class CreateEmpleadosTable extends Migration
             $table->string('telefono');
             $table->string('email');
             $table->decimal('salario',8,2);
-            $table->string('foto');
-            $table->foreignId('empresa_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('foto');            
             $table->timestamps();
+            $table->foreignId('empresa_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
