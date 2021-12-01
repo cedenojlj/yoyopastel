@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\ProveedorController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -52,3 +53,12 @@ Route::get('clientes-search', [ClienteController::class, 'search'])->name('clien
 
 Route::get('clientes-reporte', [ClienteController::class, 'export'])->name('clientes.reporte')->middleware('auth');
 
+
+
+//Proveedor
+
+Route::resource('proveedors', ProveedorController::class)->middleware('auth');
+
+Route::get('proveedors-search', [ProveedorController::class, 'search'])->name('proveedors.search')->middleware('auth');
+
+Route::get('proveedors-reporte', [ProveedorController::class, 'export'])->name('proveedors.reporte')->middleware('auth');
