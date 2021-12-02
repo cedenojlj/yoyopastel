@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpresaController;
@@ -62,3 +63,12 @@ Route::resource('proveedors', ProveedorController::class)->middleware('auth');
 Route::get('proveedors-search', [ProveedorController::class, 'search'])->name('proveedors.search')->middleware('auth');
 
 Route::get('proveedors-reporte', [ProveedorController::class, 'export'])->name('proveedors.reporte')->middleware('auth');
+
+
+//Categoria
+
+Route::resource('categorias', CategoriaController::class)->middleware('auth');
+
+Route::get('categorias-search', [CategoriaController::class, 'search'])->name('categorias.search')->middleware('auth');
+
+Route::get('categorias-reporte', [CategoriaController::class, 'export'])->name('categorias.reporte')->middleware('auth');

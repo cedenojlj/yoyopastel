@@ -63,23 +63,24 @@
                             <a class="nav-link" href="#">Ventas</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Productos</a>
-                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Productos</a>
+                            <div class="dropdown-menu">
+
+                              <a class="dropdown-item" href="#">Productos</a>
+                              <a class="dropdown-item" href="#">Materiales</a>
+                              <a class="dropdown-item" href="#">Costos</a>
+                              <a class="dropdown-item" href="{{ route('categorias.index') }}">Categorias</a>
+                              <a class="dropdown-item" href="#">Inventario Materiales</a>
+                              <a class="dropdown-item" href="#">Inventario Productos</a>
+                              
+                            </div>
+                          </li>
 
                         <li class="nav-item">
                             <a class="nav-link" href="#">Pagos</a>
                         </li>
-                        
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Inventarios</a>
-                            <div class="dropdown-menu">
-
-                              <a class="dropdown-item" href="#">Materiales</a>
-                              <a class="dropdown-item" href="#">Productos</a>
-                              
-                            </div>
-                          </li>
+                                               
 
                           <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Reportes</a>
