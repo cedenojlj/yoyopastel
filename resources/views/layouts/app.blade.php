@@ -67,7 +67,7 @@
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Productos</a>
                             <div class="dropdown-menu">
 
-                              <a class="dropdown-item" href="#">Productos</a>
+                              <a class="dropdown-item" href="{{ route('productos.index') }}">Productos</a>
                               <a class="dropdown-item" href="#">Materiales</a>
                               <a class="dropdown-item" href="#">Costos</a>
                               <a class="dropdown-item" href="{{ route('categorias.index') }}">Categorias</a>

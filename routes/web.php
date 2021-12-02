@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -72,3 +73,12 @@ Route::resource('categorias', CategoriaController::class)->middleware('auth');
 Route::get('categorias-search', [CategoriaController::class, 'search'])->name('categorias.search')->middleware('auth');
 
 Route::get('categorias-reporte', [CategoriaController::class, 'export'])->name('categorias.reporte')->middleware('auth');
+
+
+//Producto
+
+Route::resource('productos', ProductoController::class)->middleware('auth');
+
+Route::get('productos-search', [ProductoController::class, 'search'])->name('productos.search')->middleware('auth');
+
+Route::get('productos-reporte', [ProductoController::class, 'export'])->name('productos.reporte')->middleware('auth');
