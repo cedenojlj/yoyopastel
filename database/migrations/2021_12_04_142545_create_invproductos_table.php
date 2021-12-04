@@ -14,8 +14,23 @@ class CreateInvproductosTable extends Migration
     public function up()
     {
         Schema::create('invproductos', function (Blueprint $table) {
+
             $table->id();
+            $table->integer('entrada');
+            $table->integer('salida');            
             $table->timestamps();
+            $table->foreignId('producto_id')
+                    ->constrained('productos')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
+            $table->foreignId('user_id')
+                    ->constrained('users')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
+            $table->foreignId('empresa_id')
+                    ->constrained('empresas')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
         });
     }
 
