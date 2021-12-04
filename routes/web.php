@@ -4,8 +4,12 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\InvproductoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+use App\Models\Empleado;
+use App\Models\Empresa;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -82,3 +86,22 @@ Route::resource('productos', ProductoController::class)->middleware('auth');
 Route::get('productos-search', [ProductoController::class, 'search'])->name('productos.search')->middleware('auth');
 
 Route::get('productos-reporte', [ProductoController::class, 'export'])->name('productos.reporte')->middleware('auth');
+
+//
+
+Route::get('/jose', function () {
+
+    $id=auth()->user()->id;
+    $jose=Empleado::where('user_id',$id)->first()->empresa_id;
+    
+    dd($jose);
+});
+
+
+//Inventario Producto
+
+Route::resource('invproductos', InvproductoController::class)->middleware('auth');
+
+Route::get('invproductos-search', [InvproductoController::class, 'search'])->name('invproductos.search')->middleware('auth');
+
+Route::get('invproductos-reporte', [InvproductoController::class, 'export'])->name('invproductos.reporte')->middleware('auth');

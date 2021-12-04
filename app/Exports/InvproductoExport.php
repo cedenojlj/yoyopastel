@@ -18,11 +18,12 @@ class InvproductoExport implements FromCollection, WithHeadings
 
             'id',
             'Entrada',
-            'Salida',
-            'Producto',            
+            'Salida',                        
             'Creado',
-            'Actualizado'
-            
+            'Actualizado',
+            'Producto',
+            'user',
+            'empresa'            
         ];
     }
 
