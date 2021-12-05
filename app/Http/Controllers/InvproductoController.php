@@ -8,6 +8,7 @@ use App\Models\Invproducto;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 
 class InvproductoController extends Controller
@@ -124,15 +125,17 @@ class InvproductoController extends Controller
 
         //dd($request);
 
-        if ($request->search) {
+        if ($request->search) {            
 
-            //return 'con valor';
+            $busqueda = $request->search;            
 
-            $busqueda = $request->search;
-
-            $invproductos = Invproducto::where('codigo', 'LIKE', '%' . $busqueda . '%')
-                ->orWhere('nombre', 'LIKE', '%' . $busqueda . '%')
-                ->paginate(15)->withQueryString();
+            $invproductos=Invproducto::where(function ($query) {
+                $query->select('nombre')
+                    ->from('productos')
+                    ->whereColumn('productos.id', 'invproductos.producto_id')                    
+                    ->limit(1);
+            }, 'like','%' . $busqueda . '%')->paginate(15)->withQueryString(); 
+            
 
             return view('invproductos.index', compact('invproductos'));
 
