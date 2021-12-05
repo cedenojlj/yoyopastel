@@ -6,8 +6,10 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\InvproductoController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\ParidadController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+
 use App\Models\Empleado;
 use App\Models\Empresa;
 use App\Models\Invproducto;
@@ -161,3 +163,11 @@ Route::resource('materials', MaterialController::class)->middleware('auth');
 Route::get('materials-search', [MaterialController::class, 'search'])->name('materials.search')->middleware('auth');
 
 Route::get('materials-reporte', [MaterialController::class, 'export'])->name('materials.reporte')->middleware('auth');
+
+//Tipo de Cambio
+
+Route::resource('paridads', ParidadController::class)->middleware('auth');
+
+Route::get('paridads-search', [ParidadController::class, 'search'])->name('paridads.search')->middleware('auth');
+
+Route::get('paridads-reporte', [ParidadController::class, 'export'])->name('paridads.reporte')->middleware('auth');

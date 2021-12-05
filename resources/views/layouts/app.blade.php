@@ -73,6 +73,7 @@
                               <a class="dropdown-item" href="{{ route('categorias.index') }}">Categorias</a>
                               <a class="dropdown-item" href="#">Inventario Materiales</a>
                               <a class="dropdown-item" href="{{ route('invproductos.index') }}">Inventario Productos</a>
+                              <a class="dropdown-item" href="{{ route('paridads.index') }}">Paridad</a>
                               
                             </div>
                           </li>
