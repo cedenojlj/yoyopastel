@@ -68,7 +68,7 @@
                             <div class="dropdown-menu">
 
                               <a class="dropdown-item" href="{{ route('productos.index') }}">Productos</a>
-                              <a class="dropdown-item" href="#">Materiales</a>
+                              <a class="dropdown-item" href="{{ route('materials.index') }}">Materiales</a>
                               <a class="dropdown-item" href="#">Costos</a>
                               <a class="dropdown-item" href="{{ route('categorias.index') }}">Categorias</a>
                               <a class="dropdown-item" href="#">Inventario Materiales</a>

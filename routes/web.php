@@ -5,6 +5,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\InvproductoController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
 use App\Models\Empleado;
@@ -151,3 +152,12 @@ Route::resource('invproductos', InvproductoController::class)->middleware('auth'
 Route::get('invproductos-search', [InvproductoController::class, 'search'])->name('invproductos.search')->middleware('auth');
 
 Route::get('invproductos-reporte', [InvproductoController::class, 'export'])->name('invproductos.reporte')->middleware('auth');
+
+
+//Materiales
+
+Route::resource('materials', MaterialController::class)->middleware('auth');
+
+Route::get('materials-search', [MaterialController::class, 'search'])->name('materials.search')->middleware('auth');
+
+Route::get('materials-reporte', [MaterialController::class, 'export'])->name('materials.reporte')->middleware('auth');
