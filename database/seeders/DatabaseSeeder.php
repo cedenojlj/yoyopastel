@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Invproducto::factory(50)->create();
         \App\Models\Material::factory(50)->create();
         \App\Models\Paridad::factory(50)->create();
+        \App\Models\Invmaterial::factory(50)->create();
         
     }
 }

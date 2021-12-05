@@ -4,11 +4,13 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\InvmaterialController;
 use App\Http\Controllers\InvproductoController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ParidadController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+
 
 use App\Models\Empleado;
 use App\Models\Empresa;
@@ -171,3 +173,12 @@ Route::resource('paridads', ParidadController::class)->middleware('auth');
 Route::get('paridads-search', [ParidadController::class, 'search'])->name('paridads.search')->middleware('auth');
 
 Route::get('paridads-reporte', [ParidadController::class, 'export'])->name('paridads.reporte')->middleware('auth');
+
+
+//Inventario Metariales
+
+Route::resource('invmaterials', InvmaterialController::class)->middleware('auth');
+
+Route::get('invmaterials-search', [InvmaterialController::class, 'search'])->name('invmaterials.search')->middleware('auth');
+
+Route::get('invmaterials-reporte', [InvmaterialController::class, 'export'])->name('invmaterials.reporte')->middleware('auth');
