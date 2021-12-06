@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Exports\PagoExport;
+use App\Models\Empleado;
 use App\Models\Pago;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+
 
 
 class PagoController extends Controller
@@ -48,28 +50,26 @@ class PagoController extends Controller
 
         ]);
 
-        Pago::create($request->all());
+        $id=auth()->user()->id;        
+
+        $empresauser=Empleado::where('user_id',$id)->first()->empresa_id;
+
+        Pago::create([
+
+            'pago' => $request->pago,
+            'referencia' => $request->referencia,
+            'concepto' => $request->concepto,
+            'user_id' => $id,
+            'empresa_id' => $empresauser,
+
+        ]);
 
         return redirect()->route('pagos.index')->with('success', 'Pago Creado con Exito.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Pago  $pago
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Pago $pago)
-    {
-        //
-    }
+  
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Pago  $pago
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit(Pago $pago)
     {
         return view('pagos.edit', compact('pago'));
@@ -91,8 +91,20 @@ class PagoController extends Controller
             'concepto' => 'required|max:255',
 
         ]);
+
+        $id=auth()->user()->id;        
+
+        $empresauser=Empleado::where('user_id',$id)->first()->empresa_id;
         
-        $pago->update($request->all());
+        $pago->update([
+
+            'pago' => $request->pago,
+            'referencia' => $request->referencia,
+            'concepto' => $request->concepto,
+            'user_id' => $id,
+            'empresa_id' => $empresauser,
+
+        ]);
 
         return redirect()->route('pagos.index')->with('success', 'Pago Actualizado con Exito.');
     }

@@ -9,5 +9,5 @@ class Pago extends Model
 {
     use HasFactory;
 
-    protected $fillable=['pago','referencia','concepto'];
+    protected $fillable=['pago','referencia','concepto','user_id','empresa_id'];
 }

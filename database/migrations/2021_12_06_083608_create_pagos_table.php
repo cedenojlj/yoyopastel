@@ -19,6 +19,14 @@ class CreatePagosTable extends Migration
             $table->string('referencia');
             $table->string('concepto');
             $table->timestamps();
+            $table->foreignId('user_id')
+                    ->constrained('users')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
+            $table->foreignId('empresa_id')
+                    ->constrained('empresas')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
         });
     }
 
