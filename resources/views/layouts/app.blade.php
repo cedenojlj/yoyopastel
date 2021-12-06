@@ -79,7 +79,7 @@
                           </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Pagos</a>
+                            <a class="nav-link" href="{{ route('pagos.index') }}">Pagos</a>
                         </li>
                                                
 

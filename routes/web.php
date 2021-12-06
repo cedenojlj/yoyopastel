@@ -7,9 +7,11 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\InvmaterialController;
 use App\Http\Controllers\InvproductoController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ParidadController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+
 
 
 use App\Models\Empleado;
@@ -182,3 +184,12 @@ Route::resource('invmaterials', InvmaterialController::class)->middleware('auth'
 Route::get('invmaterials-search', [InvmaterialController::class, 'search'])->name('invmaterials.search')->middleware('auth');
 
 Route::get('invmaterials-reporte', [InvmaterialController::class, 'export'])->name('invmaterials.reporte')->middleware('auth');
+
+
+//Pagos
+
+Route::resource('pagos', PagoController::class)->middleware('auth');
+
+Route::get('pagos-search', [PagoController::class, 'search'])->name('pagos.search')->middleware('auth');
+
+Route::get('pagos-reporte', [PagoController::class, 'export'])->name('pagos.reporte')->middleware('auth');
