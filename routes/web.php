@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CompraController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\InvmaterialController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ParidadController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+
 
 
 
@@ -39,6 +41,7 @@ use Illuminate\Support\Facades\DB;
 Route::get('/', function () {
     return view('welcome');
 });
+
 
 Auth::routes();
 
@@ -193,3 +196,12 @@ Route::resource('pagos', PagoController::class)->middleware('auth');
 Route::get('pagos-search', [PagoController::class, 'search'])->name('pagos.search')->middleware('auth');
 
 Route::get('pagos-reporte', [PagoController::class, 'export'])->name('pagos.reporte')->middleware('auth');
+
+
+//compras
+
+Route::resource('compras', CompraController::class)->middleware('auth');
+
+Route::get('compras-search', [CompraController::class, 'search'])->name('compras.search')->middleware('auth');
+
+Route::get('compras-reporte', [CompraController::class, 'export'])->name('compras.reporte')->middleware('auth');

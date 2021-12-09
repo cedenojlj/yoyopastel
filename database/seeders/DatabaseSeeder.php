@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Paridad::factory(50)->create();
         \App\Models\Invmaterial::factory(50)->create();
         \App\Models\Pago::factory(50)->create();
+        \App\Models\Compra::factory(50)->create();
         
     }
 }

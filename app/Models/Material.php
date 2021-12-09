@@ -18,6 +18,9 @@ class Material extends Model
         'stock_min'
     ];
 
-
+    public function compras()
+    {
+        return $this->belongsToMany(Compra::class,'compra_material');
+    }
 
 }

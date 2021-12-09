@@ -20,6 +20,12 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Styles Yoyo-->
+    <link href="{{ asset('css/yoyo.css') }}" rel="stylesheet">
+
+    <!-- Livewire -->
+    @livewireStyles
 </head>
 
 <body>
@@ -56,7 +62,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Compras</a>
+                            <a class="nav-link" href="{{ route('compras.index') }}">Compras</a>
                         </li>
 
                         <li class="nav-item">
@@ -140,6 +146,9 @@
             @yield('content')
         </main>
     </div>
+
+    <!-- Livewire -->
+    @livewireScripts
 </body>
 
 </html>
