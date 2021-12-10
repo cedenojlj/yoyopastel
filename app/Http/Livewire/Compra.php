@@ -22,8 +22,8 @@ class Compra extends Component
     public $cantidad;
     public $costo;
     public $subtotal=0;
-    public $iva=0.12;
-    public $total;
+    public $iva=12;
+    public $total=0;
     public $listaMateriales=[];
 
 
@@ -34,7 +34,7 @@ class Compra extends Component
 
     protected $rules=[
 
-        // 'search'=>'required|min:2',
+        
         'material'=>'required|min:2',
         'cantidad'=>'required|numeric|min:1',
         'costo'=>'required|numeric|min:0.1',
@@ -63,18 +63,19 @@ class Compra extends Component
     {
         $this->validate();
 
-        $searchMaterial = Material::where('nombre','like','%'. $this->material .'%')->first();
+        $searchMaterial = Material::where('nombre','like','%'. $this->material .'%')
+        ->orWhere('codigo','like','%'. $this->material .'%')->first();
 
         
         if (!empty($searchMaterial)) {
             
             $subtotalitem=$this->cantidad*$this->costo;
 
-            $totalitemiva = $subtotalitem + $subtotalitem*$this->iva;
+            $totalitemiva = $subtotalitem + $subtotalitem*($this->iva/100);
 
             $this->subtotal= $this->subtotal + $subtotalitem;
 
-            $this->total= $this->subtotal +$this->subtotal*$this->iva;
+            $this->total= $this->total + $totalitemiva;
 
             $this->listaMateriales[]=[
 
@@ -120,7 +121,9 @@ class Compra extends Component
 
         if (!empty($this->material) and Str::length($this->material)>2) {
 
-           $this->materiales = Material::where('nombre','like','%'. $this->material .'%')->get();
+           $this->materiales = Material::where('nombre','like','%'. $this->material .'%')
+           ->orWhere('codigo','like','%'. $this->material .'%')
+           ->get();
 
         } else {
             
