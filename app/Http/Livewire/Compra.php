@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Empleado;
 use App\Models\Material;
 use App\Models\Proveedor;
 use Illuminate\Support\Str;
 
 
 use Livewire\Component;
+use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Subtotal;
 
 class Compra extends Component
 {
@@ -17,6 +19,7 @@ class Compra extends Component
     public $proveedor;    
     public $mostrar= false;
     public $errorMaterial= false;
+    public $errorProveedor= false;
     public $material;
     public $materiales;
     public $cantidad;
@@ -48,15 +51,25 @@ class Compra extends Component
 
             $this->proveedor = Proveedor::where('nombre','like','%'. $this->search .'%')
         ->orWhere('rif','like','%'. $this->search .'%')->first();  
-            
-        }
+       
+        $this->errorProveedor=false;
 
         $this->mostrar=true; 
+
+        }else {
+            
+            $this->errorProveedor=true;
+        }
+
+        
+
+       
     }
     public function cerrarProveedor()
     {
-        $this->mostrar=false;
         $this->search='';
+        $this->mostrar=false;
+        
     }
 
     public function cargarMaterial()
@@ -65,6 +78,9 @@ class Compra extends Component
 
         $searchMaterial = Material::where('nombre','like','%'. $this->material .'%')
         ->orWhere('codigo','like','%'. $this->material .'%')->first();
+        
+
+        $this->verificarMaterial($searchMaterial->id);
 
         
         if (!empty($searchMaterial)) {
@@ -96,7 +112,33 @@ class Compra extends Component
         }
         
     }
+
+    public function borrarMaterial($indice)
+    {
+       //dd(count($this->listaMateriales));
+
+        $this->subtotal=$this->subtotal-$this->listaMateriales[$indice]['subtotalitem'];
+        $this->total=$this->total-$this->listaMateriales[$indice]['totalitemiva'];
+
+        unset($this->listaMateriales[$indice]); 
+
+        if (count($this->listaMateriales)<1) {
+            $this->subtotal=0;
+            $this->total=0;
+        }
+    }
     
+    public function verificarMaterial($id)
+    {
+         foreach ($this->listaMateriales as $key => $value) {
+            
+            if($value['id']==$id){
+
+                $this->borrarMaterial($key);
+            };
+        } 
+        
+    }
 
     public function limpiar()
     {
@@ -105,6 +147,14 @@ class Compra extends Component
         $this->costo=0;
     }
     
+    public function cargarCompra()
+    {
+        $id=auth()->user()->id;        
+
+        $empresauser=Empleado::where('user_id',$id)->first()->empresa_id;
+
+        
+    }
 
     public function render()
     {
