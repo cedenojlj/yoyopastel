@@ -11,10 +11,10 @@ class Material extends Model
 
     protected $fillable=[        
        
+        'codigo',
         'nombre',
         'descripcion',        
-        'costo',
-        'stock',
+        'costo',        
         'stock_min'
     ];
 

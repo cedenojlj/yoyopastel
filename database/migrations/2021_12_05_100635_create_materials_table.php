@@ -16,10 +16,10 @@ class CreateMaterialsTable extends Migration
         Schema::create('materials', function (Blueprint $table) {
            
             $table->id();
+            $table->string('codigo');
             $table->string('nombre');
             $table->string('descripcion');
-            $table->decimal('costo',8,2);
-            $table->integer('stock');
+            $table->decimal('costo',8,2);  
             $table->integer('stock_min');        
             $table->timestamps();
             

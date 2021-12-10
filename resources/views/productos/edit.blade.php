@@ -139,24 +139,7 @@
                             </div>
                         </div>
 
-                        {{-- stock --}}
-
-                        <div class="form-group row">
-                            <label for="stock" class="col-md-3 col-form-label text-md-right">{{ __('Stock')
-                                }}</label>
-
-                            <div class="col-md-6">
-                                <input id="stock" type="number"
-                                    class="form-control @error('stock') is-invalid @enderror" name="stock"
-                                    value="{{ $producto->stock }}" required autocomplete="stock" autofocus>
-
-                                @error('stock')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                        </div>
+                        
 
                         {{-- stock minimo --}}
 

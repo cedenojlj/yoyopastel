@@ -43,8 +43,7 @@
                                 <th scope="col">Codigo</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Precio $</th>                                
-                                <th scope="col">Costo $</th>                                
-                                <th scope="col">Stock</th>                                
+                                <th scope="col">Costo $</th> 
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
@@ -57,8 +56,8 @@
                                 <td>{{ $producto->codigo }}</td>
                                 <td>{{ $producto->nombre }}</td>
                                 <td>{{ $producto->precio }}</td>                              
-                                <td>{{ $producto->costo }}</td>                              
-                                <td>{{ $producto->stock }}</td>                              
+                                <td>{{ $producto->costo }}</td>                             
+                                                              
                                 
 
                                 <td><form action="{{ route('productos.destroy', $producto->id) }}" method="post">

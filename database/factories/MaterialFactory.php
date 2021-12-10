@@ -15,10 +15,10 @@ class MaterialFactory extends Factory
     {
         return [
            
+            'codigo'=>$this->faker->ean8(),
             'nombre' => $this->faker->name(),
             'descripcion' => $this->faker->text($maxNbChars = 50),            
-            'costo' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 5, $max = 35),
-            'stock' => $this->faker->numberBetween($min = 1, $max = 20),
+            'costo' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 5, $max = 35),            
             'stock_min' => $this->faker->numberBetween($min = 1, $max = 10),            
         ];
     }

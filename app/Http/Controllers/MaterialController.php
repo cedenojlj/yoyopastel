@@ -42,11 +42,10 @@ class MaterialController extends Controller
     {
         $request->validate([
 
-            
+            'codigo' => 'required|max:255',
             'nombre' => 'required|max:255',
             'descripcion' => 'required|max:255',            
-            'costo' => 'required|numeric|min:1',
-            'stock' => 'required|numeric|min:0',
+            'costo' => 'required|numeric|min:1',            
             'stock_min' => 'required|numeric|min:0',
             
         ]);
@@ -91,11 +90,10 @@ class MaterialController extends Controller
     {
         $request->validate([
 
-            
+            'codigo' => 'required|max:255',
             'nombre' => 'required|max:255',
             'descripcion' => 'required|max:255',            
-            'costo' => 'required|numeric|min:1',
-            'stock' => 'required|numeric|min:0',
+            'costo' => 'required|numeric|min:1',            
             'stock_min' => 'required|numeric|min:0',
             
         ]);
@@ -130,7 +128,8 @@ class MaterialController extends Controller
 
             $busqueda = $request->search;
 
-            $materials = Material::where('nombre', 'LIKE', '%' . $busqueda . '%')                           
+            $materials = Material::where('nombre', 'LIKE', '%' . $busqueda . '%')
+                ->orWhere('codigo', 'LIKE', '%' . $busqueda . '%')                           
                 ->paginate(15)->withQueryString();
 
             return view('materials.index', compact('materials'));

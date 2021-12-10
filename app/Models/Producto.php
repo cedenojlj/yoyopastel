@@ -16,8 +16,7 @@ class Producto extends Model
         'descripcion',
         'precio',
         'costo',
-        'ganancia',
-        'stock',
+        'ganancia',        
         'stock_min',
         'categoria_id'
     ];

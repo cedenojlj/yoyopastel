@@ -49,8 +49,7 @@ class ProductoController extends Controller
             'descripcion' => 'required|max:255',
             'precio' => 'required|numeric|min:1',
             'costo' => 'required|numeric|min:1',
-            'ganancia' => 'required|numeric|min:1',
-            'stock' => 'required|numeric|min:0',
+            'ganancia' => 'required|numeric|min:1',            
             'stock_min' => 'required|numeric|min:0',
             'categoria_id' => 'required',
         ]);
@@ -102,8 +101,7 @@ class ProductoController extends Controller
             'descripcion' => 'required|max:255',
             'precio' => 'required|numeric|min:1',
             'costo' => 'required|numeric|min:1',
-            'ganancia' => 'required|numeric|min:1',
-            'stock' => 'required|numeric|min:0',
+            'ganancia' => 'required|numeric|min:1',            
             'stock_min' => 'required|numeric|min:0',
             'categoria_id' => 'required',
         ]);

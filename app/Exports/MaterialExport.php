@@ -16,11 +16,11 @@ class MaterialExport implements FromCollection, WithHeadings
     {
         return [
 
-            'id',            
+            'id',
+            'codigo',            
             'nombre',
             'descripcion',            
-            'costo',
-            'stock',
+            'costo',            
             'stock_min',                   
             'Creado',
             'Actualizado'

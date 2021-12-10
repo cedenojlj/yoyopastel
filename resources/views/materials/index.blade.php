@@ -39,10 +39,11 @@
                     <table class="table">
                         <thead class="thead-light">
                             <tr>
-                                <th scope="col">#</th>                                
+                                <th scope="col">#</th>
+                                <th scope="col">Codigo</th>                                  
                                 <th scope="col">Nombre</th>                                                               
-                                <th scope="col">Costo $</th>                                
-                                <th scope="col">Stock</th>                                
+                                <th scope="col">Costo $</th>                               
+                                                              
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
@@ -51,10 +52,11 @@
                             @foreach ($materials as $material)
 
                             <tr>
-                                <th scope="row">{{ $material->id }}</th>                                
+                                <th scope="row">{{ $material->id }}</th> 
+                                <td>{{ $material->codigo }}</td>                               
                                 <td>{{ $material->nombre }}</td>                                                          
                                 <td>{{ $material->costo }}</td>                              
-                                <td>{{ $material->stock }}</td>                             
+                                                             
                                 
 
                                 <td><form action="{{ route('materials.destroy', $material->id) }}" method="post">

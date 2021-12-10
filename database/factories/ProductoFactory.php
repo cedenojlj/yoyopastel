@@ -20,8 +20,7 @@ class ProductoFactory extends Factory
             'descripcion' => $this->faker->text($maxNbChars = 50),
             'precio' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 40, $max = 210),
             'costo' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 5, $max = 35),
-            'ganancia' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 100),
-            'stock' => $this->faker->numberBetween($min = 1, $max = 20),
+            'ganancia' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 100),            
             'stock_min' => $this->faker->numberBetween($min = 1, $max = 10),
             'categoria_id' => $this->faker->numberBetween($min = 1, $max = 10),
         ];

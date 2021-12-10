@@ -25,7 +25,24 @@
                         @csrf
                         @method('PUT')
 
-                         
+                         {{-- codigo --}}
+
+                        <div class="form-group row">
+                            <label for="codigo" class="col-md-3 col-form-label text-md-right">{{ __('codigo')
+                                }}</label>
+
+                            <div class="col-md-6">
+                                <input id="codigo" type="text"
+                                    class="form-control @error('codigo') is-invalid @enderror" name="codigo"
+                                    value="{{ $material->codigo }}" required  autofocus>
+
+                                @error('codigo')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>           
                         
                         {{-- nombre --}}
 
@@ -85,26 +102,7 @@
                             </div>
                         </div>
 
-                        
-                        {{-- stock --}}
-
-                        <div class="form-group row">
-                            <label for="stock" class="col-md-3 col-form-label text-md-right">{{ __('Stock')
-                                }}</label>
-
-                            <div class="col-md-6">
-                                <input id="stock" type="number"
-                                    class="form-control @error('stock') is-invalid @enderror" name="stock"
-                                    value="{{ $material->stock }}" required autocomplete="stock" autofocus>
-
-                                @error('stock')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                        </div>
-
+                                                
                         {{-- stock minimo --}}
 
                         <div class="form-group row">
