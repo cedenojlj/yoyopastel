@@ -18,6 +18,7 @@ class CompraExport implements FromCollection, WithHeadings
         return [
 
             'id',
+            'fecha',
             'factura',
             'subtotal',
             'iva',

@@ -11,6 +11,7 @@ class Compra extends Model
 
     protected $fillable=[
 
+        'fecha',
         'factura',
         'subtotal',
         'iva',

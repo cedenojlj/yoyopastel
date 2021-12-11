@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use App\Models\Empleado;
 use App\Models\Material;
 use App\Models\Proveedor;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 
@@ -41,6 +43,8 @@ class Compra extends Component
     public $iva = 12;
     public $total = 0;
     public $listaMateriales = [];
+    public $factura;
+    public $fecha;
 
 
 
@@ -184,11 +188,66 @@ class Compra extends Component
 
     public function cargarCompra()
     {
-        $id = auth()->user()->id;
+           
+            if (count($this->listaMateriales) >= 1 and $this->proveedor->id>=1) {
 
-        $empresauser = Empleado::where('user_id', $id)->first()->empresa_id;
+                $id = auth()->user()->id;
 
-        
+                $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
+
+                $ivaCompra = $this->total-$this->subtotal;
+
+                 /* $idCompra= DB::table('compras')->insertGetId([
+
+                    'fecha'=>$this->fecha,
+                    'factura'=>$this->factura,
+                    'subtotal'=>$this->subtotal,
+                    'iva'=>$ivaCompra,
+                    'total'=>$this->total,
+                    'proveedor_id'=>$this->proveedor->id,
+                    'user_id'=>$id,
+                    'empresa_id'=>$idempresa,                   
+
+                ]);  */
+
+                    /* $nuevaCompra = new Compra;
+
+                    $nuevaCompra->fecha=$this->fecha;
+                    $nuevaCompra->factura=$this->factura;
+                    $nuevaCompra->subtotal=$this->subtotal;
+                    $nuevaCompra->iva=$ivaCompra;
+                    $nuevaCompra->total=$this->total;
+                    $nuevaCompra->proveedor_id=$this->proveedor->id;
+                    $nuevaCompra->user_id=$id;
+                    $nuevaCompra->empresa_id=$idempresa; 
+                    
+                    $nuevaCompra->save();
+
+                    $idCompra= $nuevaCompra->id; */
+
+                    $data= Compra::create([
+
+                        'fecha'=>$this->fecha,
+                        'factura'=>$this->factura,
+                        'subtotal'=>$this->subtotal,
+                        'iva'=>$ivaCompra,
+                        'total'=>$this->total,
+                        'proveedor_id'=>$this->proveedor->id,
+                        'user_id'=>$id,
+                        'empresa_id'=>$idempresa,                   
+    
+                    ]);
+                    
+
+                    dd($data->id);
+
+            } else {
+
+                session()->flash('message', 'Por favor, colocar proveedor o materiales validos');
+            }
+            
+
+
 
         
     }

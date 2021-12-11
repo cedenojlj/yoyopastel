@@ -16,7 +16,8 @@ class CreateComprasTable extends Migration
         Schema::create('compras', function (Blueprint $table) {
 
             $table->id();
-            $table->string('factura');
+            $table->date('fecha');
+            $table->string('factura');           
             $table->decimal('subtotal');
             $table->decimal('iva');
             $table->decimal('total');

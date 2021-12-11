@@ -18,6 +18,14 @@
                     </div>
                     @endif
 
+                    @if (session()->has('message'))
+
+                        <div class="alert alert-danger">
+                            {{ session('message') }}
+                        </div>
+
+                    @endif
+
                     @if ($errorMaterial)
 
                     <div class="alert alert-danger">
@@ -38,6 +46,26 @@
 
                     @endif
 
+                     {{-- Numero de factura --}}
+                   
+                     <div class="row mb-3">
+
+                        <div class="col-md-4">
+                            <label for="factura" class="form-label">Factura</label>
+                            <input type="factura" wire:model="factura" class="form-control" id="factura"
+                                placeholder="Numero de factura" autocomplete="off">
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="fecha" class="form-label">Fecha</label>
+                            <input type="date" wire:model="fecha" class="form-control" id="fecha">
+
+                        </div>
+
+                    </div>
+
+                    {{-- busqueda de proveedores --}}
 
                     @if (!$mostrar)
 
@@ -53,8 +81,8 @@
                         <div class="col-md-6 col-sm-12">
 
                             <div class="search-input">
-                                <input type="search" wire:model="search" class="form-control" 
-                                id="search" placeholder="Proveedor" autocomplete="off">
+                                <input type="search" wire:model="search" class="form-control" id="search"
+                                    placeholder="Proveedor" autocomplete="off">
 
                                 <div class="autocom">
                                     @if (!empty($proveedores))
@@ -70,61 +98,64 @@
                                 </div> --}}
                             </div>
 
-                        </div>
+                        </div>                       
 
-                        
+
                     </div>
 
 
                     @endif
 
+                   
 
+                    {{-- Mostrar datos del proveedor --}}
+                    
                     @if ($mostrar)
 
-                    <div class="row">
+                        <div class="row">
 
-                        <div class="col-md-3">
-                            <h5>Rif:</h5>
-                            {{ $proveedor->rif }}
-                        </div>
-                        <div class="col-md-3">
-                            <h5>Proveedor:</h5>
-                            {{ $proveedor->nombre }}
-                        </div>
-                        <div class="col-md-3">
-                            <h5>Telefono:</h5>
-                            {{ $proveedor->telefono }}
-                        </div>
+                            <div class="col-md-3">
+                                <h5>Rif:</h5>
+                                {{ $proveedor->rif }}
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Proveedor:</h5>
+                                {{ $proveedor->nombre }}
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Telefono:</h5>
+                                {{ $proveedor->telefono }}
+                            </div>
 
-                        <div class="col-md-3">
-                            <button type="button" wire:click="cerrarProveedor" class="btn btn-danger"><i
-                                    class="far fa-trash-alt"></i></button>
+                            <div class="col-md-3">
+                                <button type="button" wire:click="cerrarProveedor" class="btn btn-danger"><i
+                                        class="far fa-trash-alt"></i></button>
+                            </div>
                         </div>
-                    </div>
 
                     @endif
 
 
+                    {{-- Mostrar carga de materiales --}}
 
                     <div class="row justify-content-between ml-1 mt-3">
 
                         <h3>Carga de Materiales</h3>
 
-                           {{-- materiales --}}
+                        {{-- materiales --}}
 
-                            <div class="row">
+                        <div class="row">
 
-                                <div class="col-md-12 mb-2">
+                            <div class="col-md-12 mb-2">
 
-                                    <button type="button" wire:click="cargarMaterial"
-                                        class="btn btn-primary">Nuevo</button>
+                                <button type="button" wire:click="cargarMaterial" class="btn btn-primary">Nuevo</button>
 
-                                </div>
+                            </div>
 
-                                <div class="col-md-6 mt-2">
+                            <div class="col-md-6 mt-2">
 
-                                    <label for="material" class="form-label">Material</label>
-                                    <div class="search-input">                                        
+                                <label for="material" class="form-label">Material</label>
+                                <div class="search-input">
                                     <input id="material" wire:model="material" type="text"
                                         class="form-control @error('material') is-invalid @enderror" name="material"
                                         placeholder="Material" required autocomplete="off">
@@ -142,39 +173,39 @@
                                     </div>
 
 
-                                    </div>
                                 </div>
+                            </div>
 
 
-                                <div class="col-md mt-2">
+                            <div class="col-md mt-2">
 
-                                    <label for="cantidad" class="form-label">Cantidad</label>
-                                    <input id="cantidad" wire:model="cantidad" type="number"
-                                        class="form-control @error('cantidad') is-invalid @enderror" name="cantidad"
-                                        value="{{ old('cantidad') }}" required step="0.01" placeholder="1">
+                                <label for="cantidad" class="form-label">Cantidad</label>
+                                <input id="cantidad" wire:model="cantidad" type="number"
+                                    class="form-control @error('cantidad') is-invalid @enderror" name="cantidad"
+                                    value="{{ old('cantidad') }}" required step="0.01" placeholder="1">
 
-                                </div>
+                            </div>
 
-                                <div class="col-md mt-2">
-                                    <label for="costo" class="form-label">Costo</label>
-                                    <input id="costo" wire:model="costo" type="number"
-                                        class="form-control @error('costo') is-invalid @enderror" name="costo"
-                                        value="{{ old('costo') }}" required step="0.01" placeholder="1">
-
-
-                                </div>
-
-                                <div class="col-md mt-2">
-
-                                    <label for="iva" class="form-label">Iva</label>
-                                    <input id="iva" wire:model="iva" type="number"
-                                        class="form-control @error('iva') is-invalid @enderror" name="iva"
-                                        value="{{ old('iva') }}" required step="0.01" placeholder="1">
-
-                                </div>
+                            <div class="col-md mt-2">
+                                <label for="costo" class="form-label">Costo</label>
+                                <input id="costo" wire:model="costo" type="number"
+                                    class="form-control @error('costo') is-invalid @enderror" name="costo"
+                                    value="{{ old('costo') }}" required step="0.01" placeholder="1">
 
 
-                            </div>                       
+                            </div>
+
+                            <div class="col-md mt-2">
+
+                                <label for="iva" class="form-label">Iva</label>
+                                <input id="iva" wire:model="iva" type="number"
+                                    class="form-control @error('iva') is-invalid @enderror" name="iva"
+                                    value="{{ old('iva') }}" required step="0.01" placeholder="1">
+
+                            </div>
+
+
+                        </div>
 
                     </div>
 

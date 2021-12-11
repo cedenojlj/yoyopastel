@@ -15,6 +15,7 @@ class CompraFactory extends Factory
     {
         return [
             
+            'fecha'=>$this->faker->date(),
             'factura'=>$this->faker->ean8(),
             'subtotal'=>$this->faker->randomFloat(2,5,100),
             'iva'=>$this->faker->randomFloat(2,1,12),
