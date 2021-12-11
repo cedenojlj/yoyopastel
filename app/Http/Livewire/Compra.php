@@ -13,177 +13,189 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Subtotal;
 
 class Compra extends Component
 {
-    
-    public $search; 
-    public $proveedores=[];
-    public $proveedor;    
-    public $mostrar= false;
-    public $errorMaterial= false;
-    public $errorProveedor= false;
+
+    public $search;
+    public $proveedores = [];
+    public $proveedor;
+    public $mostrar = false;
+    public $errorMaterial = false;
+    public $errorProveedor = false;
     public $material;
     public $materiales;
     public $cantidad;
     public $costo;
-    public $subtotal=0;
-    public $iva=12;
-    public $total=0;
-    public $listaMateriales=[]; 
+    public $subtotal = 0;
+    public $iva = 12;
+    public $total = 0;
+    public $listaMateriales = [];
 
 
-   
+
 
     // protected $queryString=['search'];  
 
 
-    protected $rules=[
+    protected $rules = [
 
-        
-        'material'=>'required|min:2',
-        'cantidad'=>'required|numeric|min:1',
-        'costo'=>'required|numeric|min:0.1',
-        
+
+        'material' => 'required|min:2',
+        'cantidad' => 'required|numeric|min:1',
+        'costo' => 'required|numeric|min:0.1',
+
     ];
 
-    
+
     public function buscarProveedor()
     {
-        if (count($this->proveedores)==1) {
+        if (count($this->proveedores) == 1) {
 
-            $this->proveedor = Proveedor::where('nombre','like','%'. $this->search .'%')
-        ->orWhere('rif','like','%'. $this->search .'%')->first();  
-       
-        $this->errorProveedor=false;
+            $this->proveedor = Proveedor::where('nombre', 'like', '%' . $this->search . '%')
+                ->orWhere('rif', 'like', '%' . $this->search . '%')->first();
 
-        $this->mostrar=true; 
+            $this->errorProveedor = false;
 
-        }else {
-            
-            $this->errorProveedor=true;
+            $this->mostrar = true;
+        } else {
+
+            $this->errorProveedor = true;
         }
-
-        
-
-       
     }
+
     public function cerrarProveedor()
     {
-        $this->search='';
-        $this->mostrar=false;
-        
+        $this->search = '';
+        $this->mostrar = false;
     }
 
     public function cargarMaterial()
     {
         $this->validate();
 
-        $searchMaterial = Material::where('nombre','like','%'. $this->material .'%')
-        ->orWhere('codigo','like','%'. $this->material .'%')->first();
-        
+        $searchMaterial = Material::where('nombre', 'like', '%' . $this->material . '%')
+            ->orWhere('codigo', 'like', '%' . $this->material . '%')->first();
 
-        $this->verificarMaterial($searchMaterial->id);
 
-        
-        if (!empty($searchMaterial)) {
-            
-            $subtotalitem=$this->cantidad*$this->costo;
+        $materialRepetido = $this->verificarMaterial($searchMaterial->id);
 
-            $totalitemiva = $subtotalitem + $subtotalitem*($this->iva/100);
+        if ($materialRepetido == false) {
 
-            $this->subtotal= $this->subtotal + $subtotalitem;
+            if (!empty($searchMaterial)) {
 
-            $this->total= $this->total + $totalitemiva;
+                $subtotalitem = $this->cantidad * $this->costo;
 
-            $this->listaMateriales[]=[
+                $totalitemiva = $subtotalitem + $subtotalitem * ($this->iva / 100);
 
-                'id'=>$searchMaterial->id,
-                'nombre'=>$searchMaterial->nombre,
-                'cantidad'=>$this->cantidad,
-                'costo'=>$this->costo,
-                'subtotalitem'=>$subtotalitem,
-                'totalitemiva'=>$totalitemiva,         
+                $this->subtotal = $this->subtotal + $subtotalitem;
 
-            ];
+                $this->total = $this->total + $totalitemiva;
 
-            $this->limpiar();
+                $this->listaMateriales[] = [
 
-        } else {
-            
-            $this->errorMaterial=true;
+                    'id' => $searchMaterial->id,
+                    'nombre' => $searchMaterial->nombre,
+                    'cantidad' => $this->cantidad,
+                    'costo' => $this->costo,
+                    'subtotalitem' => $subtotalitem,
+                    'totalitemiva' => $totalitemiva,
+
+                ];
+
+                $this->limpiar();
+
+
+            } else {
+
+                $this->errorMaterial = true;
+            }
         }
-        
     }
 
     public function borrarMaterial($indice)
     {
-       //dd(count($this->listaMateriales));
+        //dd(count($this->listaMateriales));
 
-        $this->subtotal=$this->subtotal-$this->listaMateriales[$indice]['subtotalitem'];
-        $this->total=$this->total-$this->listaMateriales[$indice]['totalitemiva'];
+        $this->subtotal = $this->subtotal - $this->listaMateriales[$indice]['subtotalitem'];
+        $this->total = $this->total - $this->listaMateriales[$indice]['totalitemiva'];
 
-        unset($this->listaMateriales[$indice]); 
+        unset($this->listaMateriales[$indice]);
 
-        if (count($this->listaMateriales)<1) {
-            $this->subtotal=0;
-            $this->total=0;
+        if (count($this->listaMateriales) < 1) {
+            $this->subtotal = 0;
+            $this->total = 0;
         }
     }
-    
+
     public function verificarMaterial($id)
     {
-         foreach ($this->listaMateriales as $key => $value) {
-            
-            if($value['id']==$id){
+        foreach ($this->listaMateriales as $key => $value) {
 
-                $this->borrarMaterial($key);
+            if ($value['id'] == $id) {
+
+                $subtotalitem = $this->cantidad * $this->costo;
+
+                $totalitemiva = $subtotalitem + $subtotalitem * ($this->iva / 100);
+
+                $this->subtotal = $this->subtotal + $subtotalitem;
+
+                $this->total = $this->total + $totalitemiva;
+
+                $this->listaMateriales[$key]['subtotalitem'] = $this->listaMateriales[$key]['subtotalitem'] + $subtotalitem;
+
+                $this->listaMateriales[$key]['totalitemiva'] = $this->listaMateriales[$key]['totalitemiva'] + $totalitemiva;
+
+                $this->listaMateriales[$key]['cantidad'] = $this->listaMateriales[$key]['cantidad'] + $this->cantidad;
+
+                $this->listaMateriales[$key]['costo'] = $this->costo;
+
+                $this->limpiar();
+
+                return true;
             };
-        } 
-        
+        }
+
+        return false;
     }
 
     public function limpiar()
     {
-        $this->material='';
-        $this->cantidad=0;
-        $this->costo=0;
+        $this->material = '';
+        $this->cantidad = 0;
+        $this->costo = 0;
     }
-    
+
     public function cargarCompra()
     {
-        $id=auth()->user()->id;        
+        $id = auth()->user()->id;
 
-        $empresauser=Empleado::where('user_id',$id)->first()->empresa_id;
+        $empresauser = Empleado::where('user_id', $id)->first()->empresa_id;
 
         
     }
 
     public function render()
     {
-        if (!empty($this->search) and Str::length($this->search)>2) {
+        if (!empty($this->search) and Str::length($this->search) > 2) {
 
-           
 
-            $this->proveedores = Proveedor::where('nombre','like','%'. $this->search .'%')
-            ->orWhere('rif','like','%'. $this->search .'%')->get();
 
-           
+            $this->proveedores = Proveedor::where('nombre', 'like', '%' . $this->search . '%')
+                ->orWhere('rif', 'like', '%' . $this->search . '%')->get();
         } else {
-            
+
             $this->proveedores = [];
-           
         }
 
-        if (!empty($this->material) and Str::length($this->material)>2) {
+        if (!empty($this->material) and Str::length($this->material) > 2) {
 
-           $this->materiales = Material::where('nombre','like','%'. $this->material .'%')
-           ->orWhere('codigo','like','%'. $this->material .'%')
-           ->get();
-
+            $this->materiales = Material::where('nombre', 'like', '%' . $this->material . '%')
+                ->orWhere('codigo', 'like', '%' . $this->material . '%')
+                ->get();
         } else {
-            
+
             $this->materiales = [];
         }
-                              
-       
+
+
         return view('livewire.compra');
     }
 }
