@@ -15,7 +15,7 @@ class Compra extends Component
 {
     
     public $search; 
-    public $proveedores;
+    public $proveedores=[];
     public $proveedor;    
     public $mostrar= false;
     public $errorMaterial= false;
@@ -27,7 +27,7 @@ class Compra extends Component
     public $subtotal=0;
     public $iva=12;
     public $total=0;
-    public $listaMateriales=[];
+    public $listaMateriales=[]; 
 
 
    
@@ -160,6 +160,8 @@ class Compra extends Component
     {
         if (!empty($this->search) and Str::length($this->search)>2) {
 
+           
+
             $this->proveedores = Proveedor::where('nombre','like','%'. $this->search .'%')
             ->orWhere('rif','like','%'. $this->search .'%')->get();
 
@@ -167,6 +169,7 @@ class Compra extends Component
         } else {
             
             $this->proveedores = [];
+           
         }
 
         if (!empty($this->material) and Str::length($this->material)>2) {
