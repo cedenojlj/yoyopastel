@@ -14,14 +14,27 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Subtotal;
 class Compra extends Component
 {
 
-    public $search;
-    public $proveedores = [];
-    public $proveedor;
+    //mostrar mensajes de errores
+
     public $mostrar = false;
     public $errorMaterial = false;
     public $errorProveedor = false;
+
+    
+    //busqueda de proveedores
+
+    public $search;
+    public $proveedores = [];
+    public $proveedor;
+
+    
+    //busqueda de materiales
+
     public $material;
-    public $materiales;
+    public $materiales=[];
+
+    // Campos para realizar la carga de materiales y la compra
+
     public $cantidad;
     public $costo;
     public $subtotal = 0;
@@ -29,10 +42,6 @@ class Compra extends Component
     public $total = 0;
     public $listaMateriales = [];
 
-
-
-
-    // protected $queryString=['search'];  
 
 
     protected $rules = [
@@ -54,16 +63,22 @@ class Compra extends Component
 
             $this->errorProveedor = false;
 
+            $this->proveedores = [];
+
             $this->mostrar = true;
+
         } else {
 
             $this->errorProveedor = true;
         }
+
+
     }
 
     public function cerrarProveedor()
     {
         $this->search = '';
+        $this->proveedores = [];
         $this->mostrar = false;
     }
 
@@ -101,6 +116,8 @@ class Compra extends Component
                 ];
 
                 $this->limpiar();
+
+                $this->materiales=[];
 
 
             } else {
@@ -149,6 +166,8 @@ class Compra extends Component
 
                 $this->limpiar();
 
+                $this->materiales=[];
+
                 return true;
             };
         }
@@ -170,30 +189,34 @@ class Compra extends Component
         $empresauser = Empleado::where('user_id', $id)->first()->empresa_id;
 
         
+
+        
     }
 
     public function render()
     {
+        
+        //bsuqueda de proveedores
+        
         if (!empty($this->search) and Str::length($this->search) > 2) {
-
 
 
             $this->proveedores = Proveedor::where('nombre', 'like', '%' . $this->search . '%')
                 ->orWhere('rif', 'like', '%' . $this->search . '%')->get();
-        } else {
 
-            $this->proveedores = [];
-        }
+        } 
+
+
+        // busqueda de materiales
+
 
         if (!empty($this->material) and Str::length($this->material) > 2) {
 
             $this->materiales = Material::where('nombre', 'like', '%' . $this->material . '%')
                 ->orWhere('codigo', 'like', '%' . $this->material . '%')
                 ->get();
-        } else {
-
-            $this->materiales = [];
-        }
+                
+        } 
 
 
         return view('livewire.compra');
