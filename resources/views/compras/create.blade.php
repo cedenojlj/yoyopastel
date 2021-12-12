@@ -2,6 +2,6 @@
 
 @section('content')
 
-        <livewire:compra />         
+        <livewire:cargar-compra/>         
 
 @endsection

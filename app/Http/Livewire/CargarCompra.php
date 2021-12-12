@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Compra;
+use Livewire\Component;
 use App\Models\Empleado;
 use App\Models\Material;
 use App\Models\Proveedor;
@@ -10,10 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 
-use Livewire\Component;
-use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Subtotal;
-
-class Compra extends Component
+class CargarCompra extends Component
 {
 
     //mostrar mensajes de errores
@@ -22,18 +21,18 @@ class Compra extends Component
     public $errorMaterial = false;
     public $errorProveedor = false;
 
-    
+
     //busqueda de proveedores
 
     public $search;
     public $proveedores = [];
     public $proveedor;
 
-    
+
     //busqueda de materiales
 
     public $material;
-    public $materiales=[];
+    public $materiales = [];
 
     // Campos para realizar la carga de materiales y la compra
 
@@ -70,13 +69,10 @@ class Compra extends Component
             $this->proveedores = [];
 
             $this->mostrar = true;
-
         } else {
 
             $this->errorProveedor = true;
         }
-
-
     }
 
     public function cerrarProveedor()
@@ -121,9 +117,7 @@ class Compra extends Component
 
                 $this->limpiar();
 
-                $this->materiales=[];
-
-
+                $this->materiales = [];
             } else {
 
                 $this->errorMaterial = true;
@@ -170,7 +164,7 @@ class Compra extends Component
 
                 $this->limpiar();
 
-                $this->materiales=[];
+                $this->materiales = [];
 
                 return true;
             };
@@ -188,76 +182,56 @@ class Compra extends Component
 
     public function cargarCompra()
     {
-           
-            if (count($this->listaMateriales) >= 1 and $this->proveedor->id>=1) {
 
-                $id = auth()->user()->id;
+        if (count($this->listaMateriales) >= 1 and $this->proveedor->id >= 1) {
 
-                $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
+            $id = auth()->user()->id;
 
-                $ivaCompra = $this->total-$this->subtotal;
+            $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
 
-                 /* $idCompra= DB::table('compras')->insertGetId([
+            $ivaCompra = $this->total - $this->subtotal;            
 
-                    'fecha'=>$this->fecha,
-                    'factura'=>$this->factura,
-                    'subtotal'=>$this->subtotal,
-                    'iva'=>$ivaCompra,
-                    'total'=>$this->total,
-                    'proveedor_id'=>$this->proveedor->id,
-                    'user_id'=>$id,
-                    'empresa_id'=>$idempresa,                   
+            $data = Compra::create([
 
-                ]);  */
+                'fecha' => $this->fecha,
+                'factura' => $this->factura,
+                'subtotal' => $this->subtotal,
+                'iva' => $ivaCompra,
+                'total' => $this->total,
+                'proveedor_id' => $this->proveedor->id,
+                'user_id' => $id,
+                'empresa_id' => $idempresa,
 
-                    /* $nuevaCompra = new Compra;
+            ]);
 
-                    $nuevaCompra->fecha=$this->fecha;
-                    $nuevaCompra->factura=$this->factura;
-                    $nuevaCompra->subtotal=$this->subtotal;
-                    $nuevaCompra->iva=$ivaCompra;
-                    $nuevaCompra->total=$this->total;
-                    $nuevaCompra->proveedor_id=$this->proveedor->id;
-                    $nuevaCompra->user_id=$id;
-                    $nuevaCompra->empresa_id=$idempresa; 
-                    
-                    $nuevaCompra->save();
+            $idCompra=$data->id;
 
-                    $idCompra= $nuevaCompra->id; */
+            $compra=Compra::find($idCompra);
 
-                    $data= Compra::create([
-
-                        'fecha'=>$this->fecha,
-                        'factura'=>$this->factura,
-                        'subtotal'=>$this->subtotal,
-                        'iva'=>$ivaCompra,
-                        'total'=>$this->total,
-                        'proveedor_id'=>$this->proveedor->id,
-                        'user_id'=>$id,
-                        'empresa_id'=>$idempresa,                   
-    
-                    ]);
-                    
-
-                    dd($data->id);
-
-            } else {
-
-                session()->flash('message', 'Por favor, colocar proveedor o materiales validos');
+            foreach ($this->listaMateriales as $key => $value) {
+               
+                //$compra->materials()->attach($value['id'],[]);
             }
             
 
 
+        } else {
 
-        
+            session()->flash('message', 'Por favor, colocar proveedor o materiales validos');
+        }
     }
+
+    
+
+
+
 
     public function render()
     {
+       
+         //bsuqueda de proveedores
         
-        //bsuqueda de proveedores
-        
-        if (!empty($this->search) and Str::length($this->search) > 2) {
+         if (!empty($this->search) and Str::length($this->search) > 2) {
 
 
             $this->proveedores = Proveedor::where('nombre', 'like', '%' . $this->search . '%')
@@ -276,8 +250,12 @@ class Compra extends Component
                 ->get();
                 
         } 
-
-
-        return view('livewire.compra');
+       
+       
+        return view('livewire.cargar-compra');
     }
+
+
+
+
 }
