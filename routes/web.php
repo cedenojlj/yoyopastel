@@ -12,6 +12,9 @@ use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ParidadController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\VentaController;
+
+
 
 
 
@@ -103,56 +106,6 @@ Route::get('productos-reporte', [ProductoController::class, 'export'])->name('pr
 
 //
 
-Route::get('/jose', function () {
-
-    //$id=auth()->user()->id;
-    //$jose=Empleado::where('user_id',$id)->first()->empresa_id;
-
-    /* $jose = DB::table('invproductos')
-    ->join('productos','invproductos.producto_id','=','productos.id')
-    ->join('users','invproductos.user_id','=','users.id')
-    ->join('empresas','invproductos.empresa_id','=','empresas.id')
-    ->select('productos.nombre','invproductos.entrada',
-             'invproductos.salida','users.name','empresas.nombre')->get();
- */
-    /* $jose = DB::table('invproductos')                            
-             ->join('users','users.id','=','invproductos.user_id')
-             ->join('productos','invproductos.producto_id','=','productos.id')
-             ->join('empresas','invproductos.empresa_id','=','empresas.id')                             
-             ->select('productos.nombre as producto','invproductos.entrada','invproductos.salida','users.name as user','empresas.nombre as empresa')
-             ->where('productos.nombre','like','%ton%')
-             ->orderBy('invproductos.id','asc')
-             ->get();*/
-
-             /* $busqueda='';
-             
-    $jose =  DB::table('invproductos') 
-             ->join('productos','invproductos.producto_id','=','productos.id')                                     
-             ->select('invproductos.*')
-             ->where('productos.nombre','like','%' . $busqueda . '%')
-             ->paginate(15); */ 
-
-             $busqueda='';
-
-             /* $jose = Invproducto::where(function ($query) {
-                $query->select('nombre')
-                    ->from('productos')
-                    ->whereColumn('productos.id', 'invproductos.producto_id')                    
-                    ->limit(1);
-            }, 'like','%' . $busqueda . '%')->get(); */
-
-            $jose = Invproducto::where(function ($query) {
-                $query->select('nombre')
-                    ->from('productos')
-                    ->whereColumn('productos.id', 'invproductos.producto_id')                    
-                    ->limit(1);
-            }, 'like','%' . $busqueda . '%')->paginate(15);
-
-    //$jose = Invproducto::paginate(15);
-    
-    dd($jose);
-});
-
 
 //Inventario Producto
 
@@ -205,3 +158,13 @@ Route::resource('compras', CompraController::class)->middleware('auth');
 Route::get('compras-search', [CompraController::class, 'search'])->name('compras.search')->middleware('auth');
 
 Route::get('compras-reporte', [CompraController::class, 'export'])->name('compras.reporte')->middleware('auth');
+
+
+//ventas
+
+Route::resource('ventas', VentaController::class)->middleware('auth');
+
+Route::get('ventas-search', [VentaController::class, 'search'])->name('ventas.search')->middleware('auth');
+
+Route::get('ventas-reporte', [VentaController::class, 'export'])->name('ventas.reporte')->middleware('auth');
+

@@ -251,7 +251,7 @@
                         <div class="col-md-2 offset-md-6">
                             <h5>Subtotal $:</h5>
                         </div>
-                        <div class="col-md-2">{{ $subtotal }}</div>
+                        <div class="col-md-2">{{ round($subtotal,2) }}</div>
 
                     </div>
 
@@ -260,7 +260,7 @@
                         <div class="col-md-2 offset-md-6">
                             <h5>Iva %:</h5>
                         </div>
-                        <div class="col-md-4">{{ ($iva/100)*$subtotal }}</div>
+                        <div class="col-md-4">{{ round((($iva/100)*$subtotal),2) }}</div>
                     </div>
 
                     <div class="row mt-3">
@@ -268,7 +268,7 @@
                         <div class="col-md-2 offset-md-6">
                             <h5>Total $:</h5>
                         </div>
-                        <div class="col-md-4">{{ $total }}</div>
+                        <div class="col-md-4">{{ round($total,2) }}</div>
                     </div>
 
 
