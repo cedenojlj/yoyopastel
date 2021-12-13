@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Compra;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class CompraController extends Controller
 {
@@ -19,69 +21,41 @@ class CompraController extends Controller
         return view('compras.index',compact('compras'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create()
     {
         return view('compras.create');
     }
+    
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Compra  $compra
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show(Compra $compra)
     {
-        //
+        
+        $materiales= DB::table('compra_material')
+        ->join('materials','compra_material.material_id','=','materials.id')
+        ->select('compra_material.*','materials.nombre')
+        ->where('compra_material.compra_id','=',$compra->id)
+        ->get();
+
+        $proveedor= DB::table('compras')
+        ->join('proveedors','compras.proveedor_id','=','proveedors.id')
+        ->select('proveedors.*')
+        ->where('compras.id','=',$compra->id)
+        ->first();
+        
+       
+        return view('compras.ver',compact('compra','materiales','proveedor'));
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Compra  $compra
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Compra $compra)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Compra  $compra
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Compra $compra)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Compra  $compra
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(Compra $compra)
     {
-        //
+        $compra->delete();
+
+        return redirect()->route('compras.index')->with('success','Compra eliminada con exito');
     }
+
+
 }

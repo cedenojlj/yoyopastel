@@ -26,8 +26,7 @@ class CreateCompraMaterialTable extends Migration
             $table->foreignId('material_id')
             ->constrained('materials')
             ->onUpdate('cascade')
-            ->onDelete('cascade');
-            $table->timestamps();
+            ->onDelete('cascade');          
 
         });
     }

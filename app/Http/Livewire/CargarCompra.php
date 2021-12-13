@@ -204,16 +204,44 @@ class CargarCompra extends Component
 
             ]);
 
-            $idCompra=$data->id;
+            $idCompra=$data->id;            
 
-            $compra=Compra::find($idCompra);
+            //dd($this->listaMateriales);
 
-            foreach ($this->listaMateriales as $key => $value) {
+            //$compra=Compra::find($idCompra);
+
+            foreach ($this->listaMateriales as $value) {
                
-                //$compra->materials()->attach($value['id'],[]);
+                //para tener siempre el costo maximo de cada material cargado
+
+                $costoItem = DB::table('materials')
+                            ->where('id',$value['id'])
+                            ->value('costo');
+
+                if ($value['costo']> $costoItem) {
+                   
+                    DB::table('materials')
+                    ->where('id',$value['id'])
+                    ->update(['costo'=>$value['costo']]);
+                }
+
+                //para insertar todos los materiales
+
+                DB::table('compra_material')->insert([
+
+                   'cantidad'=>$value['cantidad'], 
+                   'costo'=>$value['costo'], 
+                   'subtotal'=>$value['subtotalitem'], 
+                   'compra_id'=>$idCompra, 
+                   'material_id'=>$value['id'],                 
+
+                ]);
+
             }
             
-
+            redirect()->route('compras.index')
+            ->with('success', 'Compra Creada con Exito.');
+ 
 
         } else {
 

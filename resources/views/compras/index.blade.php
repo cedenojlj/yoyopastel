@@ -51,19 +51,25 @@
                             @foreach ($compras as $compra)
 
                             <tr>
+
                                 <th scope="row">{{ $compra->id }}</th>
                                 <td>{{ $compra->factura }}</td>
                                 <td>{{ $compra->total}}</td>
                                 <td>{{ $compra->proveedor->nombre }}</td>
                                 
 
-                                <td><form action="{{ route('compras.destroy', $compra->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <a name="" id="" class="btn btn-success"
-                                    href="{{ route('compras.edit', $compra->id) }}" role="button"><i class="fas fa-pencil-alt"></i></a>
-                                    <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                </form></td>
+                                <td>
+                                    
+                                    <form action="{{ route('compras.destroy', $compra->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <a name="" id="" class="btn btn-success"
+                                        href="{{ route('compras.show', $compra->id) }}" role="button"><i class="fas fa-pencil-alt"></i></a>
+                                        <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                                    </form>
+                            
+                                </td>
+
                             </tr>
 
                             @endforeach
