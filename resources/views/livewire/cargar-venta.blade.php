@@ -52,14 +52,14 @@
                      <div class="row mb-3">
 
                         <div class="col-md-4">
-                            <label for="factura" class="form-label">Factura</label>
-                            {{$factura}}
+                            <h5>Factura:</h5>
+                            {{str_pad($factura,15,'0',STR_PAD_LEFT)}}
 
                         </div>
 
                         <div class="col-md-4">
-                            <label for="fecha" class="form-label">Fecha</label>
-                            <input type="date" wire:model="fecha" class="form-control" id="fecha">
+                            <h5>Fecha:</h5>
+                            {{$fecha}}
 
                         </div>
 
@@ -217,7 +217,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Producto</th>
                                     <th scope="col">Cantidad</th>
-                                    <th scope="col">Costo</th>
+                                    <th scope="col">Precio</th>
                                     <th scope="col">Subtotal</th>
                                     <th scope="col">Acciones</th>
                                 </tr>
@@ -230,7 +230,7 @@
                                     <th scope="row">{{ $index + 1 }}</th>
                                     <td>{{ $item['nombre'] }}</td>
                                     <td>{{ $item['cantidad']}}</td>
-                                    <td>{{ $item['costo'] }}</td>
+                                    <td>{{ $item['precio'] }}</td>
                                     <td>{{ $item['subtotalitem'] }}</td>
 
                                     <td>

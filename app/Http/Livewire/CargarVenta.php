@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Cliente;
 use Livewire\Component;
 use App\Models\Empleado;
+use App\Models\Empresa;
 use App\Models\Producto;
 use App\Models\Venta;
 use Carbon\Carbon;
@@ -37,7 +38,7 @@ class CargarVenta extends Component
  
      // Campos para realizar la carga de productos y la venta
  
-     public $cantidad;
+     public $cantidad=1;
      public $costo;
      public $subtotal = 0;
      public $iva = 12;
@@ -57,10 +58,24 @@ class CargarVenta extends Component
  
          'producto' => 'required|min:2',
          'cantidad' => 'required|numeric|min:1',
-         'costo' => 'required|numeric|min:0.1',
+         'precio' => 'required|numeric|min:0.1',
  
      ];
  
+     public function mount()
+     {
+        
+        $id = auth()->user()->id;
+
+        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
+
+        $numfactura = Empresa::where('id',$idempresa)->value('factura');
+        
+        $this->factura= $numfactura + 1;
+
+        $this->fecha= Carbon::now()->format('Y-m-d');
+
+     }
  
      public function buscarCliente()
      {
@@ -242,11 +257,17 @@ class CargarVenta extends Component
                     'costo'=>$value['costo'], 
                     'subtotal'=>$value['subtotalitem'], 
                     'venta_id'=>$idVenta, 
-                    'cliente_id'=>$value['id'],                 
+                    'producto_id'=>$value['id'],                 
  
                  ]);
  
              }
+
+             Empresa::where('id',$idempresa)->update([
+
+                'factura'=>$this->factura,
+
+             ]);
              
              redirect()->route('ventas.index')
              ->with('success', 'Venta Creada con Exito.');
@@ -283,8 +304,31 @@ class CargarVenta extends Component
             $this->productos = Producto::where('nombre', 'like', '%' . $this->producto . '%')
                 ->orWhere('codigo', 'like', '%' . $this->producto . '%')
                 ->get();
+
+            if ($this->productos->count()==1) {
+               
+              
+                foreach ($this->productos as $value) {
+                   
+                    $this->precio = Producto::where('id',$value->id)->value('precio');                   
+
+                }
+
+            }else{
+
+                
+                $this->precio = 0;
+
+            }
                 
         } 
+
+
+        if (empty($this->producto)) {
+            
+            $this->productos=[];
+            $this->precio = 0;
+        }
         
         
         
