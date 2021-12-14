@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Compras</div>
+                <div class="card-header">Ventas</div>
 
                 <div class="card-body">
 
@@ -19,15 +19,15 @@
                         <div class="col-md-7">
 
                             <a name="" id="" class="btn btn-primary" 
-                            href="{{ route('compras.create') }}" role="button">Crear</a>
+                            href="{{ route('ventas.create') }}" role="button">Crear</a>
                             <a name="" id="" class="btn btn-primary" 
-                            href="{{ route('compras.reporte') }}" role="button">Excel</a>
+                            href="{{ route('ventas.reporte') }}" role="button">Excel</a>
 
                         </div>
                         <div class="col-md-5">
 
                             <form class="form-inline" method="GET" 
-                            action="{{ route('compras.search') }}">
+                            action="{{ route('ventas.search') }}">
                                 @csrf
                                 <input class="form-control mr-sm-2" type="text" placeholder="Search"  name="search">
                                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
@@ -40,31 +40,33 @@
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Fecha</th>
                                 <th scope="col">Factura</th>
                                 <th scope="col">Total $</th>
-                                <th scope="col">Proveedor</th>
+                                <th scope="col">Cliente</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            @foreach ($compras as $compra)
+                            @foreach ($ventas as $venta)
 
                             <tr>
 
-                                <th scope="row">{{ $compra->id }}</th>
-                                <td>{{ $compra->factura }}</td>
-                                <td>{{ $compra->total}}</td>
-                                <td>{{ $compra->proveedor->nombre }}</td>
+                                <th scope="row">{{ $venta->id }}</th>
+                                <td>{{ $venta->fecha }}</td>
+                                <td>{{ $venta->factura }}</td>
+                                <td>{{ $venta->total}}</td>
+                                <td>{{ $venta->cliente->nombre }}</td>
                                 
 
                                 <td>
                                     
-                                    <form action="{{ route('compras.destroy', $compra->id) }}" method="post">
+                                    <form action="{{ route('ventas.destroy', $venta->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <a name="" id="" class="btn btn-success"
-                                        href="{{ route('compras.show', $compra->id) }}" role="button"><i class="fas fa-pencil-alt"></i></a>
+                                        href="{{ route('ventas.show', $venta->id) }}" role="button"><i class="fas fa-pencil-alt"></i></a>
                                         <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                                     </form>
                             
@@ -77,7 +79,7 @@
                         </tbody>
                     </table>
 
-                    {{ $compras->links() }}
+                    {{ $ventas->links() }}
 
                    
 

@@ -20,6 +20,7 @@ class EmpresaExport implements FromCollection, WithHeadings
             'Direccion',
             'Telefono',
             'Email',
+            'factura',
             'Creado',
             'Actualizado'
         ];

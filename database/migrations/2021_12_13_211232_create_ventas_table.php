@@ -22,6 +22,7 @@ class CreateVentasTable extends Migration
             $table->decimal('subtotal');
             $table->decimal('iva');
             $table->decimal('total');
+            $table->decimal('paridad');
 
             $table->foreignId('cliente_id')
             ->constrained('clientes')

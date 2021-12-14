@@ -66,7 +66,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Ventas</a>
+                            <a class="nav-link" href="{{ route('ventas.index') }}">Ventas</a>
                         </li>
 
                         <li class="nav-item dropdown">

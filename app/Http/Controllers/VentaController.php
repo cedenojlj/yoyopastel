@@ -14,7 +14,9 @@ class VentaController extends Controller
      */
     public function index()
     {
-        //
+        $ventas= Venta::paginate(15);
+
+        return view('ventas.index',compact('ventas'));
     }
 
     /**
@@ -24,62 +26,20 @@ class VentaController extends Controller
      */
     public function create()
     {
-        //
+        return view('ventas.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Venta  $venta
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show(Venta $venta)
     {
-        //
-    }
+        
+        return view('ventas.ver',compact('venta'));
+    }    
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Venta  $venta
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Venta $venta)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Venta  $venta
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Venta $venta)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Venta  $venta
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Venta $venta)
     {
-        //
+        $venta->delete();
+
+        return redirect()->route('ventas.index')->with('success','Venta borrada con exito');
     }
 }

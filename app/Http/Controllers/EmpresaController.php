@@ -54,16 +54,16 @@ class EmpresaController extends Controller
             'email' => 'required',
         ]);
 
-        /*   Empresa::create([
+        
+        Empresa::create([
             
             'nombre' => $request->nombre,
             'rif' => $request->rif,
             'direccion' => $request->direccion,
             'telefono' => $request->telefono,
             'email' => $request->email,
-        ]); */
-
-        Empresa::create($request->all());
+            'factura'=> 0
+        ]);
 
         return redirect()->route('empresas.index')->with('success', 'Empresa Creada con Exito.');
 
@@ -114,7 +114,14 @@ class EmpresaController extends Controller
             'email' => 'required',
         ]);
 
-        $empresa->update($request->all());
+        $empresa->update([
+            
+            'nombre' => $request->nombre,
+            'rif' => $request->rif,
+            'direccion' => $request->direccion,
+            'telefono' => $request->telefono,
+            'email' => $request->email,            
+        ]);
 
         return redirect()->route('empresas.index')->with('success', 'Empresa Actualizada con Exito.');
     }
