@@ -6,11 +6,13 @@ use App\Models\Cliente;
 use Livewire\Component;
 use App\Models\Empleado;
 use App\Models\Empresa;
+use App\Models\Invproducto;
 use App\Models\Producto;
 use App\Models\Venta;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
 
 
 
@@ -49,6 +51,8 @@ class CargarVenta extends Component
      public $precio;
      public $subtotalCosto=0;
      public $paridad;
+     public $metodo;
+     public $moneda;
  
  
     
@@ -74,6 +78,8 @@ class CargarVenta extends Component
         $this->factura= $numfactura + 1;
 
         $this->fecha= Carbon::now()->format('Y-m-d');
+
+        $this->paridad = DB::table('paridads')->latest()->value('paridad');
 
      }
  
@@ -112,8 +118,7 @@ class CargarVenta extends Component
  
  
          $productoRepetido = $this->verificarProducto($searchProducto->id);
-
-         $this->paridad = DB::table('paridads')->latest()->value('paridad');
+        
 
          $this->precio = Producto::where('id',$searchProducto->id)->value('precio');
 
@@ -225,6 +230,8 @@ class CargarVenta extends Component
              
              $ivaVenta = $this->total - $this->subtotal;            
  
+            // Creando la Venta
+            
              $data = Venta::create([
  
                  'fecha' => $this->fecha,
@@ -233,22 +240,20 @@ class CargarVenta extends Component
                  'iva' => $ivaVenta,
                  'total' => $this->total,
                  'paridad'=>$this->paridad,
+                 'metodo'=>$this->metodo,
+                 'moneda'=>$this->moneda,
                  'cliente_id' => $this->cliente->id,
                  'user_id' => $id,
                  'empresa_id' => $idempresa,
  
              ]);
  
-             $idVenta=$data->id;            
- 
-             //dd($this->listaProductos);
- 
-             //$compra=Compra::find($idVenta);
- 
+             $idVenta=$data->id;   
+              
              foreach ($this->listaProductos as $value) {
                 
                   
-                 //para insertar todos los productos
+                 //para insertar todos los productos de la venta
  
                  DB::table('producto_venta')->insert([
  
@@ -260,6 +265,19 @@ class CargarVenta extends Component
                     'producto_id'=>$value['id'],                 
  
                  ]);
+
+
+                 //para sacar del inventario los productos vendidos
+
+                 Invproducto::create([
+
+                    'entrada' => 0,
+                    'salida' => $value['cantidad'],
+                    'producto_id' => $value['id'],
+                    'user_id' => $id,
+                    'empresa_id' => $idempresa,
+                    
+                ]);
  
              }
 
@@ -295,6 +313,10 @@ class CargarVenta extends Component
 
         } 
 
+        if (empty($this->search)) {
+           
+            $this->clientes=[];
+        }
 
         // busqueda de productos
 

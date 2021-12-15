@@ -27,6 +27,8 @@
 
         </div>
 
+        
+
         <div class="row mt-3">
 
                 <div class="col-md-3">
@@ -44,7 +46,19 @@
 
         </div>
 
+        <div class="row mt-3">
 
+                <div class="col-md-3">
+                        <h5>Metodo de Pago:</h5>
+                        {{ $venta->metodo }}
+                </div>
+
+                <div class="col-md-3">
+                        <h5>Moneda:</h5>
+                        {{ $venta->moneda }}
+                </div>
+
+        </div>
 
         <div class="row mt-4">
 
@@ -54,7 +68,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Producto</th>
                                         <th scope="col">Cantidad</th>
-                                        <th scope="col">Costo</th>
+                                        <th scope="col">Precio</th>
                                         <th scope="col">Subtotal</th>
                                 </tr>
                         </thead>
@@ -101,7 +115,16 @@
                         <h5>Total $:</h5>
                 </div>
                 <div class="col-md-4">{{ round($venta->total,2) }}</div>
-        </div>        
+        </div> 
+        
+        <div class="row mt-3">
+
+                <div class="col-md-2 offset-md-6">
+                    <h5>Total Bs:</h5>
+                </div>
+                
+                <div class="col-md-4">{{ round($venta->total*$venta->paridad,2) }}</div>
+            </div>
 
 
         {{-- fin del contenedor --}}

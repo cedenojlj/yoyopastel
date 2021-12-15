@@ -68,6 +68,7 @@ class InvmaterialController extends Controller
 
             'entrada' => $request->entrada,
             'salida' => $request->salida,
+            'idCompra'=>0,
             'material_id' => $request->material_id,
             'user_id' => $id,
             'empresa_id' => $empresauser,

@@ -63,7 +63,13 @@
 
                         </div>
 
-                    </div>
+                        <div class="col-md-4">
+                            <h5>Tasa de Cambio:</h5>
+                            {{$paridad}}
+
+                        </div>
+
+                    </div>                    
 
                     {{-- busqueda de clientes --}}
 
@@ -134,6 +140,39 @@
                         </div>
 
                     @endif
+                    
+                    {{-- Metodo de pago y moneda de pago --}}
+
+                    
+                    <div class="row mt-3">
+
+                        <div class="col-md-3">
+
+                            <div class="form-group">
+                              <label for="metodo">Metodo</label>
+                              <select wire:model="metodo" class="form-control" name="metodo" id="metodo">
+                                <option value="Debito">Debito</option>
+                                <option value="Credito">Credito</option>
+                                <option value="Efectivo">Efectivo</option>
+                              </select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <div class="form-group">
+                                <label for="moneda">Moneda</label>
+                                <select wire:model="moneda" class="form-control" name="moneda" id="moneda">
+                                  <option value="Bs">Bs</option>
+                                  <option value="Usd">Usd</option>                                 
+                                </select>
+                              </div>
+
+                        </div>
+                        
+
+                    </div>
 
 
                     {{-- Mostrar carga de productos --}}
@@ -268,6 +307,14 @@
                             <h5>Total $:</h5>
                         </div>
                         <div class="col-md-4">{{ round($total,2) }}</div>
+                    </div>
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-2 offset-md-6">
+                            <h5>Total Bs:</h5>
+                        </div>
+                        <div class="col-md-4">{{ round($total*$paridad,2) }}</div>
                     </div>
 
 

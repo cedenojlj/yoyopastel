@@ -65,7 +65,7 @@
                         {{-- select material_id --}}
 
                         <div class="form-group row">
-                            <label for="material_id" class="col-md-3 col-form-label text-md-right">{{ __('Empresa')
+                            <label for="material_id" class="col-md-3 col-form-label text-md-right">{{ __('Material')
                                 }}</label>
 
                             <div class="col-md-6">

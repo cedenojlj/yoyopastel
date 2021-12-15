@@ -58,6 +58,7 @@ class VentaController extends Controller
 
     public function destroy(Venta $venta)
     {
+                
         $venta->delete();
 
         return redirect()->route('ventas.index')->with('success','Venta borrada con exito');

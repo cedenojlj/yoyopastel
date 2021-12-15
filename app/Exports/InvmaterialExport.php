@@ -21,6 +21,7 @@ class InvmaterialExport implements FromCollection, WithHeadings
             'Material',
             'Entrada',
             'Salida',
+            'idCompra',
             'user',
             'empresa',
             'Creado',

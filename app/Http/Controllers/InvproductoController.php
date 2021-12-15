@@ -62,6 +62,7 @@ class InvproductoController extends Controller
 
             'entrada' => $request->entrada,
             'salida' => $request->salida,
+            'idVenta'=>0,
             'producto_id' => $request->producto_id,
             'user_id' => $id,
             'empresa_id' => $empresauser,

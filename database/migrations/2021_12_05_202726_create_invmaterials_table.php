@@ -17,7 +17,8 @@ class CreateInvmaterialsTable extends Migration
             
             $table->id();
             $table->integer('entrada');
-            $table->integer('salida');            
+            $table->integer('salida'); 
+            $table->unsignedBigInteger('idCompra')->default(0);                
             $table->timestamps();
             $table->foreignId('material_id')
                     ->constrained('materials')

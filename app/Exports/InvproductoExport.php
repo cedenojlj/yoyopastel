@@ -21,6 +21,7 @@ class InvproductoExport implements FromCollection, WithHeadings
             'Producto',
             'Entrada',
             'Salida',
+            'idVenta',
             'user',
             'empresa',
             'Creado',

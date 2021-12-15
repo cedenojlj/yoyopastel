@@ -21,6 +21,8 @@ class VentaFactory extends Factory
             'iva'=>$this->faker->randomFloat(2,1,12),
             'total'=>$this->faker->randomFloat(2,110,200),
             'paridad'=>$this->faker->randomFloat(2,2,7),
+            'moneda'=>$this->faker->numberBetween(1,2),
+            'metodo'=>$this->faker->numberBetween(1,3),
             'cliente_id'=>$this->faker->numberBetween(1,10),
             'user_id'=>$this->faker->numberBetween(1,10),
             'empresa_id'=>$this->faker->numberBetween(1,10)

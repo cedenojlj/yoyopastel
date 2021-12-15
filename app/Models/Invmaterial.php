@@ -9,7 +9,9 @@ class Invmaterial extends Model
 {
     use HasFactory;
 
-    protected $fillable=['entrada','salida','material_id',
+    protected $fillable=['entrada','salida',
+    'idCompra',
+    'material_id',
     'user_id','empresa_id'];
 
 

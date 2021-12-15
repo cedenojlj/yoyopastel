@@ -17,6 +17,8 @@ class Venta extends Model
         'iva',
         'total',
         'paridad',
+        'moneda',
+        'metodo',
         'cliente_id',
         'user_id',
         'empresa_id'

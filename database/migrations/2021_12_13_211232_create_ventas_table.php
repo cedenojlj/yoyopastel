@@ -23,6 +23,8 @@ class CreateVentasTable extends Migration
             $table->decimal('iva');
             $table->decimal('total');
             $table->decimal('paridad');
+            $table->enum('moneda',['Bs','Usd'])->default('Bs');
+            $table->enum('metodo',['Debito','Credito','Efectivo'])->default('Debito');
 
             $table->foreignId('cliente_id')
             ->constrained('clientes')

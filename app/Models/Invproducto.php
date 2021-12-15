@@ -9,7 +9,9 @@ class Invproducto extends Model
 {
     use HasFactory;
 
-    protected $fillable=['entrada','salida','producto_id',
+    protected $fillable=['entrada','salida',
+    'idVenta',
+    'producto_id',
     'user_id','empresa_id'];
 
 

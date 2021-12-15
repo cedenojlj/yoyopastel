@@ -65,7 +65,7 @@
                         {{-- select producto_id --}}
 
                         <div class="form-group row">
-                            <label for="producto_id" class="col-md-3 col-form-label text-md-right">{{ __('Empresa')
+                            <label for="producto_id" class="col-md-3 col-form-label text-md-right">{{ __('Producto')
                                 }}</label>
 
                             <div class="col-md-6">

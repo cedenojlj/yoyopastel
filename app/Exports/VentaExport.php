@@ -23,6 +23,8 @@ class VentaExport implements FromCollection, WithHeadings
             'iva',
             'total',
             'paridad',
+            'moneda',
+            'metodo',
             'cliente_id',
             'user_id',
             'empresa_id',

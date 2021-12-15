@@ -17,7 +17,8 @@ class CreateInvproductosTable extends Migration
 
             $table->id();
             $table->integer('entrada');
-            $table->integer('salida');            
+            $table->integer('salida');
+            $table->unsignedBigInteger('idVenta')->default(0);            
             $table->timestamps();
             $table->foreignId('producto_id')
                     ->constrained('productos')
