@@ -9,17 +9,17 @@
 
                 <div class="col-md-3">
                         <h5>Fecha:</h5>
-                        {{ $compra->fecha }}
+                        {{ $venta->fecha }}
                 </div>
 
                 <div class="col-md-3">
-                        <h5>Factura:</h5>
-                        {{ $compra->factura }}
+                        <h5>Factura:</h5>                       
+                        {{str_pad($venta->factura,15,'0',STR_PAD_LEFT)}}
                 </div>
 
                 <div class="col-md-3">
 
-                        <a name="" id="" class="btn btn-primary" href="{{ route('compras.index') }}"
+                        <a name="" id="" class="btn btn-primary" href="{{ route('ventas.index') }}"
                                 role="button">Regresar
                         </a>
 
@@ -31,15 +31,15 @@
 
                 <div class="col-md-3">
                         <h5>Rif:</h5>
-                        {{ $proveedor->rif }}
+                        {{ $cliente->rif }}
                 </div>
                 <div class="col-md-3">
-                        <h5>Proveedor:</h5>
-                        {{ $proveedor->nombre }}
+                        <h5>Cliente:</h5>
+                        {{ $cliente->nombre }}
                 </div>
                 <div class="col-md-3">
                         <h5>Telefono:</h5>
-                        {{ $proveedor->telefono }}
+                        {{ $cliente->telefono }}
                 </div>
 
         </div>
@@ -52,7 +52,7 @@
                         <thead class="thead-light">
                                 <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Material</th>
+                                        <th scope="col">Producto</th>
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">Costo</th>
                                         <th scope="col">Subtotal</th>
@@ -60,13 +60,13 @@
                         </thead>
                         <tbody>
 
-                                @foreach ($materiales as $index => $item)
+                                @foreach ($productos as $index => $item)
 
                                 <tr>
                                         <th scope="row">{{ $index + 1 }}</th>
                                         <td>{{ $item->nombre }}</td>
                                         <td>{{ $item->cantidad}}</td>
-                                        <td>{{ $item->costo }}</td>
+                                        <td>{{ $item->precio }}</td>
                                         <td>{{ $item->subtotal }}</td>
                                 </tr>
 
@@ -83,7 +83,7 @@
                         <h5>Subtotal $:</h5>
                 </div>
 
-                <div class="col-md-2">{{ round($compra->subtotal,2) }}</div>
+                <div class="col-md-2">{{ round($venta->subtotal,2) }}</div>
 
         </div>
 
@@ -92,7 +92,7 @@
                 <div class="col-md-2 offset-md-6">
                         <h5>Iva %:</h5>
                 </div>
-                <div class="col-md-4">{{ round(($compra->total - $compra->subtotal),2) }}</div>
+                <div class="col-md-4">{{ round(($venta->total - $venta->subtotal),2) }}</div>
         </div>
 
         <div class="row mt-3">
@@ -100,7 +100,7 @@
                 <div class="col-md-2 offset-md-6">
                         <h5>Total $:</h5>
                 </div>
-                <div class="col-md-4">{{ round($compra->total,2) }}</div>
+                <div class="col-md-4">{{ round($venta->total,2) }}</div>
         </div>        
 
 
