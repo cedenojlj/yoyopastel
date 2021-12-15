@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\VentaExport;
 use App\Models\Cliente;
+use App\Models\Invproducto;
 use App\Models\Producto;
 use App\Models\Venta;
 use Illuminate\Http\Request;
@@ -58,7 +59,8 @@ class VentaController extends Controller
 
     public function destroy(Venta $venta)
     {
-                
+        Invproducto::where('idVenta',$venta->id)->delete();
+        
         $venta->delete();
 
         return redirect()->route('ventas.index')->with('success','Venta borrada con exito');

@@ -150,7 +150,7 @@
 
                             <div class="form-group">
                               <label for="metodo">Metodo</label>
-                              <select wire:model="metodo" class="form-control" name="metodo" id="metodo">
+                              <select wire:model="metodo" class="form-control" name="metodo" id="metodo">                                
                                 <option value="Debito">Debito</option>
                                 <option value="Credito">Credito</option>
                                 <option value="Efectivo">Efectivo</option>
@@ -163,7 +163,7 @@
 
                             <div class="form-group">
                                 <label for="moneda">Moneda</label>
-                                <select wire:model="moneda" class="form-control" name="moneda" id="moneda">
+                                <select wire:model="moneda" class="form-control" name="moneda" id="moneda">                                  
                                   <option value="Bs">Bs</option>
                                   <option value="Usd">Usd</option>                                 
                                 </select>

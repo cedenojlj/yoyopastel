@@ -51,8 +51,8 @@ class CargarVenta extends Component
      public $precio;
      public $subtotalCosto=0;
      public $paridad;
-     public $metodo;
-     public $moneda;
+     public $metodo="Debito";
+     public $moneda="Bs";
  
  
     
@@ -63,7 +63,7 @@ class CargarVenta extends Component
          'producto' => 'required|min:2',
          'cantidad' => 'required|numeric|min:1',
          'precio' => 'required|numeric|min:0.1',
- 
+
      ];
  
      public function mount()
@@ -273,6 +273,7 @@ class CargarVenta extends Component
 
                     'entrada' => 0,
                     'salida' => $value['cantidad'],
+                    'idVenta'=>$idVenta,
                     'producto_id' => $value['id'],
                     'user_id' => $id,
                     'empresa_id' => $idempresa,
