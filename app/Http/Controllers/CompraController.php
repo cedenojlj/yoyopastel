@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CompraExport;
 use App\Models\Compra;
+use App\Models\Invmaterial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 
 class CompraController extends Controller
@@ -52,9 +56,52 @@ class CompraController extends Controller
     
     public function destroy(Compra $compra)
     {
+        
+        Invmaterial::where('idCompra',$compra->id)->delete();
+        
         $compra->delete();
 
         return redirect()->route('compras.index')->with('success','Compra eliminada con exito');
+    }
+
+
+    public function search(Request $request)
+    {
+        
+        //dd($request);
+
+        if ($request->search) {
+
+            //return 'con valor';
+
+            $busqueda= $request->search;
+            
+            $compras=Compra::where(function ($query) {
+                $query->select('nombre')
+                    ->from('proveedors')
+                    ->whereColumn('proveedors.id', 'compras.proveedor_id')                    
+                    ->limit(1);
+            }, 'like','%' . $busqueda . '%')
+            ->orWhere('factura','LIKE','%'.$busqueda.'%')
+            ->orWhere('fecha','LIKE','%'.$busqueda.'%')
+            ->paginate(15)->withQueryString();            
+            
+                            
+            return view('compras.index', compact('compras'));  
+
+        } else {
+
+            //return 'sin valor';
+
+            return redirect()->route('compras.index');
+        } 
+
+                
+    }
+
+    public function export()
+    {
+        return Excel::download(new CompraExport, 'compras.xlsx');
     }
 
 

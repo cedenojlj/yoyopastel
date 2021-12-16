@@ -40,6 +40,7 @@
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Fecha</th>
                                 <th scope="col">Factura</th>
                                 <th scope="col">Total $</th>
                                 <th scope="col">Proveedor</th>
@@ -53,6 +54,7 @@
                             <tr>
 
                                 <th scope="row">{{ $compra->id }}</th>
+                                <td>{{ $compra->fecha }}</td>
                                 <td>{{ $compra->factura }}</td>
                                 <td>{{ $compra->total}}</td>
                                 <td>{{ $compra->proveedor->nombre }}</td>

@@ -5,11 +5,13 @@ namespace App\Http\Livewire;
 use App\Models\Compra;
 use Livewire\Component;
 use App\Models\Empleado;
+use App\Models\Invmaterial;
 use App\Models\Material;
 use App\Models\Proveedor;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
 
 
 class CargarCompra extends Component
@@ -204,11 +206,8 @@ class CargarCompra extends Component
 
             ]);
 
-            $idCompra=$data->id;            
-
-            //dd($this->listaMateriales);
-
-            //$compra=Compra::find($idCompra);
+            $idCompra=$data->id; 
+           
 
             foreach ($this->listaMateriales as $value) {
                
@@ -235,6 +234,19 @@ class CargarCompra extends Component
                    'compra_id'=>$idCompra, 
                    'material_id'=>$value['id'],                 
 
+                ]);
+
+
+                //para insertar los materiales en el inventario
+
+                Invmaterial::create([
+
+                    'entrada' => $value['cantidad'],
+                    'salida' => 0,
+                    'idCompra'=> $idCompra,
+                    'material_id' => $value['id'],
+                    'user_id' => $id,
+                    'empresa_id' => $idempresa,
                 ]);
 
             }
