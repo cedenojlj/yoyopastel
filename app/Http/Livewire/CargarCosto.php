@@ -38,15 +38,15 @@ class CargarCosto extends Component
    // Campos para realizar la carga de materiales y la compra
 
    public $cantidad;   
-   public $listaMateriales = [];  
-
-
+   public $listaMateriales = [];
+   
 
    protected $rules = [
 
        'material' => 'required|min:2',
        'cantidad' => 'required|numeric|min:0.1',     
    ];
+
 
 
    public function buscarProducto()
@@ -186,11 +186,7 @@ class CargarCosto extends Component
        }
    }
 
-   
-    
-   
-   
-   
+      
    
     public function render()
     {
@@ -215,7 +211,9 @@ class CargarCosto extends Component
                 ->orWhere('codigo', 'like', '%' . $this->material . '%')
                 ->get();
                 
-        }              
+        } 
+        
+              
                 
         
         return view('livewire.cargar-costo');

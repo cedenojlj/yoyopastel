@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Exports\CostoExport;
 use App\Models\Costo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+
 
 
 class CostoController extends Controller
@@ -24,18 +26,26 @@ class CostoController extends Controller
         return view('costos.create');
     }         
 
-    public function edit(Costo $costo)
+    public function show(Costo $costo)
     {
-        //
+        $materiales= DB::table('costo_material')
+        ->join('materials','costo_material.material_id','=','materials.id')
+        ->select('costo_material.*','materials.nombre','materials.codigo')
+        ->where('costo_material.costo_id','=',$costo->id)
+        ->get();
+
+        $producto= DB::table('costos')
+        ->join('productos','costos.producto_id','=','productos.id')
+        ->select('productos.*')
+        ->where('costos.id','=',$costo->id)
+        ->first();
+        
+       
+        return view('costos.ver',compact('costo','materiales','producto'));
     }
 
    
-    public function update(Request $request, Costo $costo)
-    {
-        //
-    }
-
-   
+       
     public function destroy(Costo $costo)
     {
         $costo->delete();
