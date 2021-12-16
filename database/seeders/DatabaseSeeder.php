@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Pago::factory(50)->create();
         \App\Models\Compra::factory(50)->create();
         \App\Models\Venta::factory(50)->create();
+        \App\Models\Costo::factory(50)->create();
         
     }
 }

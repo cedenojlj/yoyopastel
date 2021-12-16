@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CompraController;
+use App\Http\Controllers\CostoController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\InvmaterialController;
@@ -167,4 +168,13 @@ Route::resource('ventas', VentaController::class)->middleware('auth');
 Route::get('ventas-search', [VentaController::class, 'search'])->name('ventas.search')->middleware('auth');
 
 Route::get('ventas-reporte', [VentaController::class, 'export'])->name('ventas.reporte')->middleware('auth');
+
+
+//costo de fabricacion de los productos
+
+Route::resource('costos', CostoController::class)->middleware('auth');
+
+Route::get('costos-search', [CostoController::class, 'search'])->name('costos.search')->middleware('auth');
+
+Route::get('costos-reporte', [CostoController::class, 'export'])->name('costos.reporte')->middleware('auth');
 
