@@ -23,9 +23,7 @@ use App\Http\Controllers\VentaController;
 use App\Models\Empleado;
 use App\Models\Empresa;
 use App\Models\Invproducto;
-
-
-
+use App\Models\Producto;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +42,40 @@ use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+Route::get('prueba', function () {
+    
+   /*  $reporte = DB::table('costo_material')
+                ->join('costos','costo_material.costo_id','=','costos.id')
+                ->join('materials','costo_material.material_id','=','materials.id')
+                ->select('costo_material.*','costos.producto_id',
+                'materials.nombre as material','materials.costo',
+                DB::raw('materials.costo*costo_material.cantidad as costoProducto'))
+                ->where('costo_id',52)
+                ->get();
+ */
+    
+     $reportes = DB::table('costo_material')
+                ->join('costos','costo_material.costo_id','=','costos.id')
+                ->join('materials','costo_material.material_id','=','materials.id')
+                ->select('costos.producto_id',
+                DB::raw('SUM(materials.costo*costo_material.cantidad) as costoProducto'))
+                ->groupBy('costos.producto_id')
+                ->get();
+
+                foreach ($reportes as $value) {
+
+                    $ganancia= Producto::where('id',$value->producto_id)->value('ganancia');
+
+                    $precio= $value->costoProducto*(1+($ganancia/100));
+                   
+                    Producto::where('id',$value->producto_id)
+                    ->update(['costo'=>$value->costoProducto,'precio'=>$precio]);
+                }
+    
+    return $reportes;
 });
 
 
@@ -177,4 +209,6 @@ Route::resource('costos', CostoController::class)->middleware('auth');
 Route::get('costos-search', [CostoController::class, 'search'])->name('costos.search')->middleware('auth');
 
 Route::get('costos-reporte', [CostoController::class, 'export'])->name('costos.reporte')->middleware('auth');
+
+
 
