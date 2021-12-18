@@ -65,7 +65,14 @@
                                     @method('DELETE')
                                     <a name="" id="" class="btn btn-success"
                                     href="{{ route('productos.edit', $producto->id) }}" role="button"><i class="fas fa-pencil-alt"></i></a>
-                                    <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                                    
+                                    @canany(['isAdmin','isSuperadmin'])
+
+                                        <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+
+                                    @endcanany
+
+
                                 </form></td>
                             </tr>
 

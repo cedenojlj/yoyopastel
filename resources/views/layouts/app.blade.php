@@ -173,6 +173,18 @@
 
     <!-- Livewire -->
     @livewireScripts
+
+    <script>
+
+         window.livewire.on('userStore', () => {
+            $('#exampleModal').modal('show');
+        });
+
+        window.livewire.on('userClose', () => {
+            $('#exampleModal').modal('hide');
+        });
+
+    </script>
 </body>
 
 </html>

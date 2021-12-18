@@ -14,24 +14,23 @@
                         <p>{{ $message }}</p>
                     </div>
                     @endif
-                    
+
                     <div class="row mb-3 justify-content-around">
                         <div class="col-md-7">
 
-                            <a name="" id="" class="btn btn-primary" 
-                            href="{{ route('empleados.create') }}" role="button">Crear</a>
-                            <a name="" id="" class="btn btn-primary" 
-                            href="{{ route('empleados.reporte') }}" role="button">Excel</a>
+                            <a name="" id="" class="btn btn-primary" href="{{ route('empleados.create') }}"
+                                role="button">Crear</a>
+                            <a name="" id="" class="btn btn-primary" href="{{ route('empleados.reporte') }}"
+                                role="button">Excel</a>
 
                         </div>
                         <div class="col-md-5">
 
-                            <form class="form-inline" method="GET" 
-                            action="{{ route('empleados.search') }}">
+                            <form class="form-inline" method="GET" action="{{ route('empleados.search') }}">
                                 @csrf
-                                <input class="form-control mr-sm-2" type="text" placeholder="Search"  name="search">
+                                <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search">
                                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-                              </form>
+                            </form>
 
                         </div>
                     </div>
@@ -57,15 +56,24 @@
                                 <td>{{ $empleado->cedula }}</td>
                                 <td>{{ $empleado->email }}</td>
                                 <td>{{ $empleado->telefono }}</td>
-                                
 
-                                <td><form action="{{ route('empleados.destroy', $empleado->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <a name="" id="" class="btn btn-success"
-                                    href="{{ route('empleados.edit', $empleado->id) }}" role="button"><i class="fas fa-pencil-alt"></i></a>
-                                    <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                </form></td>
+
+                                <td>
+                                    <form action="{{ route('empleados.destroy', $empleado->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <a name="" id="" class="btn btn-success"
+                                            href="{{ route('empleados.edit', $empleado->id) }}" role="button"><i
+                                                class="fas fa-pencil-alt"></i></a>
+
+                                        @canany(['isAdmin','isSuperadmin'])
+
+                                        <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+
+                                        @endcanany
+
+                                    </form>
+                                </td>
                             </tr>
 
                             @endforeach
@@ -75,9 +83,9 @@
 
                     {{ $empleados->links() }}
 
-                   
 
-                    
+
+
                 </div>
             </div>
         </div>

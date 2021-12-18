@@ -1,5 +1,5 @@
 <div class="container">
-    
+
 
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -20,12 +20,12 @@
 
                     @if (session()->has('message'))
 
-                        <div class="alert alert-danger">
-                            {{ session('message') }}
-                        </div>
+                    <div class="alert alert-danger">
+                        {{ session('message') }}
+                    </div>
 
                     @endif
-                   
+
 
                     @if ($errorProducto)
 
@@ -47,9 +47,9 @@
 
                     @endif
 
-                     {{-- Numero de factura --}}
-                   
-                     <div class="row mb-3">
+                    {{-- Numero de factura --}}
+
+                    <div class="row mb-3">
 
                         <div class="col-md-4">
                             <h5>Factura:</h5>
@@ -69,7 +69,7 @@
 
                         </div>
 
-                    </div>                    
+                    </div>
 
                     {{-- busqueda de clientes --}}
 
@@ -104,7 +104,7 @@
                                 </div> --}}
                             </div>
 
-                        </div>                       
+                        </div>
 
 
                     </div>
@@ -112,49 +112,49 @@
 
                     @endif
 
-                   
+
 
                     {{-- Mostrar datos del cliente --}}
-                    
+
                     @if ($mostrar)
 
-                        <div class="row">
+                    <div class="row">
 
-                            <div class="col-md-3">
-                                <h5>Rif:</h5>
-                                {{ $cliente->rif }}
-                            </div>
-                            <div class="col-md-3">
-                                <h5>Cliente:</h5>
-                                {{ $cliente->nombre }}
-                            </div>
-                            <div class="col-md-3">
-                                <h5>Telefono:</h5>
-                                {{ $cliente->telefono }}
-                            </div>
-
-                            <div class="col-md-3">
-                                <button type="button" wire:click="cerrarCliente" class="btn btn-danger"><i
-                                        class="far fa-trash-alt"></i></button>
-                            </div>
+                        <div class="col-md-3">
+                            <h5>Rif:</h5>
+                            {{ $cliente->rif }}
+                        </div>
+                        <div class="col-md-3">
+                            <h5>Cliente:</h5>
+                            {{ $cliente->nombre }}
+                        </div>
+                        <div class="col-md-3">
+                            <h5>Telefono:</h5>
+                            {{ $cliente->telefono }}
                         </div>
 
+                        <div class="col-md-3">
+                            <button type="button" wire:click="cerrarCliente" class="btn btn-danger"><i
+                                    class="far fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+
                     @endif
-                    
+
                     {{-- Metodo de pago y moneda de pago --}}
 
-                    
+
                     <div class="row mt-3">
 
                         <div class="col-md-3">
 
                             <div class="form-group">
-                              <label for="metodo">Metodo</label>
-                              <select wire:model="metodo" class="form-control" name="metodo" id="metodo">                                
-                                <option value="Debito">Debito</option>
-                                <option value="Credito">Credito</option>
-                                <option value="Efectivo">Efectivo</option>
-                              </select>
+                                <label for="metodo">Metodo</label>
+                                <select wire:model="metodo" class="form-control" name="metodo" id="metodo">
+                                    <option value="Debito">Debito</option>
+                                    <option value="Credito">Credito</option>
+                                    <option value="Efectivo">Efectivo</option>
+                                </select>
                             </div>
 
                         </div>
@@ -163,14 +163,14 @@
 
                             <div class="form-group">
                                 <label for="moneda">Moneda</label>
-                                <select wire:model="moneda" class="form-control" name="moneda" id="moneda">                                  
-                                  <option value="Bs">Bs</option>
-                                  <option value="Usd">Usd</option>                                 
+                                <select wire:model="moneda" class="form-control" name="moneda" id="moneda">
+                                    <option value="Bs">Bs</option>
+                                    <option value="Usd">Usd</option>
                                 </select>
-                              </div>
+                            </div>
 
                         </div>
-                        
+
 
                     </div>
 
@@ -328,6 +328,48 @@
 
                             <button type="button" wire:click="cargarVenta" class="btn btn-primary">Aceptar</button>
                         </div>
+
+
+                    </div>
+
+                    <div class="row modal-open">
+
+                       
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Permiso de Eliminación</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+
+                                            <div class="col-md-12 mt-2">
+                                                <label for="clave" class="form-label">Clave</label>
+                                                <input id="clave" wire:model.defer="clave" type="password"
+                                                    class="form-control @error('clave') is-invalid @enderror" name="clave"
+                                                    value="{{ old('clave') }}" placeholder="1">
+                
+                
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="button" wire:click="borrarProductoModal" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
 
 
                     </div>
