@@ -16,7 +16,8 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -45,59 +46,82 @@
 
                         @auth
 
+                        @can('isSuperadmin')
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('empresas.index') }}">Empresas</a>
                         </li>
+                            
+                        @endcan
+
+
+                        @canany(['isSuperadmin','isAdmin'])
 
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('empleados.index') }}">Empleados</a>
                         </li>
+
+                        @endcanany
+
+                        @cannot('isSaller')  
 
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('proveedors.index') }}">Proveedores</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('clientes.index') }}">Clientes</a>
+                            <a class="nav-link" href="{{ route('compras.index') }}">Compras</a>
                         </li>
 
+                        @endcannot
+
+
+
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('compras.index') }}">Compras</a>
+                            <a class="nav-link" href="{{ route('clientes.index') }}">Clientes</a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('ventas.index') }}">Ventas</a>
                         </li>
 
+                        @cannot('isSaller')
+
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Productos</a>
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                aria-expanded="false">Productos</a>
                             <div class="dropdown-menu">
 
-                              <a class="dropdown-item" href="{{ route('productos.index') }}">Productos</a>
-                              <a class="dropdown-item" href="{{ route('materials.index') }}">Materiales</a>
-                              <a class="dropdown-item" href="{{ route('costos.index') }}">Costos</a>
-                              <a class="dropdown-item" href="{{ route('categorias.index') }}">Categorias</a>
-                              <a class="dropdown-item" href="{{ route('invmaterials.index') }}">Inventario Materiales</a>
-                              <a class="dropdown-item" href="{{ route('invproductos.index') }}">Inventario Productos</a>
-                              <a class="dropdown-item" href="{{ route('paridads.index') }}">Paridad</a>
-                              
+                                <a class="dropdown-item" href="{{ route('productos.index') }}">Productos</a>
+                                <a class="dropdown-item" href="{{ route('materials.index') }}">Materiales</a>
+                                <a class="dropdown-item" href="{{ route('costos.index') }}">Costos</a>
+                                <a class="dropdown-item" href="{{ route('categorias.index') }}">Categorias</a>
+                                <a class="dropdown-item" href="{{ route('invmaterials.index') }}">Inventario
+                                    Materiales</a>
+                                <a class="dropdown-item" href="{{ route('invproductos.index') }}">Inventario
+                                    Productos</a>
+                                <a class="dropdown-item" href="{{ route('paridads.index') }}">Paridad</a>
+
                             </div>
-                          </li>
+                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('pagos.index') }}">Pagos</a>
                         </li>
-                                               
 
-                          <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Reportes</a>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                aria-expanded="false">Reportes</a>
                             <div class="dropdown-menu">
 
-                              <a class="dropdown-item" href="#">Reporte A</a>
-                              <a class="dropdown-item" href="#">Reporte B</a>
-                              
+                                <a class="dropdown-item" href="#">Reporte A</a>
+                                <a class="dropdown-item" href="#">Reporte B</a>
+
                             </div>
-                          </li>
+                        </li>
+
+                        @endcannot
 
                         @endauth
 
