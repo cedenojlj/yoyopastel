@@ -21,7 +21,7 @@ class CargarCosto extends Component
     public $mostrar = false;
     public $errorMaterial = false;
     public $errorProducto = false;
-
+    public $mostrarBotones = false;
 
     //busqueda de productos
 
@@ -56,11 +56,28 @@ class CargarCosto extends Component
             $this->producto = Producto::where('nombre', 'like', '%' . $this->search . '%')
                 ->orWhere('codigo', 'like', '%' . $this->search . '%')->first();
 
-            $this->errorProducto = false;
+            $idProductoCosto = $this->producto->id;
+
+            $verificarProductoCosto= Costo::where('producto_id', $idProductoCosto)->count();            
+
+            if($verificarProductoCosto<1){
+
+                $this->errorProducto = false;
 
             $this->productos = [];
 
             $this->mostrar = true;
+
+            $this->mostrarBotones = true;
+
+            } else{
+
+                $this->mostrarBotones = false;
+
+                session()->flash('message','Producto con costos cargados, favor eliminar y crear de nuevo');
+
+            }
+
         } else {
 
             $this->errorProducto = true;

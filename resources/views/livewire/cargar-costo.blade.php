@@ -50,37 +50,37 @@
 
                     @if (!$mostrar)
 
-                        <div class="row">
+                    <div class="row">
 
-                            <div class="col-md-12 col-sm-12">
+                        <div class="col-md-12 col-sm-12">
 
-                                <button type="button" wire:click="buscarProducto"
-                                    class="btn btn-primary mb-2">Buscar</button>
+                            <button type="button" wire:click="buscarProducto"
+                                class="btn btn-primary mb-2">Buscar</button>
 
-                            </div>
+                        </div>
 
-                            <div class="col-md-6 col-sm-12">
+                        <div class="col-md-6 col-sm-12">
 
-                                <div class="search-input">
-                                    <input type="search" wire:model="search" class="form-control" id="search"
-                                        placeholder="Producto" autocomplete="off">
+                            <div class="search-input">
+                                <input type="search" wire:model="search" class="form-control" id="search"
+                                    placeholder="Producto" autocomplete="off">
 
-                                    <div class="autocom">
-                                        @if (!empty($productos))
-                                        <ul>
-                                            @foreach ($productos as $producto)
-                                            <li>{{ $producto->nombre }}</li>
-                                            @endforeach
-                                        </ul>
-                                        @endif
-                                    </div>
-
+                                <div class="autocom">
+                                    @if (!empty($productos))
+                                    <ul>
+                                        @foreach ($productos as $producto)
+                                        <li>{{ $producto->nombre }}</li>
+                                        @endforeach
+                                    </ul>
+                                    @endif
                                 </div>
 
                             </div>
 
-
                         </div>
+
+
+                    </div>
 
 
                     @endif
@@ -91,24 +91,24 @@
 
                     @if ($mostrar)
 
-                        <div class="row">
+                    <div class="row">
 
-                            <div class="col-md-3">
-                                <h5>Codigo:</h5>
-                                {{ $producto->codigo }}
-                            </div>
-
-                            <div class="col-md-3">
-                                <h5>Producto:</h5>
-                                {{ $producto->nombre }}
-                            </div>
-
-                            <div class="col-md-3">
-                                <button type="button" wire:click="cerrarProducto" class="btn btn-danger"><i
-                                        class="far fa-trash-alt"></i></button>
-                            </div>
-
+                        <div class="col-md-3">
+                            <h5>Codigo:</h5>
+                            {{ $producto->codigo }}
                         </div>
+
+                        <div class="col-md-3">
+                            <h5>Producto:</h5>
+                            {{ $producto->nombre }}
+                        </div>
+
+                        <div class="col-md-3">
+                            <button type="button" wire:click="cerrarProducto" class="btn btn-danger"><i
+                                    class="far fa-trash-alt"></i></button>
+                        </div>
+
+                    </div>
 
                     @endif
 
@@ -117,7 +117,7 @@
 
                     <div class="row justify-content-between ml-1 my-3">
 
-                        <h3>Carga de Materiales por Producto</h3>                        
+                        <h3>Carga de Materiales por Producto</h3>
 
                     </div>
 
@@ -125,10 +125,14 @@
 
                     <div class="row">
 
-                        <div class="col-md-12 mb-2">
+                        <div class="col-md-12 mb-2">                           
+
+                           @if ($mostrarBotones)
 
                             <button type="button" wire:click="cargarMaterial" class="btn btn-primary">Nuevo</button>
-
+                           
+                           @endif
+                        
                         </div>
 
                         <div class="col-md-6 mt-2">
@@ -206,11 +210,15 @@
 
                         <div class="col-md-3">
 
+                            @if ($mostrarBotones)
+
                             <a name="" id="" class="btn btn-primary" href="{{ route('costos.index') }}"
                                 role="button">Cancel
                             </a>
 
                             <button type="button" wire:click="cargarCosto" class="btn btn-primary">Aceptar</button>
+
+                            @endif
                         </div>
 
 
