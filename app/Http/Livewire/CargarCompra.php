@@ -7,8 +7,8 @@ use Livewire\Component;
 use App\Models\Empleado;
 use App\Models\Invmaterial;
 use App\Models\Material;
+use App\Models\Producto;
 use App\Models\Proveedor;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -250,6 +250,10 @@ class CargarCompra extends Component
                 ]);
 
             }
+
+            //para actualizar los precios de los productos con la carga de las compras de materiales
+
+            $this->actualizarCostoProducto();
             
             redirect()->route('compras.index')
             ->with('success', 'Compra Creada con Exito.');
@@ -261,7 +265,31 @@ class CargarCompra extends Component
         }
     }
 
-    
+    public function actualizarCostoProducto()
+    {
+
+        $reportes = DB::table('costo_material')
+            ->join('costos', 'costo_material.costo_id', '=', 'costos.id')
+            ->join('materials', 'costo_material.material_id', '=', 'materials.id')
+            ->select(
+                'costos.producto_id',
+                DB::raw('SUM(materials.costo*costo_material.cantidad) as costoProducto')
+            )
+            ->groupBy('costos.producto_id')
+            ->get();
+
+        foreach ($reportes as $value) {
+
+            $ganancia = Producto::where('id', $value->producto_id)->value('ganancia');
+
+            $precio = $value->costoProducto * (1 + ($ganancia / 100));
+
+            Producto::where('id', $value->producto_id)
+                ->update(['costo' => $value->costoProducto, 'precio' => $precio]);
+        }
+
+        return true;
+    }
 
 
 
