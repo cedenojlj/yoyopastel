@@ -115,8 +115,8 @@
                                 aria-expanded="false">Reportes</a>
                             <div class="dropdown-menu">
 
-                                <a class="dropdown-item" href="#">Reporte A</a>
-                                <a class="dropdown-item" href="#">Reporte B</a>
+                                <a class="dropdown-item" href="{{ route('ventas.gestion') }}">Gestion General</a>
+                                <a class="dropdown-item" href="{{ route('ventas.empresarial') }}">Gestion Empresarial</a>
 
                             </div>
                         </li>

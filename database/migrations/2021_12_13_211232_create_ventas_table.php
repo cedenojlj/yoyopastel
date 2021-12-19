@@ -20,6 +20,7 @@ class CreateVentasTable extends Migration
             $table->date('fecha');
             $table->integer('factura');           
             $table->decimal('subtotal');
+            $table->decimal('subcosto');
             $table->decimal('iva');
             $table->decimal('total');
             $table->decimal('paridad');

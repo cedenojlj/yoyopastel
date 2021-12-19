@@ -77,17 +77,17 @@
 
             <tr>
                 <th>Costos</th>
-                <td>$1012</td>                
+                <td>{{ $costos }}</td>                
             </tr>
 
             <tr>
                 <th>Pagos</th>
-                <td>$1012</td>                
+                <td>{{ $pagos }}</td>                
             </tr>
 
             <tr>
                 <th>Total</th>
-                <td>$1012</td>                
+                <td>{{ $total }}</td>                
             </tr>
         
         

@@ -14,6 +14,7 @@ class Venta extends Model
         'fecha',
         'factura',
         'subtotal',
+        'subcosto',
         'iva',
         'total',
         'paridad',

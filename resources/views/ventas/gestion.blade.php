@@ -43,32 +43,32 @@
 <body>
 
     <h1>Reporte de Ganancias y Perdidas</h1>
-    <h2>Empresa YoyoPastel</h2>
+    <h2>Empresa {{ $nombre }}</h2>
     <h2>Moneda $</h2>
 
     
     <table>
 
        
-            <tr>
-                <th>Ventas</th>
-                <td>$1012</td>                
-            </tr>
+        <tr>
+            <th>Ventas</th>
+            <td>{{ $ventas }}</td>                
+        </tr>
 
-            <tr>
-                <th>Costos</th>
-                <td>$1012</td>                
-            </tr>
+        <tr>
+            <th>Costos</th>
+            <td>{{ $costos }}</td>                
+        </tr>
 
-            <tr>
-                <th>Pagos</th>
-                <td>$1012</td>                
-            </tr>
+        <tr>
+            <th>Pagos</th>
+            <td>{{ $pagos }}</td>                
+        </tr>
 
-            <tr>
-                <th>Total</th>
-                <td>$1012</td>                
-            </tr>
+        <tr>
+            <th>Total</th>
+            <td>{{ $total }}</td>                
+        </tr>
         
         
     </table>

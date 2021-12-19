@@ -19,7 +19,8 @@ class CreateProductoVentaTable extends Migration
             $table->decimal('cantidad');            
             $table->decimal('precio');            
             $table->decimal('costo');            
-            $table->decimal('subtotal');            
+            $table->decimal('subtotal');
+            $table->decimal('subcosto');
             $table->foreignId('venta_id')
             ->constrained('ventas')
             ->onUpdate('cascade')

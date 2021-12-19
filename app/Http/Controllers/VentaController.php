@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use App\Exports\VentaExport;
 use App\Models\Cliente;
 use App\Models\Empleado;
+use App\Models\Empresa;
 use App\Models\Invproducto;
+use App\Models\Pago;
 use App\Models\Producto;
 use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
-
 
 
 
@@ -105,23 +106,63 @@ class VentaController extends Controller
 
         $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
 
+        //dd($idempresa);
+
         $anio= date('Y');        
        
         //$ventas = Venta::where('empresa_id',$idempresa)->whereYear('fecha',$anio)->get();
-
-        $ventas = Venta::where('empresa_id',$idempresa)->whereYear('fecha',$anio)->sum('subtotal');
-
-       //return view('ventas.gestion',compact('ventas'));
+        $nombre=Empresa::where('id',$idempresa)->value('nombre');        
+        $ventas = Venta::where('empresa_id',$idempresa)->whereYear('created_at',$anio)->sum('subtotal');
+        $costos = Venta::where('empresa_id',$idempresa)->whereYear('created_at',$anio)->sum('subcosto');
+        $pagos = Pago::where('empresa_id',$idempresa)->whereYear('created_at',$anio)->sum('pago');
+        $total=$ventas-$costos-$pagos;      
         
-        /*$pdf = PDF::loadView('ventas.gestion', $ventas);
-        return $pdf->download('invoice.pdf');  */
-
-        //$pdf = PDF::loadView('ventas.gestion', ['ventas'=>$ventas])->setOptions(['defaultFont' => 'sans-serif']);
-        $pdf = PDF::loadView('ventas.modelo', ['ventas'=>$ventas])->setOptions(['defaultFont' => 'sans-serif']);
+             
+        $pdf = PDF::loadView('ventas.gestion', compact('ventas','costos','pagos','total','nombre'))->setOptions(['defaultFont' => 'sans-serif']);
         //$pdf->loadHTML('<h1>Test</h1>');
         //return $pdf->download('invoice.pdf');
         return $pdf->stream();
 
         
     }
+
+    public function crearEmpresarial()
+    {
+        $empresas = Empresa::all();
+        return view('ventas.empresarial', compact('empresas'));
+    }
+
+    public function reporteEmpresarial(Request $request)
+    {
+        
+        $request->validate([
+            
+            'empresa_id' => 'required|numeric',
+        ]);
+        
+                
+        $id = auth()->user()->id;
+
+        $idempresa = $request->empresa_id;
+
+        //dd($idempresa);
+
+        $anio= date('Y');        
+       
+        //$ventas = Venta::where('empresa_id',$idempresa)->whereYear('fecha',$anio)->get();
+        $nombre=Empresa::where('id',$idempresa)->value('nombre');        
+        $ventas = Venta::where('empresa_id',$idempresa)->whereYear('created_at',$anio)->sum('subtotal');
+        $costos = Venta::where('empresa_id',$idempresa)->whereYear('created_at',$anio)->sum('subcosto');
+        $pagos = Pago::where('empresa_id',$idempresa)->whereYear('created_at',$anio)->sum('pago');
+        $total=$ventas-$costos-$pagos;      
+        
+             
+        $pdf = PDF::loadView('ventas.gestion', compact('ventas','costos','pagos','total','nombre'))->setOptions(['defaultFont' => 'sans-serif']);
+        //$pdf->loadHTML('<h1>Test</h1>');
+        //return $pdf->download('invoice.pdf');
+        return $pdf->stream();
+
+        
+    }
+
 }

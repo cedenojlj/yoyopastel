@@ -55,6 +55,7 @@ class CargarVenta extends Component
     public $paridad;
     public $metodo = "Debito";
     public $moneda = "Bs";
+    public $subcosto = 0;
 
 
 
@@ -137,6 +138,12 @@ class CargarVenta extends Component
 
                 $this->total = $this->total + $totalitemiva;
 
+
+                $subtotalItemCosto = $this->cantidad * $this->costo;
+
+                $this->subcosto = $this->subcosto +  $subtotalItemCosto;
+
+
                 $this->listaProductos[] = [
 
                     'id' => $searchProducto->id,
@@ -146,12 +153,14 @@ class CargarVenta extends Component
                     'costo' => $this->costo,
                     'subtotalitem' => $subtotalitem,
                     'totalitemiva' => $totalitemiva,
+                    'subtotalItemCosto'=> $subtotalItemCosto
 
                 ];
 
                 $this->limpiar();
 
                 $this->productos = [];
+
             } else {
 
                 $this->errorProducto = true;
@@ -174,6 +183,7 @@ class CargarVenta extends Component
 
             $this->subtotal = $this->subtotal - $this->listaProductos[$indice]['subtotalitem'];
             $this->total = $this->total - $this->listaProductos[$indice]['totalitemiva'];
+            $this->subcosto = $this->subcosto - $this->listaProductos[$indice]['subtotalItemCosto'];
 
             unset($this->listaProductos[$indice]);
 
@@ -193,6 +203,7 @@ class CargarVenta extends Component
 
             $this->subtotal = $this->subtotal - $this->listaProductos[$indice]['subtotalitem'];
             $this->total = $this->total - $this->listaProductos[$indice]['totalitemiva'];
+            $this->subcosto = $this->subcosto - $this->listaProductos[$indice]['subtotalItemCosto'];
 
             unset($this->listaProductos[$indice]);
 
@@ -218,6 +229,11 @@ class CargarVenta extends Component
 
                 $this->costo = Producto::where('id', $id)->value('costo');
 
+
+                $subtotalItemCosto = $this->cantidad * $this->costo;
+
+                $this->subcosto = $this->subcosto +  $subtotalItemCosto;
+
                 $subtotalitem = $this->cantidad * $this->precio;
 
                 $totalitemiva = $subtotalitem + $subtotalitem * ($this->iva / 100);
@@ -226,9 +242,13 @@ class CargarVenta extends Component
 
                 $this->total = $this->total + $totalitemiva;
 
+
+
                 $this->listaProductos[$key]['subtotalitem'] = $this->listaProductos[$key]['subtotalitem'] + $subtotalitem;
 
                 $this->listaProductos[$key]['totalitemiva'] = $this->listaProductos[$key]['totalitemiva'] + $totalitemiva;
+
+                $this->listaProductos[$key]['subtotalItemCosto'] = $this->listaProductos[$key]['subtotalItemCosto'] + $subtotalItemCosto;
 
                 $this->listaProductos[$key]['cantidad'] = $this->listaProductos[$key]['cantidad'] + $this->cantidad;
 
@@ -270,6 +290,7 @@ class CargarVenta extends Component
                 'fecha' => $this->fecha,
                 'factura' => $this->factura,
                 'subtotal' => $this->subtotal,
+                'subcosto' => $this->subcosto,
                 'iva' => $ivaVenta,
                 'total' => $this->total,
                 'paridad' => $this->paridad,
@@ -294,6 +315,7 @@ class CargarVenta extends Component
                     'precio' => $value['precio'],
                     'costo' => $value['costo'],
                     'subtotal' => $value['subtotalitem'],
+                    'subcosto' => $value['subtotalItemCosto'],
                     'venta_id' => $idVenta,
                     'producto_id' => $value['id'],
 
