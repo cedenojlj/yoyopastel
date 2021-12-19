@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Exports\InvproductoExport;
 use App\Models\Empleado;
+use App\Models\Empresa;
 use App\Models\Invproducto;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 
 class InvproductoController extends Controller
@@ -151,5 +153,35 @@ class InvproductoController extends Controller
     public function export()
     {
         return Excel::download(new InvproductoExport, 'invproductos.xlsx');
+    }
+
+
+    public function pdfStockProducto()
+    {
+        $id = auth()->user()->id;
+
+        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
+
+        $nombre=Empresa::where('id',$idempresa)->value('nombre');   
+
+        //dd($idempresa);
+
+        $anio= date('Y'); 
+        
+                
+        $productos= DB::table('invproductos') 
+        ->join('productos','invproductos.producto_id','=','productos.id')                                
+        ->select('invproductos.producto_id','productos.nombre as producto', DB::raw('SUM(entrada) as entradas, SUM(salida) as salidas, (SUM(entrada) - SUM(salida)) as Stock'))
+        ->where('invproductos.empresa_id',$idempresa)
+        ->whereYear('invproductos.created_at',$anio)
+        ->groupBy('invproductos.producto_id','productos.nombre')  
+        ->get();          
+
+        //dd($productos); 
+             
+        $pdf = PDF::loadView('invproductos.stock', compact('productos','nombre'))->setOptions(['defaultFont' => 'sans-serif']);
+        //$pdf->loadHTML('<h1>Test</h1>');
+        //return $pdf->download('invoice.pdf');
+        return $pdf->stream();
     }
 }

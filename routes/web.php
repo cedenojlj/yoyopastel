@@ -176,6 +176,8 @@ Route::get('ventas-empresarial', [VentaController::class, 'crearEmpresarial'])->
 
 Route::post('ventas-pdfempresarial', [VentaController::class, 'reporteEmpresarial'])->name('ventas.pdfempresarial')->middleware('auth');
 
+Route::get('ventas-pdfstockproducto', [InvproductoController::class, 'pdfStockProducto'])->name('ventas.pdfStockProducto')->middleware('auth');
+
 
 
 //costo de fabricacion de los productos

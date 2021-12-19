@@ -116,7 +116,14 @@
                             <div class="dropdown-menu">
 
                                 <a class="dropdown-item" href="{{ route('ventas.gestion') }}">Gestion General</a>
+                                
+                                @can('isSuperadmin')
+
                                 <a class="dropdown-item" href="{{ route('ventas.empresarial') }}">Gestion Empresarial</a>
+                                    
+                                @endcan
+                                
+                                <a class="dropdown-item" href="{{ route('ventas.pdfStockProducto') }}">Stock Producto</a>
 
                             </div>
                         </li>
