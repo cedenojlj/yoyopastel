@@ -45,39 +45,6 @@ Route::get('/', function () {
 });
 
 
-Route::get('prueba', function () {
-    
-   /*  $reporte = DB::table('costo_material')
-                ->join('costos','costo_material.costo_id','=','costos.id')
-                ->join('materials','costo_material.material_id','=','materials.id')
-                ->select('costo_material.*','costos.producto_id',
-                'materials.nombre as material','materials.costo',
-                DB::raw('materials.costo*costo_material.cantidad as costoProducto'))
-                ->where('costo_id',52)
-                ->get();
- */
-    
-     $reportes = DB::table('costo_material')
-                ->join('costos','costo_material.costo_id','=','costos.id')
-                ->join('materials','costo_material.material_id','=','materials.id')
-                ->select('costos.producto_id',
-                DB::raw('SUM(materials.costo*costo_material.cantidad) as costoProducto'))
-                ->groupBy('costos.producto_id')
-                ->get();
-
-                foreach ($reportes as $value) {
-
-                    $ganancia= Producto::where('id',$value->producto_id)->value('ganancia');
-
-                    $precio= $value->costoProducto*(1+($ganancia/100));
-                   
-                    Producto::where('id',$value->producto_id)
-                    ->update(['costo'=>$value->costoProducto,'precio'=>$precio]);
-                }
-    
-    return $reportes;
-});
-
 
 Auth::routes();
 
@@ -201,6 +168,11 @@ Route::get('ventas-search', [VentaController::class, 'search'])->name('ventas.se
 
 Route::get('ventas-reporte', [VentaController::class, 'export'])->name('ventas.reporte')->middleware('auth');
 
+//Para los reportes de gestion y otros
+
+Route::get('ventas-gestion', [VentaController::class, 'gestion'])->name('ventas.gestion')->middleware('auth');
+
+
 
 //costo de fabricacion de los productos
 
@@ -209,6 +181,8 @@ Route::resource('costos', CostoController::class)->middleware('auth');
 Route::get('costos-search', [CostoController::class, 'search'])->name('costos.search')->middleware('auth');
 
 Route::get('costos-reporte', [CostoController::class, 'export'])->name('costos.reporte')->middleware('auth');
+
+
 
 
 
