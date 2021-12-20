@@ -203,11 +203,18 @@ class VentaController extends Controller
         
         $bolivares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
         ->where('user_id',$idUser)->where('moneda','Bs')
-        ->selectRaw('metodo, SUM(total) as total')->groupBy('metodo')->get();
+        ->selectRaw('metodo, SUM(total*paridad) as total')->groupBy('metodo')->get();
+        
+        //dd($bolivares);
+
+        /* $totalbolivares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
+        ->where('user_id',$idUser)->where('moneda','Bs')->sum('total*paridad'); */
 
         $totalbolivares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
         ->where('user_id',$idUser)->where('moneda','Bs')
-        ->sum('total');
+        ->selectRaw('SUM(total*paridad) as totalbs')->first()->totalbs;
+
+        //dd($totalbolivares);
 
         $dolares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
         ->where('user_id',$idUser)->where('moneda','Usd')
@@ -230,13 +237,21 @@ class VentaController extends Controller
 
     public function factura(Venta $venta)
     {
-       $cliente = Cliente::where('id',$venta->cliente_id);
+       $cliente = Cliente::where('id',$venta->cliente_id)->first();
 
-       $empresa = Empresa::where('id',$venta->empresa_id);
+       $empresa = Empresa::where('id',$venta->empresa_id)->first();;
 
-       $productos = DB::table('producto_venta')->where('venta_id',$venta->id)->get();
+       $productos = DB::table('producto_venta')
+       ->join('productos','producto_venta.producto_id','=','productos.id')
+       ->select('producto_venta.*','productos.nombre as producto')
+       ->where('venta_id',$venta->id)->get();
 
-       
+       $pdf = PDF::loadView('ventas.factura', compact('cliente','empresa','productos','venta'))
+        ->setOptions(['defaultFont' => 'sans-serif']);
+        
+        //$pdf->loadHTML('<h1>Test</h1>');
+        //return $pdf->download('invoice.pdf');
+        return $pdf->stream();
     }
 
 }

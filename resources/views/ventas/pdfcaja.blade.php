@@ -58,7 +58,7 @@
 
         <tr>
             <th>{{ $bolivar->metodo }}</th>
-            <td>{{ $bolivar->total }}</td>
+            <td>{{ round($bolivar->total,2) }}</td>
         </tr>
 
         @endforeach
@@ -68,7 +68,7 @@
 
         <tr>
             <th>Total</th>
-            <td>{{ $totalbolivares }}</td>
+            <td>{{ round($totalbolivares,2) }}</td>
         </tr>
 
         @else
@@ -87,7 +87,7 @@
 
         <tr>
             <th>{{ $dolar->metodo }}</th>
-            <td>{{ $dolar->total }}</td>
+            <td>{{ round($dolar->total,2) }}</td>
         </tr>
 
         @endforeach
@@ -97,7 +97,7 @@
 
         <tr>
             <th>Total</th>
-            <td>{{ $totaldolares }}</td>
+            <td>{{ round($totaldolares,2) }}</td>
         </tr>
 
         @else

@@ -194,7 +194,7 @@ Route::get('ventas-crearcaja', [VentaController::class, 'crearCaja'])->name('ven
 
 Route::post('ventas-pfdcaja', [VentaController::class, 'pdfCaja'])->name('ventas.pdfCaja')->middleware('auth');
 
-Route::post('ventas/{venta}/factura', [VentaController::class, 'factura'])->name('ventas.factura')->middleware('auth');
+Route::get('ventas/{venta}/factura', [VentaController::class, 'factura'])->name('ventas.factura')->middleware('auth');
 
 
 

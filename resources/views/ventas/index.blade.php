@@ -65,6 +65,10 @@
                                     <form action="{{ route('ventas.destroy', $venta->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
+                                        
+                                        <a name="" id="" class="btn btn-info"
+                                        href="{{ route('ventas.factura', $venta->id) }}" target="_blank" role="button"><i class="far fa-file-alt"></i></a>
+
                                         <a name="" id="" class="btn btn-success"
                                         href="{{ route('ventas.show', $venta->id) }}" role="button"><i class="fas fa-pencil-alt"></i></a>
                                        
