@@ -15,6 +15,8 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
+                    <img src="{{ asset('storage/img/logoyoyopastel.png') }}" alt="">
                 </div>
             </div>
         </div>

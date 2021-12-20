@@ -44,7 +44,7 @@
 </head>
 
 <body>
-
+    
     <h1>Reporte de Caja</h1>
     <h2>Empresa {{ $empresa }}</h2>
     <h3>Empleado {{ $empleado }}</h3>

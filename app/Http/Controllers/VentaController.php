@@ -218,12 +218,25 @@ class VentaController extends Controller
         ->sum('total');
        
                      
-        $pdf = PDF::loadView('ventas.pdfcaja', compact('bolivares','totalbolivares','dolares','totaldolares','empleado','empresa','fecha'))->setOptions(['defaultFont' => 'sans-serif']);
+        $pdf = PDF::loadView('ventas.pdfcaja', compact('bolivares','totalbolivares','dolares','totaldolares','empleado','empresa','fecha'))
+        ->setOptions(['defaultFont' => 'sans-serif']);
+        
         //$pdf->loadHTML('<h1>Test</h1>');
         //return $pdf->download('invoice.pdf');
         return $pdf->stream();
 
         
+    }
+
+    public function factura(Venta $venta)
+    {
+       $cliente = Cliente::where('id',$venta->cliente_id);
+
+       $empresa = Empresa::where('id',$venta->empresa_id);
+
+       $productos = DB::table('producto_venta')->where('venta_id',$venta->id)->get();
+
+       
     }
 
 }

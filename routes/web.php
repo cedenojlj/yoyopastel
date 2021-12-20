@@ -168,6 +168,16 @@ Route::get('ventas-search', [VentaController::class, 'search'])->name('ventas.se
 
 Route::get('ventas-reporte', [VentaController::class, 'export'])->name('ventas.reporte')->middleware('auth');
 
+
+//costo de fabricacion de los productos
+
+Route::resource('costos', CostoController::class)->middleware('auth');
+
+Route::get('costos-search', [CostoController::class, 'search'])->name('costos.search')->middleware('auth');
+
+Route::get('costos-reporte', [CostoController::class, 'export'])->name('costos.reporte')->middleware('auth');
+
+
 //Para los reportes de gestion y otros
 
 Route::get('ventas-gestion', [VentaController::class, 'gestion'])->name('ventas.gestion')->middleware('auth');
@@ -184,16 +194,7 @@ Route::get('ventas-crearcaja', [VentaController::class, 'crearCaja'])->name('ven
 
 Route::post('ventas-pfdcaja', [VentaController::class, 'pdfCaja'])->name('ventas.pdfCaja')->middleware('auth');
 
-
-//costo de fabricacion de los productos
-
-Route::resource('costos', CostoController::class)->middleware('auth');
-
-Route::get('costos-search', [CostoController::class, 'search'])->name('costos.search')->middleware('auth');
-
-Route::get('costos-reporte', [CostoController::class, 'export'])->name('costos.reporte')->middleware('auth');
-
-
+Route::post('ventas/{venta}/factura', [VentaController::class, 'factura'])->name('ventas.factura')->middleware('auth');
 
 
 
