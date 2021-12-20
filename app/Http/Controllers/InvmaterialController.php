@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Exports\InvmaterialExport;
 use App\Models\Empleado;
+use App\Models\Empresa;
 use App\Models\Invmaterial;
 use App\Models\Material;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+//use PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 
 
 
@@ -182,5 +185,34 @@ class InvmaterialController extends Controller
     public function export()
     {
         return Excel::download(new InvmaterialExport, 'invmaterials.xlsx');
+    }
+
+    public function pdfStockMaterial()
+    {
+        $id = auth()->user()->id;
+
+        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
+
+        $nombre=Empresa::where('id',$idempresa)->value('nombre');   
+
+        //dd($idempresa);
+
+        $anio= date('Y'); 
+        
+                
+        $materials= DB::table('invmaterials') 
+        ->join('materials','invmaterials.material_id','=','materials.id')                                
+        ->select('invmaterials.material_id','materials.nombre as material', DB::raw('SUM(entrada) as entradas, SUM(salida) as salidas, (SUM(entrada) - SUM(salida)) as Stock'))
+        ->where('invmaterials.empresa_id',$idempresa)
+        ->whereYear('invmaterials.created_at',$anio)
+        ->groupBy('invmaterials.material_id','materials.nombre')  
+        ->get();          
+
+        //dd($materials); 
+             
+        $pdf = PDF::loadView('invmaterials.stock', compact('materials','nombre'))->setOptions(['defaultFont' => 'sans-serif']);
+        //$pdf->loadHTML('<h1>Test</h1>');
+        //return $pdf->download('invoice.pdf');
+        return $pdf->stream();
     }
 }

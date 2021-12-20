@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 use PDF;
+//use Barryvdh\DomPDF\PDF;
 
 
 class InvproductoController extends Controller

@@ -125,6 +125,10 @@
                                 
                                 <a class="dropdown-item" href="{{ route('ventas.pdfStockProducto') }}">Stock Producto</a>
 
+                                <a class="dropdown-item" href="{{ route('ventas.pdfStockMaterial') }}">Stock Material</a>
+
+                                <a class="dropdown-item" href="{{ route('ventas.crearCaja') }}">Caja</a>
+
                             </div>
                         </li>
 

@@ -13,7 +13,7 @@ use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
-use PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 
 
 
@@ -158,6 +158,67 @@ class VentaController extends Controller
         
              
         $pdf = PDF::loadView('ventas.gestion', compact('ventas','costos','pagos','total','nombre'))->setOptions(['defaultFont' => 'sans-serif']);
+        //$pdf->loadHTML('<h1>Test</h1>');
+        //return $pdf->download('invoice.pdf');
+        return $pdf->stream();
+
+        
+    }
+
+    public function crearCaja()
+    {
+        $empresas = Empresa::all();
+        $empleados = Empleado::all();
+
+        return view('ventas.crearcaja', compact('empresas','empleados'));
+    }
+
+
+    public function pdfCaja(Request $request)
+    {
+        
+        $request->validate([
+            
+            'empresa_id' => 'required|numeric',
+            'empleado_id' => 'required|numeric',
+            'fecha' => 'required',
+        ]);
+        
+                
+        $id = $request->empleado_id;        
+
+        $idUser = Empleado::where('id',$id)->value('user_id');
+        
+        $nombre = Empleado::where('id',$id)->value('nombre');
+
+        $apellido = Empleado::where('id',$id)->value('apellido');
+
+        $empleado = $nombre." ". $apellido;
+
+        $idempresa = $request->empresa_id;
+
+        $empresa = Empresa::where('id',$idempresa)->value('nombre');
+        
+        $fecha = $request->fecha;         
+        
+        $bolivares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
+        ->where('user_id',$idUser)->where('moneda','Bs')
+        ->selectRaw('metodo, SUM(total) as total')->groupBy('metodo')->get();
+
+        $totalbolivares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
+        ->where('user_id',$idUser)->where('moneda','Bs')
+        ->sum('total');
+
+        $dolares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
+        ->where('user_id',$idUser)->where('moneda','Usd')
+        ->selectRaw('metodo, SUM(total) as total')->groupBy('metodo')->get();
+
+        $totaldolares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
+        ->where('user_id',$idUser)->where('moneda','Usd')
+        ->sum('total');
+       
+                     
+        $pdf = PDF::loadView('ventas.pdfcaja', compact('bolivares','totalbolivares','dolares','totaldolares','empleado','empresa','fecha'))->setOptions(['defaultFont' => 'sans-serif']);
         //$pdf->loadHTML('<h1>Test</h1>');
         //return $pdf->download('invoice.pdf');
         return $pdf->stream();

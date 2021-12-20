@@ -178,6 +178,11 @@ Route::post('ventas-pdfempresarial', [VentaController::class, 'reporteEmpresaria
 
 Route::get('ventas-pdfstockproducto', [InvproductoController::class, 'pdfStockProducto'])->name('ventas.pdfStockProducto')->middleware('auth');
 
+Route::get('ventas-pdfstockmaterial', [InvmaterialController::class, 'pdfStockMaterial'])->name('ventas.pdfStockMaterial')->middleware('auth');
+
+Route::get('ventas-crearcaja', [VentaController::class, 'crearCaja'])->name('ventas.crearCaja')->middleware('auth');
+
+Route::post('ventas-pfdcaja', [VentaController::class, 'pdfCaja'])->name('ventas.pdfCaja')->middleware('auth');
 
 
 //costo de fabricacion de los productos
