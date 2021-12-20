@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\EmpleadoExport;
 use App\Models\Empleado;
 use App\Models\Empresa;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
@@ -31,7 +32,8 @@ class EmpleadoController extends Controller
     public function create()
     {
         $empresas = Empresa::all();
-        return view('empleados.create', compact('empresas'));
+        $users = User::all();
+        return view('empleados.create', compact('empresas','users'));
     }
 
 
@@ -49,12 +51,15 @@ class EmpleadoController extends Controller
             'salario' => 'required|numeric',
             'foto' => 'required|image|max:1024',
             'empresa_id' => 'required|numeric',
+            'user_id' => 'required|numeric',
+
         ]);
 
 
         $path = $request->foto->store('public/img');
         $archivo = $request->foto->hashName();
 
+        //dd($request->empresa_id);
 
         Empleado::create([
 
@@ -67,6 +72,7 @@ class EmpleadoController extends Controller
             'salario' => $request->salario,
             'foto' => $archivo,
             'empresa_id' => $request->empresa_id,
+            'user_id' => $request->user_id,
         ]);
 
         //Empleado::create($request->all());
@@ -82,7 +88,8 @@ class EmpleadoController extends Controller
     public function edit(Empleado $empleado)
     {
         $empresas = Empresa::all();
-        return view('empleados.edit', compact('empleado', 'empresas'));
+        $users = User::all();
+        return view('empleados.edit', compact('empleado', 'empresas','users'));
     }
 
 
@@ -100,6 +107,7 @@ class EmpleadoController extends Controller
             'salario' => 'required|numeric',
             'foto' => 'file|image|max:1024',
             'empresa_id' => 'required|numeric',
+            'user_id' => 'required|numeric',
         ]);
 
 
@@ -127,6 +135,7 @@ class EmpleadoController extends Controller
                 'salario' => $request->salario,
                 'foto' => $archivo,
                 'empresa_id' => $request->empresa_id,
+                'user_id' => $request->user_id,
             ]);
         } else {
 
@@ -140,6 +149,7 @@ class EmpleadoController extends Controller
                 'email' => $request->email,
                 'salario' => $request->salario,
                 'empresa_id' => $request->empresa_id,
+                'user_id' => $request->user_id,
             ]);
         }
 

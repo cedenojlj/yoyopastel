@@ -23,6 +23,8 @@
                     <form method="POST" action="{{ route('empleados.store') }}" enctype="multipart/form-data">
                         @csrf
 
+                        {{-- nombre --}}
+
                         <div class="form-group row">
                             <label for="nombre" class="col-md-3 col-form-label text-md-right">{{ __('Nombre')
                                 }}</label>
@@ -39,6 +41,8 @@
                                 @enderror
                             </div>
                         </div>
+
+                        {{-- apellido --}}
 
                         <div class="form-group row">
                             <label for="apellido" class="col-md-3 col-form-label text-md-right">{{ __('Apellido')
@@ -57,6 +61,8 @@
                             </div>
                         </div>
 
+                        {{-- cedula --}}
+                        
                         <div class="form-group row">
                             <label for="cedula" class="col-md-3 col-form-label text-md-right">{{ __('Cedula')
                                 }}</label>
@@ -74,6 +80,8 @@
                             </div>
                         </div>
 
+                        {{-- direccion --}}
+                        
                         <div class="form-group row">
                             <label for="direccion" class="col-md-3 col-form-label text-md-right">{{ __('Direccion')
                                 }}</label>
@@ -91,6 +99,8 @@
                             </div>
                         </div>
 
+                        {{-- telefono --}}
+                        
                         <div class="form-group row">
                             <label for="telefono" class="col-md-3 col-form-label text-md-right">{{ __('Telefono')
                                 }}</label>
@@ -108,6 +118,8 @@
                             </div>
                         </div>
 
+                        {{-- email --}}
+                        
                         <div class="form-group row">
                             <label for="email" class="col-md-3 col-form-label text-md-right">{{ __('E-Mail Address')
                                 }}</label>
@@ -124,6 +136,8 @@
                             </div>
                         </div>
 
+                        {{-- salario --}}
+                        
                         <div class="form-group row">
                             <label for="salario" class="col-md-3 col-form-label text-md-right">{{ __('Salario')
                                 }}</label>
@@ -141,6 +155,7 @@
                             </div>
                         </div>
 
+                        {{-- foto --}}
 
                         <div class="form-group row">
                             <label for="foto" class="col-md-3 col-form-label text-md-right">{{ __('Foto')
@@ -158,6 +173,8 @@
                             </div>
                         </div>
 
+                        {{-- empresa --}}
+                        
                         <div class="form-group row">
                             <label for="empresa_id" class="col-md-3 col-form-label text-md-right">{{ __('Empresa')
                                 }}</label>
@@ -185,6 +202,38 @@
                             </div>
                         </div>
 
+                        {{-- usuario --}}
+                        
+                        <div class="form-group row">
+                            <label for="user_id" class="col-md-3 col-form-label text-md-right">{{ __('user')
+                                }}</label>
+
+                            <div class="col-md-6">
+
+                                <select class="form-control @error('user_id') is-invalid @enderror" name="user_id"
+                                    required>
+
+                                    <option value=""> --Select-- </option>
+
+                                    @foreach ($users as $user)
+
+                                    <option value="{{ $user->id }}"> {{ $user->name }}</option>
+                                        
+                                    @endforeach    
+
+                                </select>
+
+                                @error('user_id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+
+
+                        {{-- botones --}}
 
                         <div class="form-group row mb-0 justify-content-center">
                             <div class="col-md-8 offset-md-4">
