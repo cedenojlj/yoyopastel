@@ -161,7 +161,7 @@
                         {{-- select categotia_id --}}
 
                         <div class="form-group row">
-                            <label for="categoria_id" class="col-md-3 col-form-label text-md-right">{{ __('Empresa')
+                            <label for="categoria_id" class="col-md-3 col-form-label text-md-right">{{ __('Categoria')
                                 }}</label>
 
                             <div class="col-md-6">
