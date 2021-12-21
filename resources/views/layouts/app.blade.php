@@ -27,6 +27,7 @@
 
     <!-- Livewire -->
     @livewireStyles
+   
 </head>
 
 <body>
@@ -115,19 +116,19 @@
                                 aria-expanded="false">Reportes</a>
                             <div class="dropdown-menu">
 
-                                <a class="dropdown-item" href="{{ route('ventas.gestion') }}">Gestion General</a>
+                                <a class="dropdown-item" href="{{ route('ventas.gestion') }}" target="_blank">Gestion General</a>
                                 
                                 @can('isSuperadmin')
 
-                                <a class="dropdown-item" href="{{ route('ventas.empresarial') }}">Gestion Empresarial</a>
+                                <a class="dropdown-item" href="{{ route('ventas.empresarial') }}" target="_blank">Gestion Empresarial</a>
                                     
                                 @endcan
                                 
-                                <a class="dropdown-item" href="{{ route('ventas.pdfStockProducto') }}">Stock Producto</a>
+                                <a class="dropdown-item" href="{{ route('ventas.pdfStockProducto') }}" target="_blank">Stock Producto</a>
 
-                                <a class="dropdown-item" href="{{ route('ventas.pdfStockMaterial') }}">Stock Material</a>
+                                <a class="dropdown-item" href="{{ route('ventas.pdfStockMaterial') }}" target="_blank">Stock Material</a>
 
-                                <a class="dropdown-item" href="{{ route('ventas.crearCaja') }}">Caja</a>
+                                <a class="dropdown-item" href="{{ route('ventas.crearCaja') }}" target="_blank">Caja</a>
 
                             </div>
                         </li>

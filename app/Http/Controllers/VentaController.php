@@ -158,9 +158,9 @@ class VentaController extends Controller
         
              
         $pdf = PDF::loadView('ventas.gestion', compact('ventas','costos','pagos','total','nombre'))->setOptions(['defaultFont' => 'sans-serif']);
-        //$pdf->loadHTML('<h1>Test</h1>');
-        //return $pdf->download('invoice.pdf');
+        //$pdf->loadHTML('<h1>Test</h1>');        
         return $pdf->stream();
+        //return $pdf->download('gestionempresa.pdf');
 
         
     }
@@ -231,6 +231,7 @@ class VentaController extends Controller
         //$pdf->loadHTML('<h1>Test</h1>');
         //return $pdf->download('invoice.pdf');
         return $pdf->stream();
+        //return $pdf->download('caja.pdf');
 
         
     }

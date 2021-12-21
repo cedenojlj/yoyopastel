@@ -19,7 +19,7 @@ class CreateMaterialsTable extends Migration
             $table->string('codigo');
             $table->string('nombre');
             $table->string('descripcion');
-            $table->decimal('costo',8,2);  
+            $table->decimal('costo',12,2);  
             $table->integer('stock_min');        
             $table->timestamps();
             

@@ -15,7 +15,7 @@ class CreateParidadsTable extends Migration
     {
         Schema::create('paridads', function (Blueprint $table) {
             $table->id();
-            $table->decimal('paridad',8,2);
+            $table->decimal('paridad',12,2);
             $table->timestamps();
         });
     }

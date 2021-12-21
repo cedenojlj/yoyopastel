@@ -42,3 +42,11 @@
     background: rgba(0, 0, 0, 0.12)  ;
    
 }
+
+.fondoApp{
+    background-image: url('storage/img/panaderia2.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+}

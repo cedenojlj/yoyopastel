@@ -19,9 +19,9 @@ class CreateProductosTable extends Migration
             $table->string('codigo');
             $table->string('nombre');
             $table->string('descripcion');
-            $table->decimal('precio',8,2);
-            $table->decimal('costo',8,2);
-            $table->decimal('ganancia',8,2);            
+            $table->decimal('precio',12,2);
+            $table->decimal('costo',12,2);
+            $table->decimal('ganancia',12,2);            
             $table->integer('stock_min');                        
             $table->timestamps();
             $table->foreignId('categoria_id')->constrained('categorias')->onUpdate('cascade')->onDelete('cascade');

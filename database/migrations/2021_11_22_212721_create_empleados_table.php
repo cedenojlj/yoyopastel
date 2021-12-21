@@ -22,7 +22,7 @@ class CreateEmpleadosTable extends Migration
             $table->string('direccion');
             $table->string('telefono');
             $table->string('email');
-            $table->decimal('salario',8,2);
+            $table->decimal('salario',12,2);
             $table->string('foto');            
             $table->timestamps();
             $table->foreignId('empresa_id')->constrained()->onUpdate('cascade')->onDelete('cascade');

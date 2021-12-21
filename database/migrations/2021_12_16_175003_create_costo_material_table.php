@@ -17,7 +17,7 @@ class CreateCostoMaterialTable extends Migration
             
             $table->id();
 
-            $table->decimal('cantidad',8,2);
+            $table->decimal('cantidad',12,2);
             
             $table->foreignId('costo_id')
             ->constrained('costos')
