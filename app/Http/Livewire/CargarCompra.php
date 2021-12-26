@@ -41,7 +41,7 @@ class CargarCompra extends Component
     public $cantidad;
     public $costo;
     public $subtotal = 0;
-    public $iva = 12;
+    public $iva = 16;
     public $total = 0;
     public $listaMateriales = [];
     public $factura;

@@ -40,6 +40,7 @@
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Fecha</th>
                                 <th scope="col">Material</th>
                                 <th scope="col">Entrada</th>
                                 <th scope="col">Salida</th>
@@ -52,6 +53,7 @@
 
                             <tr>
                                 <th scope="row">{{ $material->id }}</th>
+                                <td>{{ $material->created_at}}</td>
                                 <td>{{ $material->material->nombre }}</td>
                                 <td>{{ $material->entrada }}</td>
                                 <td>{{ $material->salida }}</td> 

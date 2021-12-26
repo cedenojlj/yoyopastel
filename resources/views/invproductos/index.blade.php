@@ -40,6 +40,7 @@
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Fecha</th>
                                 <th scope="col">Producto</th>
                                 <th scope="col">Entrada</th>
                                 <th scope="col">Salida</th>
@@ -52,6 +53,7 @@
 
                             <tr>
                                 <th scope="row">{{ $producto->id }}</th>
+                                <td>{{ $producto->created_at }}</td>
                                 <td>{{ $producto->producto->nombre }}</td>
                                 <td>{{ $producto->entrada }}</td>
                                 <td>{{ $producto->salida }}</td> 

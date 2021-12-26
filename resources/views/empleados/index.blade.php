@@ -40,8 +40,8 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Nombre</th>
-                                <th scope="col">Cedula</th>
-                                <th scope="col">Email</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">Cedula</th>                               
                                 <th scope="col">Telefono</th>
                                 <th scope="col">Acciones</th>
                             </tr>
@@ -53,8 +53,8 @@
                             <tr>
                                 <th scope="row">{{ $empleado->id }}</th>
                                 <td>{{ $empleado->nombre }}</td>
-                                <td>{{ $empleado->cedula }}</td>
-                                <td>{{ $empleado->email }}</td>
+                                <td>{{ $empleado->apellido }}</td>
+                                <td>{{ $empleado->cedula }}</td>                                
                                 <td>{{ $empleado->telefono }}</td>
 
 

@@ -85,7 +85,7 @@
                         {{-- precio --}}
 
                         <div class="form-group row">
-                            <label for="precio" class="col-md-3 col-form-label text-md-right">{{ __('Precio')
+                            <label for="precio" class="col-md-3 col-form-label text-md-right">{{ __('Precio $')
                                 }}</label>
 
                             <div class="col-md-6">
@@ -104,7 +104,7 @@
                         {{-- costo --}}
 
                         <div class="form-group row">
-                            <label for="costo" class="col-md-3 col-form-label text-md-right">{{ __('Costo')
+                            <label for="costo" class="col-md-3 col-form-label text-md-right">{{ __('Costo $')
                                 }}</label>
 
                             <div class="col-md-6">
@@ -123,7 +123,7 @@
                         {{-- ganancia --}}
 
                         <div class="form-group row">
-                            <label for="ganancia" class="col-md-3 col-form-label text-md-right">{{ __('Ganancia')
+                            <label for="ganancia" class="col-md-3 col-form-label text-md-right">{{ __('Ganancia %')
                                 }}</label>
 
                             <div class="col-md-6">
