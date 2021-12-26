@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Exports\CompraExport;
 use App\Models\Compra;
+use App\Models\Empleado;
 use App\Models\Invmaterial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
-
 
 
 class CompraController extends Controller
@@ -20,7 +20,14 @@ class CompraController extends Controller
      */
     public function index()
     {
-        $compras= Compra::paginate(15);
+       
+        $id = auth()->user()->id;
+
+        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;   
+       
+        $compras= Compra::where('empresa_id', $idempresa)->paginate(15);
+
+        //$compras= Compra::paginate(15);
 
         return view('compras.index',compact('compras'));
     }

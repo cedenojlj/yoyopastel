@@ -19,7 +19,14 @@ class PagoController extends Controller
      */
     public function index()
     {
-        $pagos = Pago::paginate(15);
+        $id = auth()->user()->id;
+
+        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;  
+       
+        $pagos = Pago::where('empresa_id', $idempresa)->paginate(15);
+
+
+        //$pagos = Pago::paginate(15);
 
         return view('pagos.index', compact('pagos'));
     }

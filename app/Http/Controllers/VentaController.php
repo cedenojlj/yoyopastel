@@ -22,7 +22,14 @@ class VentaController extends Controller
 
     public function index()
     {
-        $ventas = Venta::paginate(15);
+        
+        $id = auth()->user()->id;
+
+        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id; 
+
+        $ventas = Venta::where('empresa_id', $idempresa)->paginate(15);
+
+        //$ventas = Venta::paginate(15);
 
         return view('ventas.index', compact('ventas'));
     }
@@ -136,6 +143,7 @@ class VentaController extends Controller
         $request->validate([
 
             'empresa_id' => 'required|numeric',
+            'reporte_id' => 'required|numeric',
         ]);
 
 

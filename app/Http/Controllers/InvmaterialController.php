@@ -25,8 +25,14 @@ class InvmaterialController extends Controller
      */
     public function index()
     {
-       
-        $invmaterials = Invmaterial::paginate(15);
+        
+        $id = auth()->user()->id;
+
+        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
+        
+        $invmaterials = Invmaterial::where('empresa_id', $idempresa)->paginate(15);
+
+        //$invmaterials = Invmaterial::paginate(15);
 
         return view('invmaterials.index', compact('invmaterials'));
 

@@ -23,7 +23,13 @@ class InvproductoController extends Controller
      */
     public function index()
     {
-        $invproductos = Invproducto::paginate(15);
+        $id = auth()->user()->id;
+
+        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
+
+        $invproductos = Invproducto::where('empresa_id', $idempresa)->paginate(15);
+
+        //$invproductos = Invproducto::paginate(15);
 
         return view('invproductos.index', compact('invproductos'));
     }
