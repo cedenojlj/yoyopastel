@@ -31,6 +31,9 @@
                                                                 __('Empresa')
                                                                 }}</label>
 
+
+
+                                                        {{-- Empresa --}}
                                                         <div class="col-md-6">
 
                                                                 <select class="form-control @error('empresa_id') is-invalid @enderror"
@@ -48,6 +51,37 @@
                                                                 </select>
 
                                                                 @error('empresa_id')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $message }}</strong>
+                                                                </span>
+                                                                @enderror
+                                                        </div>
+                                                </div>
+
+
+                                                <div class="form-group row">
+                                                        <label for="reporte_id"
+                                                                class="col-md-3 col-form-label text-md-right">{{
+                                                                __('Reporte')
+                                                                }}</label>
+
+
+
+                                                        {{-- Reporte --}}
+                                                        <div class="col-md-6">
+
+                                                                <select class="form-control @error('reporte_id') is-invalid @enderror"
+                                                                        name="reporte_id" required>
+
+                                                                        <option value=""> --Select-- </option>
+
+                                                                        <option value="1"> Gestion </option>
+                                                                        <option value="2"> Stock Material </option>
+                                                                        <option value="3"> Stock Productos </option>                                                                       
+
+                                                                </select>
+
+                                                                @error('reporte_id')
                                                                 <span class="invalid-feedback" role="alert">
                                                                         <strong>{{ $message }}</strong>
                                                                 </span>

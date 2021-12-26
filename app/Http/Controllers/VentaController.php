@@ -19,7 +19,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class VentaController extends Controller
 {
-   
+
     public function index()
     {
         $ventas = Venta::paginate(15);
@@ -27,7 +27,7 @@ class VentaController extends Controller
         return view('ventas.index', compact('ventas'));
     }
 
-    
+
     public function create()
     {
         return view('ventas.create');
@@ -101,29 +101,27 @@ class VentaController extends Controller
 
     public function gestion()
     {
-        
+
         $id = auth()->user()->id;
 
         $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
 
         //dd($idempresa);
 
-        $anio= date('Y');        
-       
+        $anio = date('Y');
+
         //$ventas = Venta::where('empresa_id',$idempresa)->whereYear('fecha',$anio)->get();
-        $nombre=Empresa::where('id',$idempresa)->value('nombre');        
-        $ventas = Venta::where('empresa_id',$idempresa)->whereYear('created_at',$anio)->sum('subtotal');
-        $costos = Venta::where('empresa_id',$idempresa)->whereYear('created_at',$anio)->sum('subcosto');
-        $pagos = Pago::where('empresa_id',$idempresa)->whereYear('created_at',$anio)->sum('pago');
-        $total=$ventas-$costos-$pagos;      
-        
-             
-        $pdf = PDF::loadView('ventas.gestion', compact('ventas','costos','pagos','total','nombre'))->setOptions(['defaultFont' => 'sans-serif']);
+        $nombre = Empresa::where('id', $idempresa)->value('nombre');
+        $ventas = Venta::where('empresa_id', $idempresa)->whereYear('created_at', $anio)->sum('subtotal');
+        $costos = Venta::where('empresa_id', $idempresa)->whereYear('created_at', $anio)->sum('subcosto');
+        $pagos = Pago::where('empresa_id', $idempresa)->whereYear('created_at', $anio)->sum('pago');
+        $total = $ventas - $costos - $pagos;
+
+
+        $pdf = PDF::loadView('ventas.gestion', compact('ventas', 'costos', 'pagos', 'total', 'nombre'))->setOptions(['defaultFont' => 'sans-serif']);
         //$pdf->loadHTML('<h1>Test</h1>');
         //return $pdf->download('invoice.pdf');
         return $pdf->stream();
-
-        
     }
 
     public function crearEmpresarial()
@@ -134,35 +132,73 @@ class VentaController extends Controller
 
     public function reporteEmpresarial(Request $request)
     {
-        
+
         $request->validate([
-            
+
             'empresa_id' => 'required|numeric',
         ]);
-        
-                
+
+
         $id = auth()->user()->id;
 
         $idempresa = $request->empresa_id;
 
+        $idreporte = $request->reporte_id;
+
         //dd($idempresa);
 
-        $anio= date('Y');        
-       
-        //$ventas = Venta::where('empresa_id',$idempresa)->whereYear('fecha',$anio)->get();
-        $nombre=Empresa::where('id',$idempresa)->value('nombre');        
-        $ventas = Venta::where('empresa_id',$idempresa)->whereYear('created_at',$anio)->sum('subtotal');
-        $costos = Venta::where('empresa_id',$idempresa)->whereYear('created_at',$anio)->sum('subcosto');
-        $pagos = Pago::where('empresa_id',$idempresa)->whereYear('created_at',$anio)->sum('pago');
-        $total=$ventas-$costos-$pagos;      
-        
-             
-        $pdf = PDF::loadView('ventas.gestion', compact('ventas','costos','pagos','total','nombre'))->setOptions(['defaultFont' => 'sans-serif']);
-        //$pdf->loadHTML('<h1>Test</h1>');        
-        return $pdf->stream();
-        //return $pdf->download('gestionempresa.pdf');
+        $anio = date('Y');
 
-        
+
+
+        if ($idreporte == 1) {
+
+            //$ventas = Venta::where('empresa_id',$idempresa)->whereYear('fecha',$anio)->get();
+            $nombre = Empresa::where('id', $idempresa)->value('nombre');
+            $ventas = Venta::where('empresa_id', $idempresa)->whereYear('created_at', $anio)->sum('subtotal');
+            $costos = Venta::where('empresa_id', $idempresa)->whereYear('created_at', $anio)->sum('subcosto');
+            $pagos = Pago::where('empresa_id', $idempresa)->whereYear('created_at', $anio)->sum('pago');
+            $total = $ventas - $costos - $pagos;
+
+
+            $pdf = PDF::loadView('ventas.gestion', compact('ventas', 'costos', 'pagos', 'total', 'nombre'))->setOptions(['defaultFont' => 'sans-serif']);             
+            return $pdf->stream();
+            //return $pdf->download('gestionempresa.pdf');
+
+        }elseif ($idreporte == 2) {
+
+            $nombre = Empresa::where('id', $idempresa)->value('nombre');
+
+            $materials= DB::table('invmaterials') 
+            ->join('materials','invmaterials.material_id','=','materials.id')                                
+            ->select('invmaterials.material_id','materials.nombre as material', DB::raw('SUM(entrada) as entradas, SUM(salida) as salidas, (SUM(entrada) - SUM(salida)) as Stock'))
+            ->where('invmaterials.empresa_id',$idempresa)
+            ->whereYear('invmaterials.created_at',$anio)
+            ->groupBy('invmaterials.material_id','materials.nombre')  
+            ->get();  
+                 
+            $pdf = PDF::loadView('invmaterials.stock', compact('materials','nombre'))->setOptions(['defaultFont' => 'sans-serif']);            
+            //return $pdf->download('invoice.pdf');
+            return $pdf->stream();
+            
+
+        }elseif  ($idreporte == 3) {
+            
+            $nombre = Empresa::where('id', $idempresa)->value('nombre');
+            $productos= DB::table('invproductos') 
+            ->join('productos','invproductos.producto_id','=','productos.id')                                
+            ->select('invproductos.producto_id','productos.nombre as producto', DB::raw('SUM(entrada) as entradas, SUM(salida) as salidas, (SUM(entrada) - SUM(salida)) as Stock'))
+            ->where('invproductos.empresa_id',$idempresa)
+            ->whereYear('invproductos.created_at',$anio)
+            ->groupBy('invproductos.producto_id','productos.nombre')  
+            ->get();          
+    
+                          
+            $pdf = PDF::loadView('invproductos.stock', compact('productos','nombre'))->setOptions(['defaultFont' => 'sans-serif']);            
+            //return $pdf->download('invoice.pdf');
+            return $pdf->stream();
+
+        }
     }
 
     public function crearCaja()
@@ -170,89 +206,88 @@ class VentaController extends Controller
         $empresas = Empresa::all();
         $empleados = Empleado::all();
 
-        return view('ventas.crearcaja', compact('empresas','empleados'));
+        return view('ventas.crearcaja', compact('empresas', 'empleados'));
     }
 
 
     public function pdfCaja(Request $request)
     {
-        
+
         $request->validate([
-            
+
             'empresa_id' => 'required|numeric',
             'empleado_id' => 'required|numeric',
             'fecha' => 'required',
         ]);
-        
-                
-        $id = $request->empleado_id;        
 
-        $idUser = Empleado::where('id',$id)->value('user_id');
-        
-        $nombre = Empleado::where('id',$id)->value('nombre');
 
-        $apellido = Empleado::where('id',$id)->value('apellido');
+        $id = $request->empleado_id;
 
-        $empleado = $nombre." ". $apellido;
+        $idUser = Empleado::where('id', $id)->value('user_id');
+
+        $nombre = Empleado::where('id', $id)->value('nombre');
+
+        $apellido = Empleado::where('id', $id)->value('apellido');
+
+        $empleado = $nombre . " " . $apellido;
 
         $idempresa = $request->empresa_id;
 
-        $empresa = Empresa::where('id',$idempresa)->value('nombre');
-        
-        $fecha = $request->fecha;         
-        
-        $bolivares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
-        ->where('user_id',$idUser)->where('moneda','Bs')
-        ->selectRaw('metodo, SUM(total*paridad) as total')->groupBy('metodo')->get();
-        
+        $empresa = Empresa::where('id', $idempresa)->value('nombre');
+
+        $fecha = $request->fecha;
+
+        $bolivares = Venta::where('empresa_id', $idempresa)->whereDate('fecha', $fecha)
+            ->where('user_id', $idUser)->where('moneda', 'Bs')
+            ->selectRaw('metodo, SUM(total*paridad) as total')->groupBy('metodo')->get();
+
         //dd($bolivares);
 
         /* $totalbolivares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
         ->where('user_id',$idUser)->where('moneda','Bs')->sum('total*paridad'); */
 
-        $totalbolivares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
-        ->where('user_id',$idUser)->where('moneda','Bs')
-        ->selectRaw('SUM(total*paridad) as totalbs')->first()->totalbs;
+        $totalbolivares = Venta::where('empresa_id', $idempresa)->whereDate('fecha', $fecha)
+            ->where('user_id', $idUser)->where('moneda', 'Bs')
+            ->selectRaw('SUM(total*paridad) as totalbs')->first()->totalbs;
 
         //dd($totalbolivares);
 
-        $dolares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
-        ->where('user_id',$idUser)->where('moneda','Usd')
-        ->selectRaw('metodo, SUM(total) as total')->groupBy('metodo')->get();
+        $dolares = Venta::where('empresa_id', $idempresa)->whereDate('fecha', $fecha)
+            ->where('user_id', $idUser)->where('moneda', 'Usd')
+            ->selectRaw('metodo, SUM(total) as total')->groupBy('metodo')->get();
 
-        $totaldolares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
-        ->where('user_id',$idUser)->where('moneda','Usd')
-        ->sum('total');
-       
-                     
-        $pdf = PDF::loadView('ventas.pdfcaja', compact('bolivares','totalbolivares','dolares','totaldolares','empleado','empresa','fecha'))
-        ->setOptions(['defaultFont' => 'sans-serif']);
-        
+        $totaldolares = Venta::where('empresa_id', $idempresa)->whereDate('fecha', $fecha)
+            ->where('user_id', $idUser)->where('moneda', 'Usd')
+            ->sum('total');
+
+
+        $pdf = PDF::loadView('ventas.pdfcaja', compact('bolivares', 'totalbolivares', 'dolares', 'totaldolares', 'empleado', 'empresa', 'fecha'))
+            ->setOptions(['defaultFont' => 'sans-serif']);
+
         //$pdf->loadHTML('<h1>Test</h1>');
         //return $pdf->download('invoice.pdf');
         return $pdf->stream();
         //return $pdf->download('caja.pdf');
 
-        
+
     }
 
     public function factura(Venta $venta)
     {
-       $cliente = Cliente::where('id',$venta->cliente_id)->first();
+        $cliente = Cliente::where('id', $venta->cliente_id)->first();
 
-       $empresa = Empresa::where('id',$venta->empresa_id)->first();;
+        $empresa = Empresa::where('id', $venta->empresa_id)->first();;
 
-       $productos = DB::table('producto_venta')
-       ->join('productos','producto_venta.producto_id','=','productos.id')
-       ->select('producto_venta.*','productos.nombre as producto')
-       ->where('venta_id',$venta->id)->get();
+        $productos = DB::table('producto_venta')
+            ->join('productos', 'producto_venta.producto_id', '=', 'productos.id')
+            ->select('producto_venta.*', 'productos.nombre as producto')
+            ->where('venta_id', $venta->id)->get();
 
-       $pdf = PDF::loadView('ventas.factura', compact('cliente','empresa','productos','venta'))
-        ->setOptions(['defaultFont' => 'sans-serif']);
-        
+        $pdf = PDF::loadView('ventas.factura', compact('cliente', 'empresa', 'productos', 'venta'))
+            ->setOptions(['defaultFont' => 'sans-serif']);
+
         //$pdf->loadHTML('<h1>Test</h1>');
         //return $pdf->download('invoice.pdf');
         return $pdf->stream();
     }
-
 }
