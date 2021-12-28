@@ -264,7 +264,7 @@ class CargarVenta extends Component
 
                 $cantidadPedida = $this->listaProductos[$key]['cantidad'] + $this->cantidad;
 
-                if ( $this->stockProducto> $cantidadPedida) {
+                if ( $this->stockProducto>= $cantidadPedida) {
 
                     $this->precio = Producto::where('id', $id)->value('precio');
 
