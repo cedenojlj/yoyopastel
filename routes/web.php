@@ -41,6 +41,7 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::get('/', function () {
+    
     return view('welcome');
 });
 
@@ -198,3 +199,29 @@ Route::get('ventas/{venta}/factura', [VentaController::class, 'factura'])->name(
 
 
 
+///prueba
+
+Route::get('/pruebas', function () {
+
+     $id = auth()->user()->id;
+
+        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
+
+        $nombre=Empresa::where('id',$idempresa)->value('nombre');   
+
+        //dd($idempresa);
+
+        $anio= date('Y'); 
+        $idproducto=1;
+                
+        $productos= DB::table('invproductos') 
+        ->join('productos','invproductos.producto_id','=','productos.id')                                
+        ->select(DB::raw('SUM(entrada) as entradas, SUM(salida) as salidas, (SUM(entrada) - SUM(salida)) as Stock'))
+        ->where('invproductos.empresa_id',$idempresa)
+        ->where('invproductos.producto_id',$idproducto)
+        ->whereYear('invproductos.created_at',$anio)        
+        ->first()->Stock; 
+        
+        dd($productos);
+        
+});

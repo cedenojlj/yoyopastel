@@ -39,6 +39,7 @@ class CargarVenta extends Component
     public $producto;
     public $productos = [];
     public $indiceProducto;
+    public $stockProducto;
 
     // Campos para realizar la carga de productos y la venta
 
@@ -110,6 +111,41 @@ class CargarVenta extends Component
         $this->mostrar = false;
     }
 
+    public function chequearStock($idproducto)
+    {
+       
+        $id = auth()->user()->id;
+
+        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
+
+        $nombre=Empresa::where('id',$idempresa)->value('nombre');
+
+        $anio= date('Y'); 
+                        
+        $this->stockProducto= DB::table('invproductos') 
+        ->join('productos','invproductos.producto_id','=','productos.id')                                
+        ->select(DB::raw('SUM(entrada) as entradas, SUM(salida) as salidas, (SUM(entrada) - SUM(salida)) as Stock'))
+        ->where('invproductos.empresa_id',$idempresa)
+        ->where('invproductos.producto_id',$idproducto)
+        ->whereYear('invproductos.created_at',$anio)        
+        ->first()->Stock; 
+
+        //dd($stock);
+
+        if ($this->cantidad>$this->stockProducto) {
+
+            session()->flash('message', 'Cantidad Superior al Stock Disponible ('.$this->stockProducto.')');
+            
+            return false;
+
+        }else {
+
+            return true;
+        }
+
+        
+    }
+
     public function cargarProducto()
     {
         $this->validate();
@@ -117,6 +153,7 @@ class CargarVenta extends Component
         $searchProducto = Producto::where('nombre', 'like', '%' . $this->producto . '%')
             ->orWhere('codigo', 'like', '%' . $this->producto . '%')->first();
 
+        $stock = $this->chequearStock($searchProducto->id);
 
         $productoRepetido = $this->verificarProducto($searchProducto->id);
 
@@ -126,7 +163,7 @@ class CargarVenta extends Component
         $this->costo = Producto::where('id', $searchProducto->id)->value('costo');
 
 
-        if ($productoRepetido == false) {
+        if ($productoRepetido == false and $stock == true) {
 
             if (!empty($searchProducto)) {
 
@@ -225,40 +262,53 @@ class CargarVenta extends Component
 
             if ($value['id'] == $id) {
 
-                $this->precio = Producto::where('id', $id)->value('precio');
+                $cantidadPedida = $this->listaProductos[$key]['cantidad'] + $this->cantidad;
 
-                $this->costo = Producto::where('id', $id)->value('costo');
+                if ( $this->stockProducto> $cantidadPedida) {
 
+                    $this->precio = Producto::where('id', $id)->value('precio');
 
-                $subtotalItemCosto = $this->cantidad * $this->costo;
+                    $this->costo = Producto::where('id', $id)->value('costo');
+    
+    
+                    $subtotalItemCosto = $this->cantidad * $this->costo;
+    
+                    $this->subcosto = $this->subcosto +  $subtotalItemCosto;
+    
+                    $subtotalitem = $this->cantidad * $this->precio;
+    
+                    $totalitemiva = $subtotalitem + $subtotalitem * ($this->iva / 100);
+    
+                    $this->subtotal = $this->subtotal + $subtotalitem;
+    
+                    $this->total = $this->total + $totalitemiva;
+    
+    
+                    $this->listaProductos[$key]['subtotalitem'] = $this->listaProductos[$key]['subtotalitem'] + $subtotalitem;
+    
+                    $this->listaProductos[$key]['totalitemiva'] = $this->listaProductos[$key]['totalitemiva'] + $totalitemiva;
+    
+                    $this->listaProductos[$key]['subtotalItemCosto'] = $this->listaProductos[$key]['subtotalItemCosto'] + $subtotalItemCosto;
+    
+                    $this->listaProductos[$key]['cantidad'] = $this->listaProductos[$key]['cantidad'] + $this->cantidad;
+    
+                    $this->listaProductos[$key]['precio'] = $this->precio;
+    
+                    $this->limpiar();
+    
+                    $this->productos = [];
+    
+                    return true;
+                    
+                } else {
 
-                $this->subcosto = $this->subcosto +  $subtotalItemCosto;
-
-                $subtotalitem = $this->cantidad * $this->precio;
-
-                $totalitemiva = $subtotalitem + $subtotalitem * ($this->iva / 100);
-
-                $this->subtotal = $this->subtotal + $subtotalitem;
-
-                $this->total = $this->total + $totalitemiva;
-
-
-
-                $this->listaProductos[$key]['subtotalitem'] = $this->listaProductos[$key]['subtotalitem'] + $subtotalitem;
-
-                $this->listaProductos[$key]['totalitemiva'] = $this->listaProductos[$key]['totalitemiva'] + $totalitemiva;
-
-                $this->listaProductos[$key]['subtotalItemCosto'] = $this->listaProductos[$key]['subtotalItemCosto'] + $subtotalItemCosto;
-
-                $this->listaProductos[$key]['cantidad'] = $this->listaProductos[$key]['cantidad'] + $this->cantidad;
-
-                $this->listaProductos[$key]['precio'] = $this->precio;
-
-                $this->limpiar();
-
-                $this->productos = [];
-
-                return true;
+                    session()->flash('message', 'Producto Repetido y Cantidad Superior al Stock Disponible ('.$this->stockProducto.')');
+                   
+                    return true;
+                }
+                
+                
+               
             };
         }
 
@@ -351,6 +401,7 @@ class CargarVenta extends Component
     }
 
 
+   
 
 
     public function render()
