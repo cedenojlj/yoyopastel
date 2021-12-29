@@ -55,8 +55,8 @@ class InvproductoController extends Controller
     {
         $request->validate([
             
-            'entrada' => 'required|numeric|min:1',
-            'salida' => 'required|numeric|min:1',
+            'entrada' => 'numeric|min:0',
+            'salida' => 'numeric|min:0',
             'producto_id' => 'required|numeric|min:1',           
             
         ]);
@@ -94,8 +94,8 @@ class InvproductoController extends Controller
 
         $request->validate([
             
-            'entrada' => 'required|numeric|min:1',
-            'salida' => 'required|numeric|min:1',
+            'entrada' => 'numeric|min:0',
+            'salida' => 'numeric|min:0',
             'producto_id' => 'required|numeric|min:1',           
             
         ]);

@@ -33,7 +33,7 @@
                             <div class="col-md-6">
                                 <input id="entrada" type="number"
                                     class="form-control @error('entrada') is-invalid @enderror" name="entrada"
-                                    value="{{ old('entrada') }}" required autocomplete="entrada" autofocus placeholder="0">
+                                    value="{{ old('entrada') }}" autocomplete="entrada" autofocus placeholder="0">
 
                                 @error('entrada')
                                 <span class="invalid-feedback" role="alert">
@@ -52,7 +52,7 @@
                             <div class="col-md-6">
                                 <input id="salida" type="number"
                                     class="form-control @error('salida') is-invalid @enderror" name="salida"
-                                    value="{{ old('salida') }}" required autocomplete="salida" autofocus placeholder="0">
+                                    value="{{ old('salida') }}" autocomplete="salida" autofocus placeholder="0">
 
                                 @error('salida')
                                 <span class="invalid-feedback" role="alert">

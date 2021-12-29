@@ -34,7 +34,7 @@
                             <div class="col-md-6">
                                 <input id="entrada" type="number"
                                     class="form-control @error('entrada') is-invalid @enderror" name="entrada"
-                                    value="{{ $invproducto->entrada }}" required autocomplete="entrada" autofocus placeholder="0">
+                                    value="{{ $invproducto->entrada }}" autocomplete="entrada" autofocus placeholder="0">
 
                                 @error('entrada')
                                 <span class="invalid-feedback" role="alert">
@@ -53,7 +53,7 @@
                             <div class="col-md-6">
                                 <input id="salida" type="number"
                                     class="form-control @error('salida') is-invalid @enderror" name="salida"
-                                    value="{{ $invproducto->salida }}" required autocomplete="salida" autofocus placeholder="0">
+                                    value="{{ $invproducto->salida }}" autocomplete="salida" autofocus placeholder="0">
 
                                 @error('salida')
                                 <span class="invalid-feedback" role="alert">

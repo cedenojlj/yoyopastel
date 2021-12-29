@@ -61,8 +61,8 @@ class InvmaterialController extends Controller
         
         $request->validate([
             
-            'entrada' => 'required|numeric|min:1',
-            'salida' => 'required|numeric|min:1',
+            'entrada' => 'numeric|min:0',
+            'salida' => 'numeric|min:0',
             'material_id' => 'required|numeric|min:1',           
             
         ]);
@@ -123,8 +123,8 @@ class InvmaterialController extends Controller
     {
         $request->validate([
             
-            'entrada' => 'required|numeric|min:1',
-            'salida' => 'required|numeric|min:1',
+            'entrada' => 'numeric|min:0',
+            'salida' => 'numeric|min:0',
             'material_id' => 'required|numeric|min:1',           
             
         ]);
