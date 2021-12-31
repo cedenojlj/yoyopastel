@@ -22,6 +22,7 @@ class VentaExport implements FromCollection, WithHeadings
             'fecha',
             'factura',
             'subtotal',
+            'subcosto',
             'iva',
             'total',
             'paridad',

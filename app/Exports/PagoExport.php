@@ -20,7 +20,9 @@ class PagoExport implements FromCollection, WithHeadings
             'Referencia',
             'Concepto',
             'Creado',
-            'Actualizado'            
+            'Actualizado',
+            'User_id',
+            'Empresa_id'            
         ];
     }
 
