@@ -24,9 +24,11 @@ use App\Models\Empleado;
 use App\Models\Empresa;
 use App\Models\Invproducto;
 use App\Models\Producto;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+
 
 
 /*
@@ -67,6 +69,10 @@ Route::resource('empleados', EmpleadoController::class)->middleware('auth');
 Route::get('empleados-search', [EmpleadoController::class, 'search'])->name('empleados.search')->middleware('auth');
 
 Route::get('empleados-reporte', [EmpleadoController::class, 'export'])->name('empleados.reporte')->middleware('auth');
+
+Route::get('empleados/{empleado}/rolEdit', [EmpleadoController::class, 'rolEdit'])->name('empleados.rolEdit')->middleware('auth');
+
+Route::put('empleados/{empleado}/rolUpdate', [EmpleadoController::class, 'rolUpdate'])->name('empleados.rolUpdate')->middleware('auth');
 
 
 //Cliente
@@ -224,4 +230,48 @@ Route::get('/pruebas', function () {
         
         dd($productos);
         
+});
+
+//comandos artisan
+
+Route::get('limpiar', function() {
+
+    echo 'limpiando cache....';
+    $exitCode = Artisan::call('cache:clear');
+    $exitCode = Artisan::call('config:cache');
+    return 'limpieza exitosa'; //Return anything
+});
+
+// borrar caché de la aplicación
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('cache:clear');
+    return 'Application cache cleared';
+});
+
+ // borrar caché de ruta
+ Route::get('/route-cache', function() {
+    $exitCode = Artisan::call('route:cache');
+    return 'Routes cache cleared';
+});
+
+// borrar caché de configuración
+Route::get('/config-cache', function() {
+    $exitCode = Artisan::call('config:cache');
+    return 'Config cache cleared';
+}); 
+
+// borrar caché de vista
+Route::get('/view-clear', function() {
+    $exitCode = Artisan::call('view:clear');
+    return 'View cache cleared';
+});
+
+// paar optimizar todo
+Route::get('/optimizartodo', function() {
+    $exitCode = Artisan::call('cache:clear');
+    $exitCode = Artisan::call('view:clear');
+    $exitCode = Artisan::call('config:cache');
+    $exitCode = Artisan::call('route:cache');
+    $exitCode = Artisan::call('view:cache');
+    return 'todo optimizado';
 });

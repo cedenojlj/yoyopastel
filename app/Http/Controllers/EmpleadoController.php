@@ -205,4 +205,39 @@ class EmpleadoController extends Controller
     {
         return Excel::download(new EmpleadoExport, 'empleado.xlsx');
     }
+
+
+    public function rolEdit(Empleado $empleado)
+    {
+        $rol = User::where('id',$empleado->user_id)->first()->rol;
+
+        //dd($rol);
+
+        return view('empleados.rol',compact('empleado','rol'));
+    }
+
+
+    public function rolUpdate(Request $request, Empleado $empleado)
+    {
+        //
+        $request->validate([
+            
+            'rol' => 'required|numeric',            
+        ]);
+
+        User::where('id',$empleado->user_id)->update([ 
+
+            'rol' => $request->rol,            
+        ]);
+
+
+        //$empleado->update($request->all());
+
+        return redirect()->route('empleados.index')->with('success', 'Rol del Empleado Actualizado con Exito.');
+    }
+
+
+
+
+    //fin de la clase
 }

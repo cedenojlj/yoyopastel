@@ -23,10 +23,11 @@ class EmpleadoExport implements FromCollection, WithHeadings
             'Telefono',
             'Email',
             'Salario',
-            'Foto',
-            'Empresa_id',
+            'Foto',            
             'Creado',
-            'Actualizado'
+            'Actualizado',
+            'Empresa_id',
+            'User_id'
         ];
     }
 

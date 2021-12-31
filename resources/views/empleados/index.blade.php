@@ -68,6 +68,10 @@
 
                                         @canany(['isAdmin','isSuperadmin'])
 
+                                        <a name="" id="" class="btn btn-info"
+                                            href="{{ route('empleados.rolEdit', $empleado->id) }}" role="button"><i
+                                                class="far fa-file-alt"></i></a>
+
                                         <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
 
                                         @endcanany

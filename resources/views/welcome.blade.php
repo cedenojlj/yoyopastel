@@ -22,7 +22,7 @@
             }
 
             .fondo{
-                background-image: url('storage/img/panaderia4.png');
+                background-image: url('storage/img/panaderia4min.png');
                 background-size: cover;
                 background-repeat: no-repeat;
                 width: 100vw;
