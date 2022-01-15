@@ -27,7 +27,7 @@ class VentaController extends Controller
 
         $idempresa = Empleado::where('user_id', $id)->first()->empresa_id; 
 
-        $ventas = Venta::where('empresa_id', $idempresa)->paginate(15);
+        $ventas = Venta::where('empresa_id', $idempresa)->orderBy('id','desc')->paginate(15);
 
         //$ventas = Venta::paginate(15);
 
@@ -291,8 +291,13 @@ class VentaController extends Controller
             ->select('producto_venta.*', 'productos.nombre as producto')
             ->where('venta_id', $venta->id)->get();
 
-        $pdf = PDF::loadView('ventas.factura', compact('cliente', 'empresa', 'productos', 'venta'))
-            ->setOptions(['defaultFont' => 'sans-serif']);
+      /*  $pdf = PDF::loadView('ventas.factura', compact('cliente', 'empresa', 'productos', 'venta'))
+            ->setOptions(['defaultFont' => 'sans-serif']);  */
+
+       $pdf = PDF::loadView('ventas.ticket', compact('cliente', 'empresa', 'productos', 'venta'))
+            ->setOptions(['defaultFont' => 'sans-serif',
+                        'defaultPaperSize'=>'b7']); 
+        
 
         //$pdf->loadHTML('<h1>Test</h1>');
         //return $pdf->download('invoice.pdf');
