@@ -66,6 +66,8 @@ Route::get('empresas-reporte', [EmpresaController::class, 'export'])->name('empr
 
 Route::resource('empleados', EmpleadoController::class)->middleware('auth');
 
+//Route::resource('empleados', EmpleadoController::class);
+
 Route::get('empleados-search', [EmpleadoController::class, 'search'])->name('empleados.search')->middleware('auth');
 
 Route::get('empleados-reporte', [EmpleadoController::class, 'export'])->name('empleados.reporte')->middleware('auth');

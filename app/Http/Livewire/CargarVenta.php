@@ -392,8 +392,13 @@ class CargarVenta extends Component
 
             ]);
 
-            redirect()->route('ventas.index')
-                ->with('success', 'Venta Creada con Exito.');
+            redirect()->route('ventas.factura', ['venta' => $idVenta]);
+
+            //return redirect()->route('ventas.factura', ['venta' => $idVenta]);
+
+            /*redirect()->route('ventas.index')
+                ->with('success', 'Venta Creada con Exito.');*/
+
         } else {
 
             session()->flash('message', 'Por favor, colocar cliente o productos validos');

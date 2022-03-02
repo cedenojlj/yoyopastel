@@ -65,7 +65,8 @@
         <h3 class="centro">SENIAT</h3>
         <p class="centro">{{ $empresa->rif }}</p>
         <p class="centro">{{ $empresa->nombre }}</p>    
-        <p class="centro">{{ $empresa->direccion }}</p>  
+        <p class="centro">{{ $empresa->direccion }}</p>
+        <h3 class="centro">FACTURA</h3>  
 
     </div>  
     <p>Facturado a:</p>

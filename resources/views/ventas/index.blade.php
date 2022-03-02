@@ -19,7 +19,7 @@
                         <div class="col-md-7">
 
                             <a name="" id="" class="btn btn-primary" 
-                            href="{{ route('ventas.create') }}" role="button">Crear</a>
+                            href="{{ route('ventas.create') }}" role="button" target="_blank">Crear</a>
                             <a name="" id="" class="btn btn-primary" 
                             href="{{ route('ventas.reporte') }}" role="button">Excel</a>
 
