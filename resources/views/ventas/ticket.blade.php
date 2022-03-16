@@ -11,30 +11,27 @@
             width: 100%;
             border-collapse: collapse;
             margin: auto;
+            border-top: 1px dashed black;
         }
 
         
         th,
-        td {
-
-            padding: 5px;
-            height: 22px;
+        td {                    
             text-align: center;
         }
 
-        table,
-        td,
-        th {
+      
+
+        .bordes th{
 
             border-top: 1px dashed black;
+
         }
 
-        .der{
+        .bordes td{
 
-            text-align:right;
-        }
-        p{
-            line-height: 20%;
+            border-top: 1px dashed black;
+
         }
 
         .centro{
@@ -53,6 +50,11 @@
             width: 100%;
         }
 
+        .margensuperior{
+
+            margin-top: 20px;
+        }
+
        
     </style>
 
@@ -60,29 +62,46 @@
 
 <body class="ticket">
 
-    <div class="centro">
+  {{--   <div class="centro">        
         
-        <h3 class="centro">SENIAT</h3>
-        <p class="centro">{{ $empresa->rif }}</p>
-        <p class="centro">{{ $empresa->nombre }}</p>    
+        <p class="centro">{{ $empresa->nombre }}</p> 
+        <p class="centro">{{ $empresa->rif }}</p>           
         <p class="centro">{{ $empresa->direccion }}</p>
-        <h3 class="centro">FACTURA</h3>  
+        <h4 class="centro">Orden de Entrega</h4>  
 
-    </div>  
-    <p>Facturado a:</p>
-    <p>Nombre o Razon Social: {{ $cliente->nombre }}</p>
-    <p>Cedula/Rif: {{ $cliente->rif }}</p>
-    <p>Direccion Fiscal: {{ $cliente->direccion }}</p>
+    </div>  --}} 
     
-    <p>Factura Nº {{ str_pad($venta->factura,10,'0',STR_PAD_LEFT) }} </p>
-    <p>Fecha: {{ $venta->created_at }}</p>
+    <table>
+                
+        <tr><td> {{ $empresa->nombre }}</td></tr>    
+        <tr><td> {{ $empresa->rif }}</td></tr>    
+        <tr><td> {{ $empresa->direccion }}</td></tr>    
+
+    </table>
+
+    <h4 class="centro">Orden de Entrega</h4>  
+
    
-    <table class="table">
+    <table>
+
+    <tr><td> Entregado a:</td></tr>    
+    <tr><td> {{ $cliente->nombre }}</td></tr>
+    <tr><td> Cedula/Rif: </td></tr>        
+    <tr><td> {{ $cliente->rif }}</td></tr>        
+    
+    <tr><td>Pedido Nº</td></tr>
+    <tr><td>{{ str_pad($venta->factura,10,'0',STR_PAD_LEFT) }} </td></tr>
+    <tr><td>Fecha:</td></tr>    
+    <tr><td>{{ $venta->created_at }}</td></tr>     
+
+    </table>
+       
+   
+    <table class="table bordes margensuperior">
         <thead>
             <tr>
                 
-                <th>Producto</th>
-                <th>Cantidad</th>                
+                <th>Producto</th>                             
                 <th>BsD</th>
 
             </tr>
@@ -93,8 +112,7 @@
 
             <tr>                
                 
-                <td>{{ $producto->producto }}</td>
-                <td>{{ round($producto->cantidad,2) }}</td>
+                <td>{{ $producto->producto }}x{{ round($producto->cantidad,2) }}</td>                
                 {{-- <td>{{ round($producto->precio*$venta->paridad,2) }}</td>  --}}
                 <td>{{ round($producto->subtotal*$venta->paridad,2) }}</td>
 
@@ -103,24 +121,27 @@
             @endforeach
 
             <tr>
-                <td colspan="2" class="der negrita">Subtotal:</td>
+                <td class="negrita">Subtotal:</td>
                 <td class="negrita">{{ round($venta->subtotal*$venta->paridad,2) }}</td>                
             </tr>
 
             <tr>
-                <td colspan="2" class="der negrita">Iva:</td>
+                <td class="negrita">Iva:</td>
                 <td class="negrita">{{ round((($venta->total - $venta->subtotal)*$venta->paridad),2) }}</td>                
             </tr>
 
             <tr>
-                <td colspan="2" class="der negrita">Total:</td>
+                <td class="negrita">Total:</td>
                 <td class="negrita">{{ round($venta->total*$venta->paridad,2) }}</td>                
-            </tr>
+            </tr>           
 
         </tbody>
     </table>
 
-    <p class="centro">!!! GRACIAS POR SU COMPRA !!!</p>
+    
+        <p class="centro"> !!! GRACIAS POR SU COMPRA !!!</p>
+    
+    
 
 
 </body>

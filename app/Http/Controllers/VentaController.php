@@ -294,9 +294,12 @@ class VentaController extends Controller
       /*  $pdf = PDF::loadView('ventas.factura', compact('cliente', 'empresa', 'productos', 'venta'))
             ->setOptions(['defaultFont' => 'sans-serif']);  */
 
-       $pdf = PDF::loadView('ventas.ticket', compact('cliente', 'empresa', 'productos', 'venta'))
+    /*    $pdf = PDF::loadView('ventas.ticket', compact('cliente', 'empresa', 'productos', 'venta'))
             ->setOptions(['defaultFont' => 'sans-serif',
-                        'defaultPaperSize'=>'b7']); 
+                        'defaultPaperSize'=>'b7']);  */
+
+        $pdf = PDF::loadView('ventas.ticket', compact('cliente', 'empresa', 'productos', 'venta'))
+            ->setPaper(array(0,0,164.40,1000.00),'portrait')->setOptions(['defaultFont' => 'sans-serif']); 
         
 
         //$pdf->loadHTML('<h1>Test</h1>');

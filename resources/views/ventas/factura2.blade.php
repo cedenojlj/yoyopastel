@@ -72,26 +72,28 @@
 
             @foreach ($productos as $indice => $producto)
 
-            <tr>               
+            <tr>                
                 
-                <td>{{ $producto->producto }}x{{ round($producto->cantidad,2) }}x{{ round($producto->precio*$venta->paridad,2) }}</td>                               
+                <td>{{ $producto->producto }}</td>
+                <td>{{ round($producto->cantidad,2) }}</td>
+                <td>{{ round($producto->precio*$venta->paridad,2) }}</td>                
                 <td>{{ round($producto->subtotal*$venta->paridad,2) }}</td>
             </tr>
 
             @endforeach
 
             <tr>
-                <td class="der negrita">Subtotal:</td>
+                <td colspan="4" class="der negrita">Subtotal:</td>
                 <td class="negrita">{{ round($venta->subtotal*$venta->paridad,2) }}</td>                
             </tr>
 
             <tr>
-                <td class="der negrita">Iva:</td>
+                <td colspan="4" class="der negrita">Iva:</td>
                 <td class="negrita">{{ round((($venta->total - $venta->subtotal)*$venta->paridad),2) }}</td>                
             </tr>
 
             <tr>
-                <td class="der negrita">Total:</td>
+                <td colspan="4" class="der negrita">Total:</td>
                 <td class="negrita">{{ round($venta->total*$venta->paridad,2) }}</td>                
             </tr>
 
