@@ -51,7 +51,7 @@ class PagoController extends Controller
     {
         $request->validate([
 
-            'pago' => 'required|numeric',
+            'pago' => 'required|numeric|min:0.1',
             'referencia' => 'required|max:255',
             'concepto' => 'required|max:255',
 
@@ -93,7 +93,7 @@ class PagoController extends Controller
     {
         $request->validate([
 
-            'pago' => 'required|numeric',
+            'pago' => 'required|numeric|min:0.1',
             'referencia' => 'required|max:255',
             'concepto' => 'required|max:255',
 

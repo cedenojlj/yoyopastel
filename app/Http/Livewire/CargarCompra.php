@@ -53,7 +53,7 @@ class CargarCompra extends Component
 
 
         'material' => 'required|min:2',
-        'cantidad' => 'required|numeric|min:1',
+        'cantidad' => 'required|numeric|min:0.1',
         'costo' => 'required|numeric|min:0.1',
 
     ];

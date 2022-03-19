@@ -45,7 +45,7 @@ class MaterialController extends Controller
             'codigo' => 'required|max:255',
             'nombre' => 'required|max:255',
             'descripcion' => 'required|max:255',            
-            'costo' => 'required|numeric|min:1',            
+            'costo' => 'required|numeric|min:0.1',            
             'stock_min' => 'required|numeric|min:0',
             
         ]);
@@ -93,7 +93,7 @@ class MaterialController extends Controller
             'codigo' => 'required|max:255',
             'nombre' => 'required|max:255',
             'descripcion' => 'required|max:255',            
-            'costo' => 'required|numeric|min:1',            
+            'costo' => 'required|numeric|min:0.1',            
             'stock_min' => 'required|numeric|min:0',
             
         ]);

@@ -65,7 +65,7 @@ class CargarVenta extends Component
 
 
         'producto' => 'required|min:2',
-        'cantidad' => 'required|numeric|min:1',
+        'cantidad' => 'required|numeric|min:0.1',
         'precio' => 'required|numeric|min:0.1',
 
     ];
