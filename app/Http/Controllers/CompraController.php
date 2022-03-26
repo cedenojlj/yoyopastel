@@ -24,8 +24,23 @@ class CompraController extends Controller
         $id = auth()->user()->id;
 
         $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;   
+        
+
+        if (auth()->user()->rol=="superadmin" or auth()->user()->rol=="admin" ) {
+            
+            
+            $compras= Compra::paginate(15);
+
+            
+        } else {
+
+
+            $compras= Compra::where('empresa_id', $idempresa)->paginate(15);
+           
+        }
+
        
-        $compras= Compra::where('empresa_id', $idempresa)->paginate(15);
+
 
         //$compras= Compra::paginate(15);
 
@@ -91,6 +106,7 @@ class CompraController extends Controller
             }, 'like','%' . $busqueda . '%')
             ->orWhere('factura','LIKE','%'.$busqueda.'%')
             ->orWhere('fecha','LIKE','%'.$busqueda.'%')
+            ->orWhere('total','LIKE','%'.$busqueda.'%')
             ->paginate(15)->withQueryString();            
             
                             

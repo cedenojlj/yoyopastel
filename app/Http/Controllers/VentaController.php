@@ -25,11 +25,29 @@ class VentaController extends Controller
     public function index()
     {
         
+
         $id = auth()->user()->id;
 
-        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id; 
+        //dd(auth()->user()->rol);
 
-        $ventas = Venta::where('empresa_id', $idempresa)->orderBy('id','desc')->paginate(15);
+        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id; 
+        
+
+        if (auth()->user()->rol=="superadmin" or auth()->user()->rol=="admin" ) {
+
+            
+            $ventas = Venta::paginate(15);
+            
+            
+        } else {
+
+
+            $ventas = Venta::where('empresa_id', $idempresa)->orderBy('id','desc')->paginate(15);
+           
+        }
+        
+
+        
 
         //$ventas = Venta::paginate(15);
 
@@ -91,6 +109,8 @@ class VentaController extends Controller
             }, 'like', '%' . $busqueda . '%')
                 ->orWhere('factura', 'LIKE', '%' . $busqueda . '%')
                 ->orWhere('fecha', 'LIKE', '%' . $busqueda . '%')
+                ->orWhere('id', 'LIKE', '%' . $busqueda . '%')
+                ->orWhere('total', 'LIKE', '%' . $busqueda . '%')
                 ->paginate(15)->withQueryString();
 
 
@@ -113,8 +133,10 @@ class VentaController extends Controller
 
         $id = auth()->user()->id;
 
-        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
+        //dd($id);
 
+        $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
+       
         //dd($idempresa);
 
         $anio = date('Y');

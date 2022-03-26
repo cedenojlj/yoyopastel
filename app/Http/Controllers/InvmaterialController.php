@@ -29,8 +29,21 @@ class InvmaterialController extends Controller
         $id = auth()->user()->id;
 
         $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
+
+
+        if (auth()->user()->rol=="superadmin" or auth()->user()->rol=="admin" ) {
+            
+            
+            $invmaterials = Invmaterial::paginate(15);
+            
+        } else {
+
+            
+            $invmaterials = Invmaterial::where('empresa_id', $idempresa)->paginate(15);
+        }
+
         
-        $invmaterials = Invmaterial::where('empresa_id', $idempresa)->paginate(15);
+        //$invmaterials = Invmaterial::where('empresa_id', $idempresa)->paginate(15);
 
         //$invmaterials = Invmaterial::paginate(15);
 
@@ -47,7 +60,8 @@ class InvmaterialController extends Controller
     {
         
         $materials = Material::all();
-        return view('invmaterials.create', compact('materials'));
+        $empresas = Empresa::all();
+        return view('invmaterials.create', compact('materials','empresas'));
     }
 
     /**
@@ -63,15 +77,14 @@ class InvmaterialController extends Controller
             
             'entrada' => 'numeric|min:0',
             'salida' => 'numeric|min:0',
-            'material_id' => 'required|numeric|min:1',           
+            'material_id' => 'required|numeric|min:1',
+            'empresa_id' => 'required|numeric',           
             
         ]);
 
         
 
-        $id=auth()->user()->id;        
-
-        $empresauser=Empleado::where('user_id',$id)->first()->empresa_id;
+        $id=auth()->user()->id; 
 
         Invmaterial::create([
 
@@ -80,7 +93,7 @@ class InvmaterialController extends Controller
             'idCompra'=>0,
             'material_id' => $request->material_id,
             'user_id' => $id,
-            'empresa_id' => $empresauser,
+            'empresa_id' => $request->empresa_id,
         ]);
 
         return redirect()->route('invmaterials.index')
@@ -109,7 +122,8 @@ class InvmaterialController extends Controller
     {
         
         $materials = Material::all();
-        return view('invmaterials.edit', compact('invmaterial', 'materials'));
+        $empresas = Empresa::all();
+        return view('invmaterials.edit', compact('invmaterial', 'materials','empresas'));
     }
 
     /**
@@ -125,21 +139,21 @@ class InvmaterialController extends Controller
             
             'entrada' => 'numeric|min:0',
             'salida' => 'numeric|min:0',
-            'material_id' => 'required|numeric|min:1',           
+            'material_id' => 'required|numeric|min:1', 
+            'empresa_id' => 'required|numeric',          
             
         ]);
 
 
         $id=auth()->user()->id;
-        $empresauser=Empleado::where('user_id',$id)->first()->empresa_id;
-
+        
         $invmaterial->update([
 
             'entrada' => $request->entrada,
             'salida' => $request->salida,
             'material_id' => $request->material_id,
             'user_id' => $id,
-            'empresa_id' => $empresauser,
+            'empresa_id' => $request->empresa_id,
 
         ]);
 

@@ -91,6 +91,35 @@
                                 @enderror
                             </div>
                         </div>
+
+                         {{-- empresa --}}
+                        
+                         <div class="form-group row">
+                            <label for="empresa_id" class="col-md-3 col-form-label text-md-right">{{ __('Empresa')
+                                }}</label>
+
+                            <div class="col-md-6">
+
+                                <select class="form-control @error('salario') is-invalid @enderror" name="empresa_id"
+                                    required>
+
+                                    <option value=""> --Select-- </option>
+
+                                    @foreach ($empresas as $empresa)
+
+                                    <option {{ $empresa->id==$invproducto->empresa_id ? 'selected' : '' }} value="{{ $empresa->id }}"> {{ $empresa->nombre }}</option>
+                                        
+                                    @endforeach    
+
+                                </select>
+
+                                @error('empresa_id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
                                              
 
                         <div class="form-group row mb-0 justify-content-center">

@@ -27,9 +27,24 @@ class InvproductoController extends Controller
 
         $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
 
-        $invproductos = Invproducto::where('empresa_id', $idempresa)->paginate(15);
+
+        if (auth()->user()->rol=="superadmin" or auth()->user()->rol=="admin" ) {
+            
+            
+            $invproductos = Invproducto::paginate(15);
+            
+        } else {
+
+            
+            $invproductos = Invproducto::where('empresa_id', $idempresa)->paginate(15);
+        }
+
+
+
+        //$invproductos = Invproducto::where('empresa_id', $idempresa)->paginate(15);
 
         //$invproductos = Invproducto::paginate(15);
+
 
         return view('invproductos.index', compact('invproductos'));
     }
@@ -42,7 +57,8 @@ class InvproductoController extends Controller
     public function create()
     {
         $productos = Producto::all();
-        return view('invproductos.create', compact('productos'));
+        $empresas = Empresa::all();
+        return view('invproductos.create', compact('productos','empresas'));
     }
 
     /**
@@ -57,15 +73,14 @@ class InvproductoController extends Controller
             
             'entrada' => 'numeric|min:0',
             'salida' => 'numeric|min:0',
-            'producto_id' => 'required|numeric|min:1',           
+            'producto_id' => 'required|numeric|min:1',
+            'empresa_id' => 'required|numeric',           
             
         ]);
 
         
 
-        $id=auth()->user()->id;        
-
-        $empresauser=Empleado::where('user_id',$id)->first()->empresa_id;
+        $id=auth()->user()->id; 
 
         Invproducto::create([
 
@@ -74,7 +89,7 @@ class InvproductoController extends Controller
             'idVenta'=>0,
             'producto_id' => $request->producto_id,
             'user_id' => $id,
-            'empresa_id' => $empresauser,
+            'empresa_id' => $request->empresa_id,
         ]);
 
         return redirect()->route('invproductos.index')
@@ -85,7 +100,8 @@ class InvproductoController extends Controller
     public function edit(Invproducto $invproducto)
     {
         $productos = Producto::all();
-        return view('invproductos.edit', compact('invproducto', 'productos'));
+        $empresas = Empresa::all();
+        return view('invproductos.edit', compact('invproducto', 'productos','empresas'));
     }
 
 
@@ -96,13 +112,13 @@ class InvproductoController extends Controller
             
             'entrada' => 'numeric|min:0',
             'salida' => 'numeric|min:0',
-            'producto_id' => 'required|numeric|min:1',           
+            'producto_id' => 'required|numeric|min:1',
+            'empresa_id' => 'required|numeric',           
             
         ]);
 
 
-        $id=auth()->user()->id;
-        $empresauser=Empleado::where('user_id',$id)->first()->empresa_id;
+        $id=auth()->user()->id;        
 
         $invproducto->update([
 
@@ -110,7 +126,7 @@ class InvproductoController extends Controller
             'salida' => $request->salida,
             'producto_id' => $request->producto_id,
             'user_id' => $id,
-            'empresa_id' => $empresauser,
+            'empresa_id' => $request->empresa_id,
 
         ]);
 

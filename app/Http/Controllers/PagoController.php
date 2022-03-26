@@ -22,8 +22,25 @@ class PagoController extends Controller
         $id = auth()->user()->id;
 
         $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;  
+
+
+        if (auth()->user()->rol=="superadmin" or auth()->user()->rol=="admin" ) {
+
+            
+            $pagos = Pago::paginate(15);
+            
+            
+        } else {
+
+
+            $pagos = Pago::where('empresa_id', $idempresa)->paginate(15);
+           
+        }
+
+
+
        
-        $pagos = Pago::where('empresa_id', $idempresa)->paginate(15);
+        //$pagos = Pago::where('empresa_id', $idempresa)->paginate(15);
 
 
         //$pagos = Pago::paginate(15);
