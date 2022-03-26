@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\VentaExport;
+use App\Models\Caja;
 use App\Models\Cliente;
 use App\Models\Empleado;
 use App\Models\Empresa;
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
+
 
 
 
@@ -245,26 +247,23 @@ class VentaController extends Controller
 
         $fecha = $request->fecha;
 
-        $bolivares = Venta::where('empresa_id', $idempresa)->whereDate('fecha', $fecha)
+        $bolivares = Caja::where('empresa_id', $idempresa)->whereDate('fecha', $fecha)
             ->where('user_id', $idUser)->where('moneda', 'Bs')
-            ->selectRaw('metodo, SUM(total*paridad) as total')->groupBy('metodo')->get();
+            ->selectRaw('metodo, SUM(total) as total')->groupBy('metodo')->get();
 
-        //dd($bolivares);
+        //dd($bolivares);        
 
-        /* $totalbolivares = Venta::where('empresa_id',$idempresa)->whereDate('fecha', $fecha)
-        ->where('user_id',$idUser)->where('moneda','Bs')->sum('total*paridad'); */
-
-        $totalbolivares = Venta::where('empresa_id', $idempresa)->whereDate('fecha', $fecha)
+        $totalbolivares = Caja::where('empresa_id', $idempresa)->whereDate('fecha', $fecha)
             ->where('user_id', $idUser)->where('moneda', 'Bs')
-            ->selectRaw('SUM(total*paridad) as totalbs')->first()->totalbs;
+            ->selectRaw('SUM(total) as totalbs')->first()->totalbs;
 
         //dd($totalbolivares);
 
-        $dolares = Venta::where('empresa_id', $idempresa)->whereDate('fecha', $fecha)
+        $dolares = Caja::where('empresa_id', $idempresa)->whereDate('fecha', $fecha)
             ->where('user_id', $idUser)->where('moneda', 'Usd')
             ->selectRaw('metodo, SUM(total) as total')->groupBy('metodo')->get();
 
-        $totaldolares = Venta::where('empresa_id', $idempresa)->whereDate('fecha', $fecha)
+        $totaldolares = Caja::where('empresa_id', $idempresa)->whereDate('fecha', $fecha)
             ->where('user_id', $idUser)->where('moneda', 'Usd')
             ->sum('total');
 
