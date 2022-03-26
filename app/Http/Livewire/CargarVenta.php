@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Caja;
 use App\Models\Cliente;
 use Livewire\Component;
 use App\Models\Empleado;
@@ -12,6 +13,7 @@ use App\Models\Venta;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
 
 
 
@@ -57,8 +59,21 @@ class CargarVenta extends Component
     public $metodo = "Debito";
     public $moneda = "Bs";
     public $subcosto = 0;
+    public $totalBs = 0;
+    public $pagosCaja = [];
 
 
+    //Campos para controlar la caja
+
+    public $pagoBs = 0;
+    public $metodoPagoBs = "Debito";
+    public $vueltoBs = 0;
+    public $metodoVueltoBs = "Debito";
+
+    public $pagoDol = 0;
+    public $metodoPagoDol = "Debito";
+    public $vueltoDol = 0;
+    public $metodoVueltoDol = "Debito";
 
 
     protected $rules = [
@@ -113,37 +128,34 @@ class CargarVenta extends Component
 
     public function chequearStock($idproducto)
     {
-       
+
         $id = auth()->user()->id;
 
         $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
 
-        $nombre=Empresa::where('id',$idempresa)->value('nombre');
+        $nombre = Empresa::where('id', $idempresa)->value('nombre');
 
-        $anio= date('Y'); 
-                        
-        $this->stockProducto= DB::table('invproductos') 
-        ->join('productos','invproductos.producto_id','=','productos.id')                                
-        ->select(DB::raw('SUM(entrada) as entradas, SUM(salida) as salidas, (SUM(entrada) - SUM(salida)) as Stock'))
-        ->where('invproductos.empresa_id',$idempresa)
-        ->where('invproductos.producto_id',$idproducto)
-        ->whereYear('invproductos.created_at',$anio)        
-        ->first()->Stock; 
+        $anio = date('Y');
+
+        $this->stockProducto = DB::table('invproductos')
+            ->join('productos', 'invproductos.producto_id', '=', 'productos.id')
+            ->select(DB::raw('SUM(entrada) as entradas, SUM(salida) as salidas, (SUM(entrada) - SUM(salida)) as Stock'))
+            ->where('invproductos.empresa_id', $idempresa)
+            ->where('invproductos.producto_id', $idproducto)
+            ->whereYear('invproductos.created_at', $anio)
+            ->first()->Stock;
 
         //dd($stock);
 
-        if ($this->cantidad>$this->stockProducto) {
+        if ($this->cantidad > $this->stockProducto) {
 
-            session()->flash('message', 'Cantidad Superior al Stock Disponible ('.$this->stockProducto.')');
-            
+            session()->flash('message', 'Cantidad Superior al Stock Disponible (' . $this->stockProducto . ')');
+
             return false;
-
-        }else {
+        } else {
 
             return true;
         }
-
-        
     }
 
     public function cargarProducto()
@@ -190,14 +202,13 @@ class CargarVenta extends Component
                     'costo' => $this->costo,
                     'subtotalitem' => $subtotalitem,
                     'totalitemiva' => $totalitemiva,
-                    'subtotalItemCosto'=> $subtotalItemCosto
+                    'subtotalItemCosto' => $subtotalItemCosto
 
                 ];
 
                 $this->limpiar();
 
                 $this->productos = [];
-
             } else {
 
                 $this->errorProducto = true;
@@ -214,8 +225,7 @@ class CargarVenta extends Component
 
             $this->indiceProducto = $indice;
 
-            $this->emit('userStore');           
-
+            $this->emit('userStore');
         } else {
 
             $this->subtotal = $this->subtotal - $this->listaProductos[$indice]['subtotalitem'];
@@ -252,8 +262,7 @@ class CargarVenta extends Component
             $this->clave = "";
         }
 
-        $this->emit('userClose');   
-       
+        $this->emit('userClose');
     }
 
     public function verificarProducto($id)
@@ -264,51 +273,47 @@ class CargarVenta extends Component
 
                 $cantidadPedida = $this->listaProductos[$key]['cantidad'] + $this->cantidad;
 
-                if ( $this->stockProducto>= $cantidadPedida) {
+                if ($this->stockProducto >= $cantidadPedida) {
 
                     $this->precio = Producto::where('id', $id)->value('precio');
 
                     $this->costo = Producto::where('id', $id)->value('costo');
-    
-    
+
+
                     $subtotalItemCosto = $this->cantidad * $this->costo;
-    
+
                     $this->subcosto = $this->subcosto +  $subtotalItemCosto;
-    
+
                     $subtotalitem = $this->cantidad * $this->precio;
-    
+
                     $totalitemiva = $subtotalitem + $subtotalitem * ($this->iva / 100);
-    
+
                     $this->subtotal = $this->subtotal + $subtotalitem;
-    
+
                     $this->total = $this->total + $totalitemiva;
-    
-    
+
+
                     $this->listaProductos[$key]['subtotalitem'] = $this->listaProductos[$key]['subtotalitem'] + $subtotalitem;
-    
+
                     $this->listaProductos[$key]['totalitemiva'] = $this->listaProductos[$key]['totalitemiva'] + $totalitemiva;
-    
+
                     $this->listaProductos[$key]['subtotalItemCosto'] = $this->listaProductos[$key]['subtotalItemCosto'] + $subtotalItemCosto;
-    
+
                     $this->listaProductos[$key]['cantidad'] = $this->listaProductos[$key]['cantidad'] + $this->cantidad;
-    
+
                     $this->listaProductos[$key]['precio'] = $this->precio;
-    
+
                     $this->limpiar();
-    
+
                     $this->productos = [];
-    
+
                     return true;
-                    
                 } else {
 
-                    session()->flash('message', 'Producto Repetido y Cantidad Superior al Stock Disponible ('.$this->stockProducto.')');
-                   
+                    session()->flash('message', 'Producto Repetido y Cantidad Superior al Stock Disponible (' . $this->stockProducto . ')');
+
                     return true;
                 }
-                
-                
-               
             };
         }
 
@@ -392,13 +397,110 @@ class CargarVenta extends Component
 
             ]);
 
+
+            //para insertar los valores en la tabla de caja
+
+
+            $this->pagosCaja[] = [
+
+                'total' => $this->pagoBs,
+                'moneda' => 'Bs',
+                'metodo' => $this->metodoPagoBs,
+            ];
+
+            $this->pagosCaja[] = [
+
+                'total' => $this->pagoDol,
+                'moneda' => 'Usd',
+                'metodo' => $this->metodoPagoDol,
+            ];
+
+
+            $this->pagosCaja[] = [
+
+                'total' => $this->vueltoBs*(-1),
+                'moneda' => 'Bs',
+                'metodo' => $this->metodoVueltoBs,
+            ];
+
+            $this->pagosCaja[] = [
+
+                'total' => $this->vueltoDol*(-1),
+                'moneda' => 'Usd',
+                'metodo' => $this->metodoVueltoDol,
+            ];
+
+
+            foreach ($this->pagosCaja as $value) {
+
+
+
+                DB::table('cajas')->insert([
+
+                    'fecha'=> $this->fecha,
+                    'factura'=> $this->factura,        
+                    'total'=> $value['total'],
+                    'paridad'=> $this->paridad,
+                    'moneda'=> $value['moneda'],
+                    'metodo'=> $value['metodo'],        
+                    'user_id'=> $id,
+                    'empresa_id'=> $idempresa,
+                    'venta_id'=>$idVenta,
+
+                ]);
+
+                
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             redirect()->route('ventas.factura', ['venta' => $idVenta]);
 
             //return redirect()->route('ventas.factura', ['venta' => $idVenta]);
 
             /*redirect()->route('ventas.index')
                 ->with('success', 'Venta Creada con Exito.');*/
-
         } else {
 
             session()->flash('message', 'Por favor, colocar cliente o productos validos');
@@ -406,7 +508,7 @@ class CargarVenta extends Component
     }
 
 
-   
+
 
 
     public function render()
@@ -457,6 +559,50 @@ class CargarVenta extends Component
         }
 
 
+        //para gestionar los cambios en la caja
+
+        //seccion de pagos    
+
+
+        if ($this->pagoBs <> "" and $this->pagoDol <> "") {
+
+
+            if ($this->pagoBs >= 0 or $this->pagoDol >= 0) {
+
+                $pagoClienteDol = ($this->pagoBs / $this->paridad) + $this->pagoDol;
+                $saldo = $pagoClienteDol - $this->total;
+
+                if ($saldo > 0) {
+
+                    $this->vueltoBs = round($saldo * $this->paridad, 2);
+                }
+            }
+        }
+        // Seccion de Vueltos
+
+
+        if ($this->vueltoDol <> "" and $this->vueltoBs <> "") {
+
+            if ($this->vueltoDol > 0) {
+
+                $pagoClienteDol = ($this->pagoBs / $this->paridad) + $this->pagoDol;
+
+                if ($pagoClienteDol > $this->total) {
+
+
+                    $saldo = $pagoClienteDol - $this->total - $this->vueltoDol;
+
+                    if ($saldo > 0) {
+
+                        $this->vueltoBs = round($saldo * $this->paridad, 2);
+                    } elseif ($saldo <= 0) {
+
+                        $this->vueltoBs = 0;
+                        $this->vueltoDol = round($pagoClienteDol - $this->total, 2);
+                    }
+                }
+            }
+        }
 
         return view('livewire.cargar-venta');
     }

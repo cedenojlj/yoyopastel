@@ -284,6 +284,7 @@
                         </table>
                     </div>
 
+
                     <div class="row">
 
                         <div class="col-md-2 offset-md-6">
@@ -316,6 +317,103 @@
                         </div>
                         <div class="col-md-4">{{ round($total*$paridad,2) }}</div>
                     </div>
+
+
+                    
+                    {{-- Para controlar los pagos y vueltos y cuadrar la caja --}}
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-3">
+                            <label for="pagoBs" class="form-label">pagoBs</label>
+                                <input id="pagoBs" wire:model="pagoBs" type="number"
+                                    class="form-control @error('pagoBs') is-invalid @enderror" name="pagoBs"
+                                    value="" step="0.01" placeholder="0">
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <div class="form-group">
+                                <label for="metodoPagoBs">Metodo</label>
+                                <select wire:model="metodoPagoBs" class="form-control" name="metodoPagoBs" id="metodoPagoBs">
+                                    <option value="Debito">Debito</option>
+                                    <option value="Credito">Credito</option>
+                                    <option value="Efectivo">Efectivo</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="vueltoBs" class="form-label">vueltoBs</label>
+                                <input id="vueltoBs" wire:model="vueltoBs" type="number"
+                                    class="form-control @error('vueltoBs') is-invalid @enderror" name="vueltoBs"
+                                    value="" step="0.01" placeholder="0">
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <div class="form-group">
+                                <label for="metodoVueltoBs">Metodo</label>
+                                <select wire:model="metodoVueltoBs" class="form-control" name="metodoVueltoBs" id="metodoVueltoBs">
+                                    <option value="Debito">Debito</option>
+                                    <option value="Credito">Credito</option>
+                                    <option value="Efectivo">Efectivo</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <label for="pagoDol" class="form-label">pagoDol</label>
+                                <input id="pagoDol" wire:model="pagoDol" type="number"
+                                    class="form-control @error('pagoDol') is-invalid @enderror" name="pagoDol"
+                                    value="" step="0.01" placeholder="0">
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <div class="form-group">
+                                <label for="metodoPagoDol">Metodo</label>
+                                <select wire:model="metodoPagoDol" class="form-control" name="metodoPagoDol" id="metodoPagoDol">
+                                    <option value="Debito">Debito</option>
+                                    <option value="Credito">Credito</option>
+                                    <option value="Efectivo">Efectivo</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="vueltoDol" class="form-label">vueltoDol</label>
+                                <input id="vueltoDol" wire:model="vueltoDol" type="number"
+                                    class="form-control @error('vueltoDol') is-invalid @enderror" name="vueltoDol"
+                                    value="" step="0.01" placeholder="0">
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <div class="form-group">
+                                <label for="metodoVueltoDol">Metodo</label>
+                                <select wire:model="metodoVueltoDol" class="form-control" name="metodoVueltoDol" id="metodoVueltoDol">
+                                    <option value="Debito">Debito</option>
+                                    <option value="Credito">Credito</option>
+                                    <option value="Efectivo">Efectivo</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        
+                    </div>
+
+                    {{-- fin de control del flujo de caja --}}
+
 
 
                     <div class="row justify-content-end mt-3">
