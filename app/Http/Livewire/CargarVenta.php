@@ -330,181 +330,158 @@ class CargarVenta extends Component
     public function cargarVenta()
     {
 
-        if (count($this->listaProductos) >= 1 and $this->cliente->id >= 1) {
+        if (($this->pagoBs + $this->pagoDol)>0) {
 
-            $id = auth()->user()->id;
+            if (count($this->listaProductos) >= 1 and $this->cliente->id >= 1) {
 
-            $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
-
-            $ivaVenta = $this->total - $this->subtotal;
-
-            // Creando la Venta
-
-            $data = Venta::create([
-
-                'fecha' => $this->fecha,
-                'factura' => $this->factura,
-                'subtotal' => $this->subtotal,
-                'subcosto' => $this->subcosto,
-                'iva' => $ivaVenta,
-                'total' => $this->total,
-                'paridad' => $this->paridad,
-                'metodo' => $this->metodo,
-                'moneda' => $this->moneda,
-                'cliente_id' => $this->cliente->id,
-                'user_id' => $id,
-                'empresa_id' => $idempresa,
-
-            ]);
-
-            $idVenta = $data->id;
-
-            foreach ($this->listaProductos as $value) {
-
-
-                //para insertar todos los productos de la venta
-
-                DB::table('producto_venta')->insert([
-
-                    'cantidad' => $value['cantidad'],
-                    'precio' => $value['precio'],
-                    'costo' => $value['costo'],
-                    'subtotal' => $value['subtotalitem'],
-                    'subcosto' => $value['subtotalItemCosto'],
-                    'venta_id' => $idVenta,
-                    'producto_id' => $value['id'],
-
-                ]);
-
-
-                //para sacar del inventario los productos vendidos
-
-                Invproducto::create([
-
-                    'entrada' => 0,
-                    'salida' => $value['cantidad'],
-                    'idVenta' => $idVenta,
-                    'producto_id' => $value['id'],
+                $id = auth()->user()->id;
+    
+                $idempresa = Empleado::where('user_id', $id)->first()->empresa_id;
+    
+                $ivaVenta = $this->total - $this->subtotal;
+    
+                // Creando la Venta
+    
+                $data = Venta::create([
+    
+                    'fecha' => $this->fecha,
+                    'factura' => $this->factura,
+                    'subtotal' => $this->subtotal,
+                    'subcosto' => $this->subcosto,
+                    'iva' => $ivaVenta,
+                    'total' => $this->total,
+                    'paridad' => $this->paridad,
+                    'metodo' => $this->metodo,
+                    'moneda' => $this->moneda,
+                    'cliente_id' => $this->cliente->id,
                     'user_id' => $id,
                     'empresa_id' => $idempresa,
-
+    
                 ]);
+    
+                $idVenta = $data->id;
+    
+                foreach ($this->listaProductos as $value) {
+    
+    
+                    //para insertar todos los productos de la venta
+    
+                    DB::table('producto_venta')->insert([
+    
+                        'cantidad' => $value['cantidad'],
+                        'precio' => $value['precio'],
+                        'costo' => $value['costo'],
+                        'subtotal' => $value['subtotalitem'],
+                        'subcosto' => $value['subtotalItemCosto'],
+                        'venta_id' => $idVenta,
+                        'producto_id' => $value['id'],
+    
+                    ]);
+    
+    
+                    //para sacar del inventario los productos vendidos
+    
+                    Invproducto::create([
+    
+                        'entrada' => 0,
+                        'salida' => $value['cantidad'],
+                        'idVenta' => $idVenta,
+                        'producto_id' => $value['id'],
+                        'user_id' => $id,
+                        'empresa_id' => $idempresa,
+    
+                    ]);
+                }
+    
+                Empresa::where('id', $idempresa)->update([
+    
+                    'factura' => $this->factura,
+    
+                ]);
+    
+    
+                //para insertar los valores en la tabla de caja
+    
+    
+                $this->pagosCaja[] = [
+    
+                    'total' => $this->pagoBs,
+                    'moneda' => 'Bs',
+                    'metodo' => $this->metodoPagoBs,
+                ];
+    
+                $this->pagosCaja[] = [
+    
+                    'total' => $this->pagoDol,
+                    'moneda' => 'Usd',
+                    'metodo' => $this->metodoPagoDol,
+                ];
+    
+    
+                $this->pagosCaja[] = [
+    
+                    'total' => $this->vueltoBs * (-1),
+                    'moneda' => 'Bs',
+                    'metodo' => $this->metodoVueltoBs,
+                ];
+    
+                $this->pagosCaja[] = [
+    
+                    'total' => $this->vueltoDol * (-1),
+                    'moneda' => 'Usd',
+                    'metodo' => $this->metodoVueltoDol,
+                ];
+    
+    
+                foreach ($this->pagosCaja as $value) {
+    
+    
+    
+                    DB::table('cajas')->insert([
+    
+                        'fecha' => $this->fecha,
+                        'factura' => $this->factura,
+                        'total' => $value['total'],
+                        'paridad' => $this->paridad,
+                        'moneda' => $value['moneda'],
+                        'metodo' => $value['metodo'],
+                        'user_id' => $id,
+                        'empresa_id' => $idempresa,
+                        'venta_id' => $idVenta,
+    
+                    ]);
+                }
+    
+    
+    
+    
+    
+    
+    
+                redirect()->route('ventas.factura', ['venta' => $idVenta]);
+    
+                //return redirect()->route('ventas.factura', ['venta' => $idVenta]);
+    
+                /*redirect()->route('ventas.index')
+                    ->with('success', 'Venta Creada con Exito.');*/
+            } else {
+    
+                session()->flash('message', 'Por favor, colocar cliente o productos validos');
             }
 
-            Empresa::where('id', $idempresa)->update([
-
-                'factura' => $this->factura,
-
-            ]);
-
-
-            //para insertar los valores en la tabla de caja
-
-
-            $this->pagosCaja[] = [
-
-                'total' => $this->pagoBs,
-                'moneda' => 'Bs',
-                'metodo' => $this->metodoPagoBs,
-            ];
-
-            $this->pagosCaja[] = [
-
-                'total' => $this->pagoDol,
-                'moneda' => 'Usd',
-                'metodo' => $this->metodoPagoDol,
-            ];
-
-
-            $this->pagosCaja[] = [
-
-                'total' => $this->vueltoBs*(-1),
-                'moneda' => 'Bs',
-                'metodo' => $this->metodoVueltoBs,
-            ];
-
-            $this->pagosCaja[] = [
-
-                'total' => $this->vueltoDol*(-1),
-                'moneda' => 'Usd',
-                'metodo' => $this->metodoVueltoDol,
-            ];
-
-
-            foreach ($this->pagosCaja as $value) {
-
-
-
-                DB::table('cajas')->insert([
-
-                    'fecha'=> $this->fecha,
-                    'factura'=> $this->factura,        
-                    'total'=> $value['total'],
-                    'paridad'=> $this->paridad,
-                    'moneda'=> $value['moneda'],
-                    'metodo'=> $value['metodo'],        
-                    'user_id'=> $id,
-                    'empresa_id'=> $idempresa,
-                    'venta_id'=>$idVenta,
-
-                ]);
-
-                
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            redirect()->route('ventas.factura', ['venta' => $idVenta]);
-
-            //return redirect()->route('ventas.factura', ['venta' => $idVenta]);
-
-            /*redirect()->route('ventas.index')
-                ->with('success', 'Venta Creada con Exito.');*/
+            
         } else {
 
-            session()->flash('message', 'Por favor, colocar cliente o productos validos');
+
+            session()->flash('message', 'Pago inferior a la venta, por favor, verificar pago');
+            
         }
+        
+
+
+       
+
+
     }
 
 
