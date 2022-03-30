@@ -75,6 +75,10 @@ class CargarVenta extends Component
     public $vueltoDol = 0;
     public $metodoVueltoDol = "Debito";
 
+    public $diferenciaBs =0;
+    public $diferenciaDol =0;
+
+
 
     protected $rules = [
 
@@ -544,10 +548,16 @@ class CargarVenta extends Component
         if ($this->pagoBs <> "" and $this->pagoDol <> "") {
 
 
+
+
+
             if ($this->pagoBs >= 0 or $this->pagoDol >= 0) {
 
                 $pagoClienteDol = ($this->pagoBs / $this->paridad) + $this->pagoDol;
                 $saldo = $pagoClienteDol - $this->total;
+
+                $this->diferenciaDol = round($saldo,2);
+                $this->diferenciaBs=round($saldo * $this->paridad,2);
 
                 if ($saldo > 0) {
 

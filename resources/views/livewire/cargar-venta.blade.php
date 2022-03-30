@@ -319,6 +319,27 @@
                     </div>
 
 
+                    <div class="row mt-3">
+
+                        <div class="col-md-3 offset-md-6">
+
+                            <label for="diferenciaBs" class="form-label">Diferencia Bs</label>
+                                <input id="diferenciaBs" wire:model="diferenciaBs" type="number"
+                                    class="form-control @error('diferenciaBs') is-invalid @enderror" name="diferenciaBs"
+                                    value="" step="0.01" placeholder="0">
+                        </div>
+
+                        <div class="col-md-3">
+                            
+                            <label for="diferenciaDol" class="form-label">Diferencia $</label>
+                                <input id="diferenciaDol" wire:model="diferenciaDol" type="number"
+                                    class="form-control @error('diferenciaDol') is-invalid @enderror" name="diferenciaDol"
+                                    value="" step="0.01" placeholder="0">
+                        </div>
+                       
+                    </div>
+
+
                     
                     {{-- Para controlar los pagos y vueltos y cuadrar la caja --}}
 
